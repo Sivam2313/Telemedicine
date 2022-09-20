@@ -1,8 +1,34 @@
 import { Box, Button, FormControl, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion';
 import Logo from '../images/Logo.png';
-const PatientInfo = ({setShow}) => {
+import axios from 'axios';
+const PatientInfo = ({setShow,setPatientData}) => {
+
+    const [regId, setRegId] = useState();
+
+    const submitHandler = async () =>{
+        if(!regId){
+            return;
+        }
+        try{
+            const config = {
+                headers: {
+                    "Content-type":"application/json"
+                },
+            }
+            const {data} =await axios.post('/api/patient/fetch',{regId},config);
+            if(data.found==false){
+                return;
+            }
+            setPatientData(data);
+            setShow(7);
+        }
+        catch (error){
+            console.log(error);
+        }
+    }
+
   return (
     <Box sx={{
         width: '98vw',
@@ -29,10 +55,11 @@ const PatientInfo = ({setShow}) => {
                                 id="ID"
                                 label="Registration ID"
                                 sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
+                                onChange={(e)=>{setRegId(e.target.value)}}
                             />
                             </FormControl>
                         </Box>
-                        <Button sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',marginTop:'5vh','&:hover':{backgroundColor:'#CF9D6E'}}}>
+                        <Button onClick={submitHandler} sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',marginTop:'5vh','&:hover':{backgroundColor:'#CF9D6E'}}}>
                             Search
                         </Button>
                     </Box>

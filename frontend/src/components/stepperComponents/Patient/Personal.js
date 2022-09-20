@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Paper, Select, Step, StepLabel, Stepper, Typography } from '@mui/material'
-const Personal = ({setDOB,setEducation,setProfession}) => {
+const Personal = ({setDOB,setEducation,setProfession,patientData,setMarital,setGender}) => {
   return (
     <Box sx={{flexFlow:'column'}} display='flex' justifyContent='center'>
       <Box sx={{ marginTop:'5vh',alignSelf:'start',marginLeft:'-4vw' }} display='flex' justifyContent='start'>
@@ -12,7 +12,7 @@ const Personal = ({setDOB,setEducation,setProfession}) => {
         <OutlinedInput
             id="Name"
             label="Relationship with CWE"
-            value='self'
+            value={patientData.relationship}
             sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
             disabled
         />
@@ -23,14 +23,19 @@ const Personal = ({setDOB,setEducation,setProfession}) => {
             <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>create</i>
         </Box>
         <FormControl sx={{width:'40vw'}}>
-        <InputLabel htmlFor="Name">Gender</InputLabel>
-        <OutlinedInput
-            id="Name"
+          <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
             label="Gender"
-            value='Male'
-            sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
-            disabled
-        />
+            sx={{backgroundColor:'#FEFFFF'}}
+            onChange={(e)=>{setGender(e.target.value)}}
+            defaultValue=''
+          >
+            <MenuItem value='Male'>Male</MenuItem>
+            <MenuItem value='Female'>Female</MenuItem>
+            <MenuItem value='Others'>Others</MenuItem>
+          </Select>
         </FormControl>                
       </Box>
       <Box sx={{ marginTop:'25px',alignSelf:'start',marginLeft:'-4vw' }} display='flex'>
@@ -38,7 +43,7 @@ const Personal = ({setDOB,setEducation,setProfession}) => {
             <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>create</i>
         </Box>
         <FormControl sx={{width:'40vw'}}>
-        <InputLabel htmlFor="Name">Date of Birth (dd/mm/yyyy</InputLabel>
+        <InputLabel htmlFor="Name">Date of Birth (dd/mm/yyyy)</InputLabel>
         <OutlinedInput
             id="Name"
             label="Name"
@@ -111,9 +116,8 @@ const Personal = ({setDOB,setEducation,setProfession}) => {
         <OutlinedInput
             id="Name"
             label="Marital Status"
-            value='NM'
             sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
-            disabled
+            onChange={(e)=>{setMarital(e.target.value)}}
         />
         </FormControl>                
       </Box>

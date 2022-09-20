@@ -13,7 +13,7 @@ const MedicalConsultation = () => {
         top:'12vh'
     }} display='flex' justifyContent='center'>
         <motion.div layoutId='main'>
-            <Paper elevation={3} sx={{backgroundColor:'#C7C7C7',marginTop:'15vh',borderRadius:'25px',width:'30vw',height:'55vh',minWidth:'500px'}}>
+            <Paper elevation={3} sx={{backgroundColor:'#C7C7C7',marginTop:'15vh',borderRadius:'25px',width:'30vw',height:'fit-content',minWidth:'500px'}}>
                 <motion.div animate={{opacity:1}} initial={{opacity:0}} transition={{delay: 0.4}}>
                     <Box display='flex' alignItems='center' sx={{flexFlow:'column'}}>
                         <img src={Logo} alt='not found' style={{borderRadius:'50%',position:'absolute',top:'5vh'}}></img>
@@ -44,7 +44,7 @@ const MedicalConsultation = () => {
                                 <FormControlLabel control={<Radio />} label='Mobile Number' value='2' />
                             </RadioGroup>
                         </FormControl>
-                        <Button sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',marginTop:'5vh','&:hover':{backgroundColor:'#CF9D6E'}}}>
+                        <Button sx={{marginBottom:'45px',backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',marginTop:'5vh','&:hover':{backgroundColor:'#CF9D6E'}}}>
                             Search
                         </Button>
                     </Box>

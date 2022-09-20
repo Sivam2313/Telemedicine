@@ -1,4 +1,5 @@
 import { Box, List, ListItem, Toolbar, Drawer, ListItemText, ListItemButton, CssBaseline, AppBar, Button, IconButton, ListItemIcon} from '@mui/material'
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import DoctorRegister from '../components/DoctorRegister';
@@ -14,6 +15,7 @@ const HealthWorker = () => {
 
     const [isOpen, setisOpen] = useState(false);
     const [show,setshow] = useState(0);
+    const [patientData, setPatientData] = useState({});
     const history = useHistory();
     useEffect(() => {
       if(localStorage.getItem('isAuth')==='false' ){
@@ -29,7 +31,7 @@ const HealthWorker = () => {
             case 1:
                 return <FamilyRegistration />
             case 2:
-                return <PatientInfo setshow={setshow}/>
+                return <PatientInfo setShow={setshow} setPatientData={setPatientData}/>
             case 3:
                 return <MedicalConsultation />
             case 4:
@@ -39,11 +41,24 @@ const HealthWorker = () => {
             case 6:
                 return <SearchPrescription />
             case 7:
-              return <PatientForm />
+              return <PatientForm patientData={patientData}/>
         }
     }
 
-    const logoutHandler=()=>{
+    const logoutHandler=async ()=>{ 
+      const logId = JSON.parse(localStorage.getItem("HwOnline")).logId;
+      try{
+        const config={
+            headers: {
+                "Content-type":"application/json"
+            },
+        }
+        const {data} = await axios.post('/api/logs/logout',{logId},config)
+      }
+      catch (error){
+        console.log(error);
+        return;
+      }
       localStorage.setItem('isAuth', false); 
       localStorage.setItem("HwOnline",false);
       history.push('/')

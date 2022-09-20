@@ -44,6 +44,10 @@ const familySchema = mongoose.Schema({
             type:String,
             required:true,
         },
+        relationship:{
+            type:String,
+            default: 'relative',
+        },
     }],
     education:{
         type:String,

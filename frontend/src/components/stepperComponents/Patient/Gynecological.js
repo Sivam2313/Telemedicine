@@ -1,102 +1,66 @@
 import React, { useState } from 'react'
 import { Box, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Paper, Select, Step, StepLabel, Stepper, Typography } from '@mui/material'
-const Basic = ({setMobile,patientData}) => {
-    var today = new Date();
-    var date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
+const Gynecological = ({setNAbortion,setNumberOfChild,setOtherComplications,setTotalPregnancies}) => {
   return (
     <Box sx={{flexFlow:'column'}} display='flex' justifyContent='center'>
-      <Box sx={{ marginTop:'5vh',alignSelf:'start',marginLeft:'-4vw' }} display='flex' justifyContent='center'>
-        <Box display='flex' justifyContent='center' alignItems='center' sx={{backgroundColor:'#2B7A78',width:'56px',height:'56px',color:'#17252A',borderRadius:'5px 0px 0px 5px'}}>
-            <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>create</i>
-        </Box>
-        <FormControl sx={{width:'40vw'}}>
-        <InputLabel htmlFor="Name">Family Registration Number</InputLabel>
-        <OutlinedInput
-            id="Name"
-            label='Family Registration Number'
-            value={patientData.registrationNumber}
-            sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
-            disabled
-        />
-        </FormControl>                
-      </Box>
       <Box sx={{ marginTop:'25px',alignSelf:'start',marginLeft:'-4vw' }} display='flex' justifyContent='center'>
         <Box display='flex' justifyContent='center' alignItems='center' sx={{backgroundColor:'#2B7A78',width:'56px',height:'56px',color:'#17252A',borderRadius:'5px 0px 0px 5px'}}>
             <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>create</i>
         </Box>
         <FormControl sx={{width:'40vw'}}>
-        <InputLabel htmlFor="Name">Patient Registration Id</InputLabel>
+        <InputLabel htmlFor="Name">बच्चों की संख्या</InputLabel>
         <OutlinedInput
             id="Name"
-            label='Patient Registration Id'
-            value={patientData.registrationP}
+            label="बच्चों की संख्या"
             sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
-            disabled
+            onChange={(e)=>{setNumberOfChild(e.target.value)}}
         />
         </FormControl>                
-      </Box>
-      <Box sx={{ marginTop:'25px',alignSelf:'start',marginLeft:'-4vw' }} display='flex'>
-        <Box display='flex' justifyContent='center' alignItems='center' sx={{backgroundColor:'#2B7A78',width:'56px',height:'56px',color:'#17252A',borderRadius:'5px 0px 0px 5px'}}>
-            <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>create</i>
-        </Box>
-        <FormControl sx={{width:'40vw'}}>
-        <InputLabel htmlFor="Name">Name</InputLabel>
-        <OutlinedInput
-            id="Name"
-            value={patientData.name}
-            label='Name'
-            sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
-            disabled
-        />
-        </FormControl>                
-      </Box>
+      </Box> 
       <Box sx={{ marginTop:'25px',alignSelf:'start',marginLeft:'-4vw' }} display='flex' justifyContent='center'>
         <Box display='flex' justifyContent='center' alignItems='center' sx={{backgroundColor:'#2B7A78',width:'56px',height:'56px',color:'#17252A',borderRadius:'5px 0px 0px 5px'}}>
             <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>create</i>
         </Box>
         <FormControl sx={{width:'40vw'}}>
-        <InputLabel htmlFor="Name">Patient Ticket Id</InputLabel>
+        <InputLabel htmlFor="Name">गर्भधारण की कुल संख्या</InputLabel>
         <OutlinedInput
             id="Name"
-            label="Patient Ticket Id"
-            value={patientData.ticketId}
+            label="गर्भधारण की कुल संख्या"
             sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
-            disabled
+            onChange={(e)=>{setTotalPregnancies(e.target.value)}}
         />
         </FormControl>                
-      </Box>
+      </Box> 
       <Box sx={{ marginTop:'25px',alignSelf:'start',marginLeft:'-4vw' }} display='flex' justifyContent='center'>
         <Box display='flex' justifyContent='center' alignItems='center' sx={{backgroundColor:'#2B7A78',width:'56px',height:'56px',color:'#17252A',borderRadius:'5px 0px 0px 5px'}}>
             <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>create</i>
         </Box>
         <FormControl sx={{width:'40vw'}}>
-        <InputLabel htmlFor="Name">Date</InputLabel>
+        <InputLabel htmlFor="Name">गर्भपात</InputLabel>
         <OutlinedInput
             id="Name"
-            label="Date"
-            value={date}
+            label="गर्भपात"
             sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
-            disabled
+            onChange={(e)=>{setNAbortion(e.target.value)}}
         />
         </FormControl>                
-      </Box>
+      </Box> 
       <Box sx={{ marginTop:'25px',alignSelf:'start',marginLeft:'-4vw' }} display='flex' justifyContent='center'>
         <Box display='flex' justifyContent='center' alignItems='center' sx={{backgroundColor:'#2B7A78',width:'56px',height:'56px',color:'#17252A',borderRadius:'5px 0px 0px 5px'}}>
             <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>create</i>
         </Box>
         <FormControl sx={{width:'40vw'}}>
-        <InputLabel htmlFor="Name">Mobile No</InputLabel>
+        <InputLabel htmlFor="Name">अन्य जटिलताएं</InputLabel>
         <OutlinedInput
             id="Name"
-            label="Mobile No"
+            label="अन्य जटिलताएं"
             sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
-            onChange = {(e)=>{setMobile(e.target.value)}}
+            onChange={(e)=>{setOtherComplications(e.target.value)}}
         />
         </FormControl>                
-      </Box>
-      
+      </Box> 
     </Box>
   )
 }
 
-export default Basic
+export default Gynecological

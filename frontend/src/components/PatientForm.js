@@ -6,13 +6,14 @@ import Success from './stepperComponents/Success';
 import Personal from './stepperComponents/Patient/Personal';
 import Basic from './stepperComponents/Patient/Basic';
 import Medical from './stepperComponents/Patient/Medical';
-const PatientForm = () => {
+import PastHistory from './stepperComponents/Patient/PastHistory';
+import Gynecological from './stepperComponents/Patient/Gynecological';
+import axios from 'axios';
+
+const PatientForm = ({patientData}) => {
     const steps = ['Basic Info','Personal Profile', 'Medical Profile', 'Past Medical History','प्रसूति / स्त्री रोग संबंधी इतिहास (महिलाओं के लिए)'];
     const [active, setActive] = useState(0);
     const [result, setResult] = useState('Successful')
-    const [registrationNo, setRegistrationNo] = useState();
-    const [name, setName] = useState();
-    const [registrationP, setRegistrationP] = useState();
     const [mobile, setMobile] = useState();
     const [DOB, setDOB] = useState();
     const [education, setEducation] = useState();
@@ -20,29 +21,62 @@ const PatientForm = () => {
     const [height, setHeight] = useState();
     const [weight, setWeight] = useState();
     const [temperature, setTemperature] = useState();
-    const [pusle, setPulse] = useState();
+    const [pulse, setPulse] = useState();
     const [sbp, setSbp] = useState();
     const [dbp, setDbp] = useState();
     const [alcohol, setAlcohol] = useState();
     const [smoking, setSmoking] = useState();
     const [asthama, setAsthama] = useState();
-    const [Diabetes, setDiabetes] = useState();
+    const [diabetes, setDiabetes] = useState();
     const [familyIll, setFamilyIll] = useState();
     const [spo2, setSpo2] = useState();
     const [others, setOthers] = useState();
+    const [admitted, setAdmitted] = useState();
+    const [currentMed, setCurrentMed] = useState();
+    const [healthCondition, setHealthCondition] = useState();
+    const [injuries, setInjuries] = useState();
+    const [otherHistory, setOtherHistory] = useState();
+    const [pastDiseases, setPastDiseases] = useState();
+    const [abortion, setAbortion] = useState("");
+    const [numberOfChild, setNumberOfChild] = useState("");
+    const [otherComplications, setOtherComplications] = useState("");
+    const [totalPregnancies, setTotalPregnancies] = useState("");
+    const [marital, setMarital] = useState();
+    const [gender, setGender] = useState();
     function activeStep(){
         switch(active){
             case 1:
-                return <Personal setRegistrationNo={setRegistrationNo} setName={setName} setRegistrationP={setRegistrationP} setMobile={setMobile}/>
+                return <Personal patientData={patientData}  setMarital={setMarital} setGender={setGender} setDOB={setDOB} setEducation={setEducation} setProfession={setProfession}/>
             case 0:
-                return <Basic setDOB={setDOB} setEducation={setEducation} setProfession={setProfession} />
+                return <Basic setMobile={setMobile} patientData={patientData}/>
             case 2:
                 return <Medical setHeight={setHeight} setWeight={setWeight} setTemperature={setTemperature} setPulse={setPulse} setSbp={setSbp} setDbp={setDbp} setAlcohol={setAlcohol} setAsthama={setAsthama} setDiabetes={setDiabetes} setFamilyIll={setFamilyIll} setSmoking={setSmoking} setSpo2={setSpo2} setOthers={setOthers}/>
             case 3:
+                return <PastHistory setAdmitted={setAdmitted} setCurrentMed={setCurrentMed} setHealthCondition={setHealthCondition} setInjuries={setInjuries} setOtherHistory={setOtherHistory} setPastDiseases={setPastDiseases}/>
+            case 4:
+                return <Gynecological setNAbortion={setAbortion} setNumberOfChild={setNumberOfChild} setOtherComplications={setOtherComplications} setTotalPregnancies={setTotalPregnancies}/>
+            case 5:
                 return <Success result={result}/>
         }
     }
     async function submitHandler (){
+        if(!marital || !DOB || !education || !profession || !height || !weight || !temperature || !pulse || !sbp || !dbp || !alcohol || !asthama || !diabetes || !familyIll || !smoking || !spo2 || !admitted || !currentMed || !healthCondition || !injuries || !pastDiseases){
+            return;
+        }
+        try{
+            const config = {
+                headers: {
+                    "Content-type":"application/json"
+                }, 
+            }
+            const {data} =await axios.post('/api/patient/add',{marital,DOB,education,profession,height,weight,temperature,pulse,sbp,dbp,alcohol,asthama,diabetes,familyIll,smoking,spo2,admitted,currentMed,healthCondition,injuries,pastDiseases,abortion,numberOfChild,otherComplications,totalPregnancies,others,otherHistory,patientData,mobile,gender},config);
+            setResult('Successful')
+        }
+        catch(error){
+            console.log(error);
+            setResult('Failed');
+        }
+        
     }
     const backHandler = ()=>{
         if(active>0){
@@ -51,12 +85,10 @@ const PatientForm = () => {
         }
     }
     const stepperHandler = ()=>{
-        if(active===6){
+        if(active===4){
             submitHandler()
         }
-        if(active===1){
-        }
-        if(active<6){
+        if(active<5){
             var newActive = active + 1
             setActive(newActive);
         }
@@ -92,14 +124,16 @@ const PatientForm = () => {
                         
                     </Box>
                 </motion.div>
-                <motion.div style={{marginTop:'30px',marginLeft:'6vw',width:'56vw',display:'flex',justifyContent:'space-between'}} animate={{opacity:1}} initial={{opacity:0}} transition={{delay:0.4}}>
-                    <Button onClick={backHandler} sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',alignSelf:'end',marginRight:'8vw','&:hover':{backgroundColor:'#CF9D6E'}}}>
-                        Back
-                    </Button>
-                    <Button onClick={stepperHandler} sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',alignSelf:'end',marginRight:'8vw','&:hover':{backgroundColor:'#CF9D6E'}}}>
-                        {(active===6)? 'Register' : (active===7)? 'Reset' : 'Next'}
-                    </Button>
-                </motion.div>
+                <Box display={(active===5)?'none':'block'}>
+                    <motion.div style={{marginTop:'30px',marginLeft:'6vw',width:'56vw',display:'flex',justifyContent:'space-between'}} animate={{opacity:1}} initial={{opacity:0}} transition={{delay:0.4}}>
+                        <Button onClick={backHandler} sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',alignSelf:'end',marginRight:'8vw','&:hover':{backgroundColor:'#CF9D6E'}}}>
+                            Back
+                        </Button>
+                        <Button onClick={stepperHandler} sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',alignSelf:'end',marginRight:'8vw','&:hover':{backgroundColor:'#CF9D6E'}}}>
+                            {(active===4)? 'Register' : (active===5)? 'Reset' : 'Next'}
+                        </Button>
+                    </motion.div>
+                </Box>
             </Paper>
         </motion.div>
     </Box>    

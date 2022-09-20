@@ -8,8 +8,8 @@ const registerFamily = asyncHandler(async (req,res)=>{
         throw new Error("Please Enter all the Feilds");
     }
     var number = 0;
-    const count = await Family.countDocuments({}); 
-
+    const familyList = await Family.find({date:date}); 
+    count= familyList.length;
     if(count+1<10){
         number = "000" + (count+1);
     }

@@ -1,8 +1,9 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
 import mainImg from '../images/Logo.png';
 import Pdf from "react-to-pdf";
+import { useHistory } from 'react-router-dom';
 
 const FamilyCardsView = () => {
 
@@ -10,6 +11,7 @@ const FamilyCardsView = () => {
     const familyData = JSON.parse(localStorage.getItem('familyData'));
     // localStorage.removeItem("familyData"); 
     const ref = React.createRef();
+    const history = useHistory();
 
 
 
@@ -103,6 +105,9 @@ const FamilyCardsView = () => {
                 </Typography>
             </Box>
         </Box>
+        <Button onClick={()=>{history.goBack()}} sx={{position:'absolute',top:'2vh',left:'3vw',backgroundColor:'#17252A',color:'#FEFFFF',padding:'1rem',borderRadius:'50px','&:hover':{backgroundColor:'#333333'}}}>
+            <i className="material-icons" sx={{fontSize:'1rem'}}>keyboard_backspace</i>
+        </Button>
         <Pdf targetRef={ref} filename="code-example.pdf" options={{ orientation: 'portrait',format: [9.4,10.6],unit:'in'}}>
             {({ toPdf }) => <button onClick={toPdf}>Generate Pdf</button>}
         </Pdf>

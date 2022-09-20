@@ -50,6 +50,7 @@ const authDoctor = asyncHandler(async (req,res)=>{
     const {registrationID} = req.body
     
     const doctor = await Doctor.findOne({registrationID});
+    
 
     if(doctor){
         res.status(201).json({

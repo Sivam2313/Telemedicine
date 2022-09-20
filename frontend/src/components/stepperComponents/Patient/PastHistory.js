@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Paper, Select, Step, StepLabel, Stepper, Typography } from '@mui/material'
-const PastHistory = ({setDOB,setEducation,setProfession}) => {
+const PastHistory = ({setAdmitted,setCurrentMed,setHealthCondition,setInjuries,setOtherHistory,setPastDiseases}) => {
   return (
     <Box sx={{flexFlow:'column'}} display='flex' justifyContent='center'>
       <Box sx={{ marginTop:'25px',alignSelf:'start',marginLeft:'-4vw' }} display='flex'>
@@ -8,25 +8,22 @@ const PastHistory = ({setDOB,setEducation,setProfession}) => {
             <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>work</i>
         </Box>
         <FormControl sx={{width:'40vw'}}>
-          <InputLabel id="demo-simple-select-label">Profession</InputLabel>
+          <InputLabel id="demo-simple-select-label">पिछली बीमारियां</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            label="Profession"
+            label="पिछली बीमारियां"
             sx={{backgroundColor:'#FEFFFF'}}
-            onChange={(e)=>{setProfession(e.target.value)}}
+            onChange={(e)=>{setPastDiseases(e.target.value)}}
             defaultValue=''
           >
-            <MenuItem value='किसान'>किसान</MenuItem>
-            <MenuItem value='नौकरी'>नौकरी</MenuItem>
-            <MenuItem value='घरेलू कार्यकर्ता'>घरेलू कार्यकर्ता</MenuItem>
-            <MenuItem value='दैनिक दांव'>दैनिक दांव</MenuItem>
-            <MenuItem value='विद्यार्थी'>विद्यार्थी</MenuItem>
-            <MenuItem value='भइया/ Brother'>भइया/ Brother</MenuItem>
-            <MenuItem value='समाज सेवक'>समाज सेवक</MenuItem>
-            <MenuItem value='बेरोजगार'>बेरोजगार</MenuItem>
-            <MenuItem value='सेवातनवृत'>सेवातनवृत</MenuItem>
-            <MenuItem value='कुशल कामगार (राजमिस्त्री, दर्जी, बढ़ई, बिजली मिस्त्री, नर्स आदि)'>कुशल कामगार (राजमिस्त्री, दर्जी, बढ़ई, बिजली मिस्त्री, नर्स आदि)</MenuItem>
+            <MenuItem value='कैंसर'>कैंसर</MenuItem>
+            <MenuItem value='हृदय रोग'>हृदय रोग</MenuItem>
+            <MenuItem value='उच्च रक्तचाप'>उच्च रक्तचाप</MenuItem>
+            <MenuItem value='मधुमेह'>मधुमेह</MenuItem>
+            <MenuItem value='टीबी'>टीबी</MenuItem>
+            <MenuItem value='सेरेब्रल अटैक'>सेरेब्रल अटैक</MenuItem>
+            <MenuItem value='कुछ नही'>कुछ नही</MenuItem>
           </Select>
         </FormControl>
       </Box>  
@@ -55,7 +52,7 @@ const PastHistory = ({setDOB,setEducation,setProfession}) => {
             id="demo-simple-select"
             label="अस्पताल में भर्ती"
             sx={{backgroundColor:'#FEFFFF'}}
-            onChange={(e)=>{setIDK(e.target.value)}}
+            onChange={(e)=>{setAdmitted(e.target.value)}}
             defaultValue=''
           >
             <MenuItem value='बच्चे का जन्म'>बच्चे का जन्म</MenuItem>
@@ -75,7 +72,7 @@ const PastHistory = ({setDOB,setEducation,setProfession}) => {
             id="demo-simple-select"
             label="अस्पताल में भर्ती"
             sx={{backgroundColor:'#FEFFFF'}}
-            onChange={(e)=>{setIDK(e.target.value)}}
+            onChange={(e)=>{setHealthCondition(e.target.value)}}
             defaultValue=''
           >
             <MenuItem value='उत्कृष्ट'>उत्कृष्ट</MenuItem>
@@ -96,7 +93,7 @@ const PastHistory = ({setDOB,setEducation,setProfession}) => {
             id="Name"
             label="चोट या दुर्घटनाएं"
             sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
-            onChange={(e)=>{setIDK2(e.target.value)}}
+            onChange={(e)=>{setInjuries(e.target.value)}}
         />
         </FormControl>                
       </Box>
@@ -110,7 +107,7 @@ const PastHistory = ({setDOB,setEducation,setProfession}) => {
             id="Name"
             label="वर्तमान दवाएं"
             sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
-            onChange={(e)=>{setIDK3(e.target.value)}}
+            onChange={(e)=>{setCurrentMed(e.target.value)}}
         />
         </FormControl>                
       </Box> 

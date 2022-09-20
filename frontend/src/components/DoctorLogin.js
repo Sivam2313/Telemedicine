@@ -29,11 +29,13 @@ const DoctorLogin = () => {
                 "Content-type":"application/json"
             },
         }
-        const {data} = await axios.post('/doctor/login',{registrationID},config);
+        const {data} = await axios.post('/api/doctor/login',{registrationID},config);
+        localStorage.setItem("DoctorOnline", JSON.stringify(data))
+        localStorage.setItem('isAuth',true);
         history.push('/doctor');
     }
     catch(error){
-      console.error();
+      console.log(error);
     }
   }
 
@@ -51,7 +53,7 @@ const DoctorLogin = () => {
                   <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>person_outline</i>
                 </Box>
                 <ThemeProvider theme={theme}>
-                  <TextField id="standard-basic" color='neutral' label="Registration ID" variant="filled" sx={{ input: { color: '#FEFFFF' } }} focused/>
+                  <TextField id="standard-basic" color='neutral' onChange={(e)=>{setRegistrationID(e.target.value)}} label="Registration ID" variant="filled" sx={{ input: { color: '#FEFFFF' } }} focused/>
                 </ThemeProvider>
               </Box>
               <Button onClick={loginHandler} sx={{marginTop:'5vh',width:'10vw',color:'#DEF2F1',borderRadius:'20px',padding:'0.5rem',backgroundColor:"#CF823A",'&:hover':{backgroundColor:'#CF8F5D'}}}>

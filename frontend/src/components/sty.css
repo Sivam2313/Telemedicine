@@ -14,3 +14,6 @@
 .MuiTableCell-head{
     background-color: rgb(175, 4, 175);
 }
+.test{
+    background: linear-gradient(#dc2dec 80%,#e9e628 10%);
+}
