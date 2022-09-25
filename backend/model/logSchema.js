@@ -14,7 +14,8 @@ const logSchema = mongoose.Schema({
         type:Date,
     },
     logout:{
-        type:Date,
+        type:String,
+        default:'Online Now'
     },
 },{
     timestamp:true,

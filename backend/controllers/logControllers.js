@@ -13,8 +13,9 @@ const fetchLogs = asyncHandler(async (req,res)=>{
 
 const handelLogout = asyncHandler(async(req,res)=>{
     const {logId} = req.body;
-    const logout = new Date();
-    const log = await Log.updateOne({_id:logId},{logout:logout})
+    const today = new Date();
+    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    const log = await Log.updateOne({_id:logId},{logout:date})
     if(log){
         res.status(201).json(log);
     }

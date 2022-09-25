@@ -1,9 +1,11 @@
 import { Box, List, ListItem, Toolbar, Drawer, ListItemText, ListItemButton, CssBaseline, AppBar, Button, IconButton, ListItemIcon} from '@mui/material'
+import axios from 'axios';
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import Dashboard from '../components/Dashboard';
 import DoctorRegister from '../components/DoctorRegister';
 import HwRegister from '../components/HwRegister';
+import LogRecord from '../components/LogRecord';
 import SearchFamilyCards from '../components/SearchFamilyCards';
 import SearchPrescription from '../components/SearchPrescription';
 import mainImg from '../images/Logo.png';
@@ -24,10 +26,25 @@ const Admin = () => {
           return <SearchFamilyCards />
       case 4:
           return <SearchPrescription />
+      case 6:
+          return <LogRecord />
     }
   }
 
-  const logoutHandler=()=>{
+  const logoutHandler=async ()=>{
+      const logId = JSON.parse(localStorage.getItem("AdminOnline")).logId;
+      try{
+        const config={
+            headers: {
+                "Content-type":"application/json"
+            },
+        }
+        const {data} = await axios.post('/api/logs/logout',{logId},config)
+      }
+      catch (error){
+        console.log(error);
+        return;
+      }
     localStorage.setItem('isAuth', false);
     localStorage.setItem("AdminOnline",false);
     history.push('/')
@@ -56,7 +73,7 @@ const Admin = () => {
             backgroundColor:'#DEDEDE'
           }}}>
           <List>
-            {['Dashboard','Health Worker Registration','Doctor Registration','Search Family Cards','Search Prescription','Issue Medicine'].map((text,idx)=>(
+            {['Dashboard','Health Worker Registration','Doctor Registration','Search Family Cards','Search Prescription','Issue Medicine','View Logs'].map((text,idx)=>(
               <ListItem key={text} disablePadding>
                 <ListItemButton onClick={()=>setshow(idx)} sx={{
                   height:'8vh',

@@ -42,7 +42,12 @@ const HwDashboard = () => {
         }, 
       }
       const {data} = await axios.post('/api/patient/appointed',{from,to},config);
-      setpatientArr(data)
+      if(data.length===0){
+        setpatientArr(["None Found"])
+      }
+      else{
+        setpatientArr(data)
+      }
       console.log(data);
 
     }catch(error){

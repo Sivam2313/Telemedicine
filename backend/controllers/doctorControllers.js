@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Doctor = require('../model/doctorSchema');
 const generateToken = require('../config/tokenGen');
+const Log = require('../model/logSchema');
 
 const registerDoctor = asyncHandler(async (req,res)=>{
     const {name,ssfID,registrationID,mobile,adress,gender,speciality,arr} = req.body;
@@ -53,13 +54,26 @@ const authDoctor = asyncHandler(async (req,res)=>{
     
 
     if(doctor){
-        res.status(201).json({
-            _id: doctor._id,
-            ssfID: doctor.ssfID,
-            registrationID: doctor.registrationID,
-            timeAvailable: doctor.timeAvailable,
-            token: generateToken(doctor._id)
+        const logReport = await Log.create({
+            user:'Doctor',
+            registrationId:registrationID,
+            name:doctor.name,
+            login:new Date(),
         })
+        if(logReport){
+            res.status(201).json({
+                _id: doctor._id,
+                ssfID: doctor.ssfID,
+                registrationID: doctor.registrationID,
+                timeAvailable: doctor.timeAvailable,
+                token: generateToken(doctor._id),
+                logId:logReport._id,
+            })
+        }
+        else{
+            throw new Error ("error");
+        }
+
     }
     else{
         res.status(400)
