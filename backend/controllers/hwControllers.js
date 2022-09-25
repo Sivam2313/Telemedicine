@@ -25,12 +25,27 @@ const registerHw = asyncHandler(async (req,res)=>{
     });
     
     if(hw){
-        res.status(201).json({
-            _id: hw._id,
-            name: hw.name,
-            userID: hw.userID,
-            password: hw.password,
+        const login = new Date()
+        const logReport = await Log.create({
+            user:"Health Worker",
+            registrationId:hw.userID,
+            name:hw.name,
+            login: login,
         })
+        if(logReport){
+            res.status(201).json({
+                _id: hw._id,
+                name: hw.name,
+                userID: hw.userID,
+                password: hw.password,
+                logId: logReport._id,
+            })
+        }
+        else{
+            res.status(400)
+            throw new Error ("Error")
+        }
+
     }
     else{
         res.status(400)

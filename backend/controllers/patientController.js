@@ -99,6 +99,8 @@ const appointedPatients = asyncHandler(async (req,res)=>{
         appointedTime:{$gte:start},
     }).find({
         appointedTime:{$lte:end},
+    }).find({
+        isVisited:'false'
     })
     if(patients){
         res.status(201).json(patients);

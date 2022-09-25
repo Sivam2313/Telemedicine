@@ -145,6 +145,14 @@ const patientSchema = mongoose.Schema({
         type:String,
         default:"0",
     },
+    isVisited:{
+        type:String,
+        default:'false',
+    },
+    nextAppointedDate:{
+        type:String,
+        default:''
+    }
 },{
     timestamp:true,
 });
