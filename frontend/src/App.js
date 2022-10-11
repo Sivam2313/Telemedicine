@@ -7,6 +7,7 @@ import healthWorker from './pages/HealthWorker';
 import Protect from './components/Protect';
 import Doctor from './pages/Doctor';
 import FamilyCardsView from './pages/FamilyCardsView';
+import Conference from './pages/Conference';
 function App() {
   return (
     <div className="App">
@@ -16,6 +17,7 @@ function App() {
         <Route path='/admin' component={Admin} exact /> 
         <Route path='/doctor' component={Doctor} exact/>  
         <Route path='/info' component={FamilyCardsView} exact />
+        <Route path='/conference' component={Conference} exact />
       </Protect>
 
     </div>

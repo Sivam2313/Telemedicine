@@ -55,6 +55,11 @@ const HwDashboard = () => {
     }
   }
 
+  function roomHandler(idx){
+    localStorage.setItem('room',patientArr[idx].patientData.ticketId)
+    history.push('/conference');
+  }
+
     return (
       <motion.div animate={{opacity:1}} initial={{opacity:0}}>
         <Box sx={{
@@ -150,7 +155,7 @@ const HwDashboard = () => {
                 )
               }  
                 return(
-                  <Paper elevation={3} sx={{backgroundColor:'#FEFFFF',width:'80vw',height:'9vh',borderRadius:'8px',marginBottom :'15px'}}>
+                  <Paper key={idx} elevation={3} sx={{backgroundColor:'#FEFFFF',width:'80vw',height:'9vh',borderRadius:'8px',marginBottom :'15px'}}>
                     <Box display='center' justifyContent='space-between' alignItems='center' sx={{width:'80vw'}}>
                       <Typography variant='h5' component='div' sx={{fontFamily:'Roboto Condensed',display:'flex',alignItems:'center',width:'20vw',height:'9vh',paddingLeft:'30px'}}>
                         {idx+1}
@@ -162,7 +167,7 @@ const HwDashboard = () => {
                         {item.doctor}
                       </Typography>
                       <Box display='center' justifyContent='center' alignItems='center' sx={{width:'20vw'}}>
-                        <Button sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'5vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
+                        <Button onClick={()=>roomHandler(idx)} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'5vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
                           Start
                         </Button>
                       </Box>
