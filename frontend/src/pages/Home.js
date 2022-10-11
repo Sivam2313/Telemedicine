@@ -4,7 +4,7 @@ import Main from '../components/Main';
 import Login from '../components/Login';
 
 const Home = () => {
-  const [isMain, setIsMain] = React.useState(true);
+      const [isMain, setIsMain] = React.useState(true);
   return (
     <Box>
       {(isMain)?<Main setisMain={setIsMain}/>:<Login setismain={setIsMain}/>}

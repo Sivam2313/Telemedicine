@@ -30,6 +30,11 @@ const HwDashboard = () => {
     }
   }, [])
 
+  function roomHandler(idx){
+    localStorage.setItem('room',patientArr[idx].ticketId)
+    history.push('/conference')
+  }
+
   const submitHandler = async()=>{
     if(!from || !to){
       return;
@@ -162,7 +167,7 @@ const HwDashboard = () => {
                         {item.doctor}
                       </Typography>
                       <Box display='center' justifyContent='center' alignItems='center' sx={{width:'20vw'}}>
-                        <Button sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'5vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
+                        <Button onClick={()=>roomHandler(idx)} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'5vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
                           Start
                         </Button>
                       </Box>
