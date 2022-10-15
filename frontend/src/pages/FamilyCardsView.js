@@ -12,13 +12,16 @@ const FamilyCardsView = () => {
     // localStorage.removeItem("familyData"); 
     const ref = React.createRef();
     const history = useHistory();
-
+    const properties = { header: 'Acme' }
 
 
   return (
+    <React.Fragment>
+    
+
     <Box display='flex' justifyContent='center' alignItems='center'>
 
-        <Box  ref={ref} display='flex' alignItems='center' sx={{width:'40vw',minWidth:'900px',border:'1px solid black',borderRadius:'25px',flexFlow:'column',backgroundColor:'#FEFFFF',marginBottom:'30px'}}>
+        <Box  ref={ref} id='page' display='flex' alignItems='center' sx={{width:'40vw',minWidth:'900px',border:'1px solid black',borderRadius:'25px',flexFlow:'column',backgroundColor:'#FEFFFF',marginBottom:'30px'}}>
             <Box sx={{width:'100%',marginTop:'5vh'}} display='center' justifyContent='center' alignItems='center'>
                 <img src={mainImg} alt="not found" style={{borderRadius:'50%',width:'10vmin',height:'10vmin'}}/>
             </Box>
@@ -112,6 +115,7 @@ const FamilyCardsView = () => {
             {({ toPdf }) => <button onClick={toPdf}>Generate Pdf</button>}
         </Pdf>
     </Box>
+    </React.Fragment>
   )
 }
 

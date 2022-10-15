@@ -76,13 +76,19 @@ const Conference = () => {
             setMessageList((arr)=>[...arr,data])
             setIsCallable(true);
             setRemotePeerIdValue(id);
+            call(id);
         })
         
         
     }, [socket])
 
 
-  const call = (remotePeerId) => {
+  function call(remotePeerId) {
+
+    if(!remotePeerId){
+      return;
+    }
+
     var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
     getUserMedia({ video: true, audio: true }, (mediaStream) => {
@@ -124,9 +130,7 @@ const Conference = () => {
           </div>
         </div>
         <div className="options__right">
-          <button onClick={()=>{call(remotePeerIdValue)}} id="inviteButton" className="options__button" style={{
-                display:(isCallable)? 'block':'none',            
-          }}>
+          <button onClick={()=>{call(remotePeerIdValue)}} id="inviteButton" className="options__button">
             <i className="fas fa-user-plus"></i>
           </button>
         </div>

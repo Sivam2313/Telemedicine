@@ -33,6 +33,11 @@ const DoctorDash = ({setShow}) => {
       fetch()
     },[])
 
+    function roomHandler(idx){
+      localStorage.setItem('room',patientArr[idx].patientData.ticketId)
+      history.push('/conference');
+    }
+
     return (
     <Box sx={{height:'150vh',position:'absolute'}}>
       <Box sx={{height:'13vh',width:'35vw',borderRadius:'15px',background:'linear-gradient(135deg, #2B7A78 10%, #3AAFA9 100%)',marginTop:'14vh',marginLeft:'8vw'}}>
@@ -82,7 +87,7 @@ const DoctorDash = ({setShow}) => {
                       {item.nextAppointedDate}
                     </Typography>
                     <Box display='flex' justifyContent='center' alignItems='center' sx={{height:'8vh',fontFamily:'Sans Sherif',width:'20vw',paddingLeft:'4vw'}}>
-                      <Button onClick={()=>{setShow(1)}} sx={{backgroundColor:'#19414D',color:'#FEFFFF',height:'5vh',width:'8vw',borderRadius:'15px'}}>
+                      <Button onClick={()=>roomHandler(idx)} sx={{backgroundColor:'#19414D',color:'#FEFFFF',height:'5vh',width:'8vw',borderRadius:'15px'}}>
                         Start
                       </Button>
                     </Box>

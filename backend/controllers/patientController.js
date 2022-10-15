@@ -127,6 +127,14 @@ const setAppointedDate = asyncHandler(async (req,res)=>{
     }
 })
 
+const changeVisited = asyncHandler (async (req,res)=>{
+    const {id} = req.body; 
+    const patient = await Patient.findOneAndUpdate({registrationP:id},{isVisited:true})
+    if(patient){
+        res.status(201).json(patient)
+    }
+})
+
 const fetchAll = asyncHandler(async (req,res)=>{
     const patients = await Patient.find({doctor:"0"})
     if(patients){
@@ -134,4 +142,4 @@ const fetchAll = asyncHandler(async (req,res)=>{
     }
 })
 
-module.exports = {fetchPatient,addPatient,appointedPatients,setAppointedDate,fetchAll};
+module.exports = {fetchPatient,addPatient,appointedPatients,setAppointedDate,fetchAll,changeVisited};

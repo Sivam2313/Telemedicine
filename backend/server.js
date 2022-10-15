@@ -11,6 +11,7 @@ const logRoutes = require('./routes/logRoutes');
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5000
+// const PORT = 3000;
 connectDB();
 const cors = require('cors')
 const http = require('http')

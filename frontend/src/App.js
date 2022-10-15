@@ -8,6 +8,7 @@ import Protect from './components/Protect';
 import Doctor from './pages/Doctor';
 import FamilyCardsView from './pages/FamilyCardsView';
 import Conference from './pages/Conference';
+import Prescription from './pages/Prescription';
 function App() {
   return (
     <div className="App">
@@ -18,6 +19,7 @@ function App() {
         <Route path='/doctor' component={Doctor} exact/>  
         <Route path='/info' component={FamilyCardsView} exact />
         <Route path='/conference' component={Conference} exact />
+        <Route path='/prescription' component={Prescription} exact />
       </Protect>
 
     </div>
