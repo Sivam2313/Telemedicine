@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import {motion} from 'framer-motion';
+import DatePicker from 'react-date-picker';
 const HwDashboard = () => {
 
   const [familyCount,setFamilyCount] = useState(0);
@@ -31,11 +32,8 @@ const HwDashboard = () => {
   }, [])
 
   const submitHandler = async()=>{
-    if(!from || !to){
-      return;
-    }
+    
     try{
-      
       const config={
         headers: {
           "Content-type":"application/json"
@@ -105,6 +103,7 @@ const HwDashboard = () => {
             <FormControl sx={{width:'10vw'}}>
               <OutlinedInput
                 id="ID"
+                type='date'
                 placeholder='DD/MM/YYYY'
                 sx={{borderRadius:'5px',height:'5vh',marginTop:'5px'}}
                 onChange={(e)=>{setFrom(e.target.value)}}
@@ -118,10 +117,12 @@ const HwDashboard = () => {
             <FormControl sx={{width:'10vw'}}>
               <OutlinedInput
                 id="ID"
+                type='date'
                 placeholder='DD/MM/YYYY'
                 sx={{borderRadius:'5px',height:'5vh',marginTop:'5px'}}
                 onChange={(e)=>{setTo(e.target.value)}}
               />
+              {/* <DatePicker onChange={(e)=>setTo(e)} selected={to} /> */}
             </FormControl>
           </Box>
           <Button onClick={submitHandler} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'5vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>

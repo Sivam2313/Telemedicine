@@ -1,8 +1,33 @@
 import { Box, Button, FormControl, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import Logo from '../images/Logo.png';
 import {motion} from 'framer-motion';
-const SearchPrescription = () => {
+import axios from 'axios';
+const SearchPrescription = ({setPrescription,setShow}) => {
+    const [id, setId] = useState();
+
+    const submitHandler = async ()=>{
+        if(!id){
+            return;
+        }
+        try{
+            const config = {
+                headers: {
+                    "Content-type":"application/json"
+                },          
+            }
+            const {data} = await axios.post('/api/prescription/fetch',{id},config);
+            setPrescription(data);
+            if(data.length===0){
+                setPrescription("None Found")
+            }
+            console.log(data);
+            setShow(8);
+        }catch(error){
+            console.log(error);
+        }
+    }
+
   return (
     <Box sx={{
         width: '98vw',
@@ -24,15 +49,16 @@ const SearchPrescription = () => {
                                 <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>create</i>
                             </Box>
                             <FormControl sx={{width:'20vw'}}>
-                            <InputLabel htmlFor="ID">Patient Name</InputLabel>
+                            <InputLabel htmlFor="ID">Patient Id</InputLabel>
                             <OutlinedInput
                                 id="ID"
                                 label="Registration ID"
                                 sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
+                                onChange={(e)=>{setId(e.target.value)}}
                             />
                             </FormControl>
                         </Box>
-                        <Button sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',marginTop:'5vh','&:hover':{backgroundColor:'#CF9D6E'}}}>
+                        <Button onClick={submitHandler} sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',marginTop:'5vh','&:hover':{backgroundColor:'#CF9D6E'}}}>
                             Search
                         </Button>
                     </Box>

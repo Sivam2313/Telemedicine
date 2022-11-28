@@ -8,8 +8,10 @@ import HwDashboard from '../components/HwDashboard';
 import MedicalConsultation from '../components/MedicalConsultation';
 import PatientForm from '../components/PatientForm';
 import PatientInfo from '../components/PatientInfo';
+import PrescriptionDetails from '../components/PrescriptionDetails';
 import SearchFamilyCards from '../components/SearchFamilyCards';
 import SearchPrescription from '../components/SearchPrescription';
+import ShowPrescription from '../components/ShowPrescription';
 import mainImg from '../images/Logo.png';
 const HealthWorker = () => {
 
@@ -17,6 +19,7 @@ const HealthWorker = () => {
     const [show,setshow] = useState(0);
     const [patientData, setPatientData] = useState({});
     const history = useHistory();
+    const [prescription, setPrescription] = useState()
     useEffect(() => {
       if(localStorage.getItem('isAuth')==='false' ){
         history.push('/');
@@ -39,9 +42,13 @@ const HealthWorker = () => {
             case 5:
                 return <SearchFamilyCards />
             case 6:
-                return <SearchPrescription />
+                return <SearchPrescription setPrescription={setPrescription} setShow={setshow}/>
             case 7:
               return <PatientForm patientData={patientData}/>
+            case 8:
+              return <ShowPrescription data = {prescription} setData={setPrescription} setShow={setshow}/>
+            case 9:
+              return <PrescriptionDetails data = {prescription}/>
         }
     }
 

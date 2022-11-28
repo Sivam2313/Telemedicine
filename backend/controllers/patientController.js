@@ -90,15 +90,16 @@ const addPatient = asyncHandler(async(req,res)=>{
 })
 
 const appointedPatients = asyncHandler(async (req,res)=>{
-    const {from,to} = req.body;
-    var [day,month,year] = from.split('/');
-    const start = new Date(year,month-1,day)
-    var [day,month,year] = to.split('/');
-    const end = new Date(year,month-1,day)
+    var  {from,to} = req.body;
+    if(!from || !to){
+        from = new Date(1111,12,12);
+        to = new Date(4000,12,12);
+    }
+    // console.log(year,month-1,day+1);
     const patients = await Patient.find({
-        appointedTime:{$gte:start},
+        appointedTime:{$gte:from},
     }).find({
-        appointedTime:{$lte:end},
+        appointedTime:{$lte:to},
     }).find({
         isVisited:'false'
     })
@@ -129,7 +130,7 @@ const setAppointedDate = asyncHandler(async (req,res)=>{
 
 const changeVisited = asyncHandler (async (req,res)=>{
     const {id} = req.body; 
-    const patient = await Patient.findOneAndUpdate({registrationP:id},{isVisited:true})
+    const patient = await Patient.findOneAndUpdate({'patientData.registrationP':id},{isVisited:true})
     if(patient){
         res.status(201).json(patient)
     }
@@ -142,4 +143,16 @@ const fetchAll = asyncHandler(async (req,res)=>{
     }
 })
 
-module.exports = {fetchPatient,addPatient,appointedPatients,setAppointedDate,fetchAll,changeVisited};
+const trueFetch = asyncHandler(async (req,res)=>{
+    const {id} = req.body;
+    console.log(id);
+    const patient = await Patient.findOne({'patientData.ticketId':id})
+    if(patient){
+        res.json(patient)
+    }
+    else{
+        res.send('not found')
+    }
+})
+
+module.exports = {fetchPatient,addPatient,appointedPatients,setAppointedDate,fetchAll,changeVisited,trueFetch};

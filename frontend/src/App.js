@@ -19,7 +19,7 @@ function App() {
         <Route path='/doctor' component={Doctor} exact/>  
         <Route path='/info' component={FamilyCardsView} exact />
         <Route path='/conference' component={Conference} exact />
-        <Route path='/prescription' component={Prescription} exact />
+        <Route path='/prescription/:id' component={Prescription} exact />
       </Protect>
 
     </div>

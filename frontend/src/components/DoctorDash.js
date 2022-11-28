@@ -16,8 +16,9 @@ const DoctorDash = ({setShow}) => {
               },
           }
           var today = new Date();
-          var from = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();
-          var to = from;
+          var from = new Date(today.getFullYear(),today.getMonth(),parseInt(today.getDate()));
+          var to = new Date(today.getFullYear(),today.getMonth(),parseInt(today.getDate())+1);
+          console.log(from);
           const {data} = await axios.post('/api/patient/appointed',{from,to},config);
           if(data.length===0){
             setPatientArr(['None Found'])
@@ -35,7 +36,8 @@ const DoctorDash = ({setShow}) => {
 
     function roomHandler(idx){
       localStorage.setItem('room',patientArr[idx].patientData.ticketId)
-      history.push('/conference');
+      const path = '/prescription/'+patientArr[idx].patientData.ticketId;
+      history.push(path);
     }
 
     return (
@@ -45,7 +47,7 @@ const DoctorDash = ({setShow}) => {
           Number of Patients Today :
         </Typography>        
         <Typography variant='h4' fontFamily='Sans Sherif' sx={{color:'#FEFFFF',marginLeft:'3vw',paddingTop:'1vh'}}>
-          3  
+          {patientArr.length} 
         </Typography> 
       </Box>
       <Box display='flex' alignItems='center' sx={{backgroundColor:'#D1D1D1',width:'80vw',height:'5vh',borderRadius:'8px 8px 0px 0px',marginTop:'4vh',marginLeft:'8vw'}}>
@@ -87,8 +89,8 @@ const DoctorDash = ({setShow}) => {
                       {item.nextAppointedDate}
                     </Typography>
                     <Box display='flex' justifyContent='center' alignItems='center' sx={{height:'8vh',fontFamily:'Sans Sherif',width:'20vw',paddingLeft:'4vw'}}>
-                      <Button onClick={()=>roomHandler(idx)} sx={{backgroundColor:'#19414D',color:'#FEFFFF',height:'5vh',width:'8vw',borderRadius:'15px'}}>
-                        Start
+                      <Button onClick={()=>roomHandler(idx)} className='btn' sx={{backgroundColor:'#19414D',color:'#FEFFFF',height:'5vh',width:'8vw',borderRadius:'15px'}}>
+                        See Details
                       </Button>
                     </Box>
                   </Box>
