@@ -5,6 +5,10 @@ import Login from '../components/Login';
 
 const Home = () => {
   const [isMain, setIsMain] = React.useState(true);
+  React.useEffect(() => {
+    console.log(isMain);
+  }, [])
+  
   return (
     <Box>
       {(isMain)?<Main setisMain={setIsMain}/>:<Login setismain={setIsMain}/>}

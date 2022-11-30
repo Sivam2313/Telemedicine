@@ -14,7 +14,7 @@ const Main = ({setisMain}) => {
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 SSFNGO
               </Typography>
-              <Button color="inherit" onClick={()=>setisMain(false)} sx={{margin:'0px',backgroundColor:'#17252A',borderRadius:'50px',width:'5vw','&:hover':{backgroundColor:'#444444'}}}>
+              <Button color="inherit" onClick={()=>{setisMain(false)}} sx={{margin:'0px',backgroundColor:'#17252A',borderRadius:'50px',width:'5vw','&:hover':{backgroundColor:'#444444'}}}>
                 Login
               </Button>
             </div>

@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import {motion} from 'framer-motion';
+import DatePicker from 'react-date-picker';
 const HwDashboard = () => {
 
   const [familyCount,setFamilyCount] = useState(0);
@@ -31,11 +32,8 @@ const HwDashboard = () => {
   }, [])
 
   const submitHandler = async()=>{
-    if(!from || !to){
-      return;
-    }
+    
     try{
-      
       const config={
         headers: {
           "Content-type":"application/json"
@@ -53,6 +51,11 @@ const HwDashboard = () => {
     }catch(error){
       console.log(error);
     }
+  }
+
+  function roomHandler(idx){
+    localStorage.setItem('room',patientArr[idx].patientData.ticketId)
+    history.push('/conference');
   }
 
     return (
@@ -100,6 +103,7 @@ const HwDashboard = () => {
             <FormControl sx={{width:'10vw'}}>
               <OutlinedInput
                 id="ID"
+                type='date'
                 placeholder='DD/MM/YYYY'
                 sx={{borderRadius:'5px',height:'5vh',marginTop:'5px'}}
                 onChange={(e)=>{setFrom(e.target.value)}}
@@ -113,10 +117,12 @@ const HwDashboard = () => {
             <FormControl sx={{width:'10vw'}}>
               <OutlinedInput
                 id="ID"
+                type='date'
                 placeholder='DD/MM/YYYY'
                 sx={{borderRadius:'5px',height:'5vh',marginTop:'5px'}}
                 onChange={(e)=>{setTo(e.target.value)}}
               />
+              {/* <DatePicker onChange={(e)=>setTo(e)} selected={to} /> */}
             </FormControl>
           </Box>
           <Button onClick={submitHandler} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'5vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
@@ -150,7 +156,7 @@ const HwDashboard = () => {
                 )
               }  
                 return(
-                  <Paper elevation={3} sx={{backgroundColor:'#FEFFFF',width:'80vw',height:'9vh',borderRadius:'8px',marginBottom :'15px'}}>
+                  <Paper key={idx} elevation={3} sx={{backgroundColor:'#FEFFFF',width:'80vw',height:'9vh',borderRadius:'8px',marginBottom :'15px'}}>
                     <Box display='center' justifyContent='space-between' alignItems='center' sx={{width:'80vw'}}>
                       <Typography variant='h5' component='div' sx={{fontFamily:'Roboto Condensed',display:'flex',alignItems:'center',width:'20vw',height:'9vh',paddingLeft:'30px'}}>
                         {idx+1}
@@ -162,7 +168,7 @@ const HwDashboard = () => {
                         {item.doctor}
                       </Typography>
                       <Box display='center' justifyContent='center' alignItems='center' sx={{width:'20vw'}}>
-                        <Button sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'5vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
+                        <Button onClick={()=>roomHandler(idx)} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'5vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
                           Start
                         </Button>
                       </Box>

@@ -64,6 +64,7 @@ const authDoctor = asyncHandler(async (req,res)=>{
             res.status(201).json({
                 _id: doctor._id,
                 ssfID: doctor.ssfID,
+                name:doctor.name,
                 registrationID: doctor.registrationID,
                 timeAvailable: doctor.timeAvailable,
                 token: generateToken(doctor._id),

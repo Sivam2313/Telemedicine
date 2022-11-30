@@ -60,7 +60,7 @@ const HwLogin = () => {
                   <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>lock_outline</i>
                 </Box>
                 <ThemeProvider theme={theme}>
-                  <TextField id="Password" color='neutral' onChange={(e)=>{setPassword(e.target.value)}} label="Password" variant="filled" sx={{ input: { color: '#FEFFFF' } }} focused/>
+                  <TextField id="Password" type='password' color='neutral' onChange={(e)=>{setPassword(e.target.value)}} label="Password" variant="filled" sx={{ input: { color: '#FEFFFF' } }} focused/>
                 </ThemeProvider>
               </Box>
               <Button onClick={loginHandler} sx={{marginTop:'5vh',width:'10vw',color:'#DEF2F1',borderRadius:'20px',padding:'0.5rem',backgroundColor:"#CF823A",'&:hover':{backgroundColor:'#CF8F5D'}}}>
