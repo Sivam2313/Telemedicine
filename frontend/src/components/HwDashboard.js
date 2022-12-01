@@ -54,7 +54,7 @@ const HwDashboard = () => {
   }
 
   function roomHandler(idx){
-    localStorage.setItem('room',patientArr[idx].patientData.ticketId)
+    localStorage.setItem('room',patientArr[idx].patientData.registrationP)
     history.push('/conference');
   }
 

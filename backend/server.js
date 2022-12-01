@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('../backend/config/db');
-const adminRoutes = require('./Routes/adminRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 const hwRoutes = require('./Routes/hwRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
 const familyRoutes = require('./routes/familyRoutes');
@@ -9,6 +9,7 @@ const patientRoutes = require('./routes/patientRoutes');
 const logRoutes = require('./routes/logRoutes');
 const prescriptionRoutes = require('./routes/prescriptionRoutes')
 const medicineRoutes = require('./routes/medicineRoutes');
+const path = require('path');
 
 dotenv.config()
 const app = express()
@@ -28,13 +29,13 @@ const io = new Server(server,{
 })
 
 io.on('connection',(socket)=>{
-    console.log(socket.id)
+    // console.log(socket.id)
 
     socket.on('send-message',(msg,room)=>{
         socket.to(room).emit('recieve-message',msg)
     })
     socket.on('join-room',(room,userId)=>{
-        // console.log(room);
+        console.log(room);
         socket.join(room);
         socket.to(room).emit('user-connected',userId);
     })
@@ -53,9 +54,20 @@ app.use('/api/logs',logRoutes);
 app.use('/api/prescription',prescriptionRoutes);
 app.use('/api/medicine',medicineRoutes);
 
-app.get('/api',(req,res)=>{
-    res.send("ok");
-})
+const __dirname1 = path.resolve();
+
+if(process.env.Node_Env=='production'){
+    app.use(express.static(path.join(__dirname1,'./frontend/build')));
+    app.get('*',(req,res)=>{
+        res.sendFile(path.resolve(__dirname1,"./frontend/build/index.html"))
+    })
+}
+else{
+    
+    app.get('/',(req,res)=>{
+        res.send('ok');
+    })
+}
 
 
 server.listen(PORT,console.log("server at " + PORT))

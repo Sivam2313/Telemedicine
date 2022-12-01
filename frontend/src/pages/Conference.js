@@ -82,6 +82,10 @@ const Conference = () => {
         
     }, [socket])
 
+    // function stopVideo (){
+    //   currentUserVideoRef.current.stop();
+    // }
+
 
   function call(remotePeerId) {
 
@@ -122,9 +126,9 @@ const Conference = () => {
       </div>
       <div className="options">
         <div className="options__left">
-          <div id="stopVideo" className="options__button">
+          <button id="stopVideo" className="options__button">
             <i className="fa fa-video-camera"></i>
-          </div>
+          </button>
           <div id="muteButton" className="options__button">
             <i className="fa fa-microphone"></i>
           </div>
