@@ -90,19 +90,33 @@ const addPatient = asyncHandler(async(req,res)=>{
 })
 
 const appointedPatients = asyncHandler(async (req,res)=>{
-    var  {from,to} = req.body;
+    var  {from,to,id} = req.body;
     if(!from || !to){
         from = new Date(1111,12,12);
         to = new Date(4000,12,12);
     }
     // console.log(year,month-1,day+1);
-    const patients = await Patient.find({
-        appointedTime:{$gte:from},
-    }).find({
-        appointedTime:{$lte:to},
-    }).find({
-        isVisited:'false'
-    })
+    var patients;
+    if(!id){
+        patients = await Patient.find({
+            appointedTime:{$gte:from},
+        }).find({
+            appointedTime:{$lte:to},
+        }).find({
+            isVisited:'false'
+        })
+    }
+    else{
+        patients = await Patient.find({
+            appointedTime:{$gte:from},
+        }).find({
+            appointedTime:{$lte:to},
+        }).find({
+            isVisited:'false'
+        }).find({
+            doctor:id,
+        })
+    }
     if(patients){
         res.status(201).json(patients);
     }
@@ -146,7 +160,7 @@ const fetchAll = asyncHandler(async (req,res)=>{
 const trueFetch = asyncHandler(async (req,res)=>{
     const {id} = req.body;
     console.log(id);
-    const patient = await Patient.findOne({'patientData.ticketId':id})
+    const patient = await Patient.findOne({'patientData.registrationP':id})
     if(patient){
         res.json(patient)
     }

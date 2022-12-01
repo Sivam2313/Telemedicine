@@ -1,10 +1,11 @@
-import { Box, Button, FormControl, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
+import { Box, Button, FormControl, FormControlLabel, InputLabel, OutlinedInput, Paper, Radio, RadioGroup, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import Logo from '../images/Logo.png';
 import {motion} from 'framer-motion';
 import axios from 'axios';
 const SearchPrescription = ({setPrescription,setShow}) => {
     const [id, setId] = useState();
+    const [searchType, setSearchType] = useState("Ticket ID")
 
     const submitHandler = async ()=>{
         if(!id){
@@ -16,7 +17,7 @@ const SearchPrescription = ({setPrescription,setShow}) => {
                     "Content-type":"application/json"
                 },          
             }
-            const {data} = await axios.post('/api/prescription/fetch',{id},config);
+            const {data} = await axios.post('/api/prescription/fetch',{id,searchType},config);
             setPrescription(data);
             if(data.length===0){
                 setPrescription("None Found")
@@ -49,7 +50,7 @@ const SearchPrescription = ({setPrescription,setShow}) => {
                                 <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>create</i>
                             </Box>
                             <FormControl sx={{width:'20vw'}}>
-                            <InputLabel htmlFor="ID">Patient Id</InputLabel>
+                            <InputLabel htmlFor="ID">{searchType}</InputLabel>
                             <OutlinedInput
                                 id="ID"
                                 label="Registration ID"
@@ -58,6 +59,17 @@ const SearchPrescription = ({setPrescription,setShow}) => {
                             />
                             </FormControl>
                         </Box>
+                        <FormControl sx={{marginTop:'3vh'}}>
+                            <RadioGroup
+                                defaultValue='1'
+                                row
+                                name='searchType'
+                                onChange={(e)=>setSearchType(e.target.value)}
+                            >
+                                <FormControlLabel control={<Radio />} label='Ticket ID' value='Ticket ID' />
+                                <FormControlLabel control={<Radio />} label='Mobile Number' value='Mobile Number' />
+                            </RadioGroup>
+                        </FormControl>
                         <Button onClick={submitHandler} sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',marginTop:'5vh','&:hover':{backgroundColor:'#CF9D6E'}}}>
                             Search
                         </Button>

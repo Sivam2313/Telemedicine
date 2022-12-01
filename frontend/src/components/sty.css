@@ -17,3 +17,6 @@
 .test{
     background: linear-gradient(#dc2dec 80%,#e9e628 10%);
 }
+.med::placeholder{
+    color:black;
+}

@@ -6,6 +6,7 @@ import DoctorRegister from '../components/DoctorRegister';
 import FamilyRegistration from '../components/FamilyRegistration';
 import HwDashboard from '../components/HwDashboard';
 import MedicalConsultation from '../components/MedicalConsultation';
+import Medicine from '../components/Medicine';
 import PatientForm from '../components/PatientForm';
 import PatientInfo from '../components/PatientInfo';
 import PrescriptionDetails from '../components/PrescriptionDetails';
@@ -43,12 +44,14 @@ const HealthWorker = () => {
                 return <SearchFamilyCards />
             case 6:
                 return <SearchPrescription setPrescription={setPrescription} setShow={setshow}/>
-            case 7:
+            case 10:
               return <PatientForm patientData={patientData}/>
             case 8:
               return <ShowPrescription data = {prescription} setData={setPrescription} setShow={setshow}/>
             case 9:
               return <PrescriptionDetails data = {prescription}/>
+            case 7:
+              return <Medicine user={'hw'} />
         }
     }
 

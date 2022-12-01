@@ -22,7 +22,7 @@ const PatientInfo = ({setShow,setPatientData}) => {
                 return;
             }
             setPatientData(data);
-            setShow(7);
+            setShow(10);
         }
         catch (error){
             console.log(error);

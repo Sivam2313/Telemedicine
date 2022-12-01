@@ -67,8 +67,8 @@ const submitHandler = async()=>{
                                 name='searchType'
                                 onChange={(e)=>setSearchType(e.target.value)}
                             >
-                                <FormControlLabel control={<Radio />} label='Registration ID' value='1' />
-                                <FormControlLabel control={<Radio />} label='Mobile Number' value='2' />
+                                <FormControlLabel control={<Radio />} label='Registration ID' value='Registration ID' />
+                                <FormControlLabel control={<Radio />} label='Mobile Number' value='Mobile Number' />
                             </RadioGroup>
                         </FormControl>
                         <Button onClick={submitHandler} sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',marginTop:'5vh','&:hover':{backgroundColor:'#CF9D6E'}}}>

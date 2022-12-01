@@ -6,6 +6,7 @@ import Dashboard from '../components/Dashboard';
 import DoctorRegister from '../components/DoctorRegister';
 import HwRegister from '../components/HwRegister';
 import LogRecord from '../components/LogRecord';
+import Medicine from '../components/Medicine';
 import SearchFamilyCards from '../components/SearchFamilyCards';
 import SearchPrescription from '../components/SearchPrescription';
 import mainImg from '../images/Logo.png';
@@ -28,6 +29,8 @@ const Admin = () => {
           return <SearchPrescription />
       case 6:
           return <LogRecord />
+      case 7:
+          return <Medicine user={'admin'} />
     }
   }
 
@@ -73,7 +76,7 @@ const Admin = () => {
             backgroundColor:'#DEDEDE'
           }}}>
           <List>
-            {['Dashboard','Health Worker Registration','Doctor Registration','Search Family Cards','Search Prescription','Issue Medicine','View Logs'].map((text,idx)=>(
+            {['Dashboard','Health Worker Registration','Doctor Registration','Search Family Cards','Search Prescription','Issue Medicine','View Logs','Issue Medicine'].map((text,idx)=>(
               <ListItem key={text} disablePadding>
                 <ListItemButton onClick={()=>setshow(idx)} sx={{
                   height:'8vh',

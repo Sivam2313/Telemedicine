@@ -18,8 +18,9 @@ const DoctorDash = ({setShow}) => {
           var today = new Date();
           var from = new Date(today.getFullYear(),today.getMonth(),parseInt(today.getDate()));
           var to = new Date(today.getFullYear(),today.getMonth(),parseInt(today.getDate())+1);
+          var id = JSON.parse(localStorage.getItem('DoctorOnline')).name;
           console.log(from);
-          const {data} = await axios.post('/api/patient/appointed',{from,to},config);
+          const {data} = await axios.post('/api/patient/appointed',{from,to,id},config);
           if(data.length===0){
             setPatientArr(['None Found'])
           }
@@ -35,8 +36,8 @@ const DoctorDash = ({setShow}) => {
     },[])
 
     function roomHandler(idx){
-      localStorage.setItem('room',patientArr[idx].patientData.ticketId)
-      const path = '/prescription/'+patientArr[idx].patientData.ticketId;
+      localStorage.setItem('room',patientArr[idx].patientData.registrationP)
+      const path = '/prescription/'+patientArr[idx].patientData.registrationP;
       history.push(path);
     }
 

@@ -8,6 +8,7 @@ const familyRoutes = require('./routes/familyRoutes');
 const patientRoutes = require('./routes/patientRoutes');
 const logRoutes = require('./routes/logRoutes');
 const prescriptionRoutes = require('./routes/prescriptionRoutes')
+const medicineRoutes = require('./routes/medicineRoutes');
 
 dotenv.config()
 const app = express()
@@ -48,8 +49,9 @@ app.use('/api/hw',hwRoutes);
 app.use('/api/doctor',doctorRoutes);
 app.use('/api/family',familyRoutes);
 app.use('/api/patient',patientRoutes);
-app.use('/api/logs',logRoutes)
-app.use('/api/prescription',prescriptionRoutes)
+app.use('/api/logs',logRoutes);
+app.use('/api/prescription',prescriptionRoutes);
+app.use('/api/medicine',medicineRoutes);
 
 app.get('/api',(req,res)=>{
     res.send("ok");

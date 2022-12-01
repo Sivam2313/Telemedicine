@@ -1,7 +1,8 @@
 body{
     /* background: linear-gradient(180deg,#3AAFA9,#84CEEB); */
     background: linear-gradient(180deg, #3AAFA9 10%, #DEF2F1 90%);
-    height: 98vh;   
+    min-height: 98vh;
+    height: fit-content;   
 }
 .cls{
     color:#333333
