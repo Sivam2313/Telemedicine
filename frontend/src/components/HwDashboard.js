@@ -54,7 +54,9 @@ const HwDashboard = () => {
   }
 
   function roomHandler(idx){
-    localStorage.setItem('room',patientArr[idx].patientData.registrationP)
+    localStorage.setItem('room',patientArr[idx].patientData.ticketId)
+    const hw = JSON.parse(localStorage.getItem('HwOnline'));
+    localStorage.setItem('port',hw.port);
     history.push('/conference');
   }
 

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import io from 'socket.io-client';
 import Peer from 'peerjs';
 import './style.css';
-const socket = io.connect("http://localhost:5000")
+var socket;
 const Conference = () => {
     const [message, setMessage] = useState();
     const [messageList, setMessageList] = useState([]);
@@ -12,12 +12,15 @@ const Conference = () => {
     const remoteVideoRef = useRef(null);
     const currentUserVideoRef = useRef(null);
     const peerInstance = useRef(null);
+    const downloadBtn = useRef(null);
     const peer = new Peer()
 
 
   useEffect(() => {
     const peer = new Peer();
-    const room = localStorage.getItem('room')
+    const room = localStorage.getItem('room');
+    const port = localStorage.getItem('port');
+    socket = io("https://telemedicine-nitd.azurewebsites.net/")
     peer.on('open', (id) => {
       setPeerId(id)
       socket.emit('join-room',room,id)
@@ -82,10 +85,6 @@ const Conference = () => {
         
     }, [socket])
 
-    // function stopVideo (){
-    //   currentUserVideoRef.current.stop();
-    // }
-
 
   function call(remotePeerId) {
 
@@ -109,6 +108,31 @@ const Conference = () => {
     });
   }
 
+  async function startRecording(){
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        video:{
+          mediaSource:'screen',
+        }
+      });
+      var data = [];
+
+      const mediaRecorder = new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable = (e)=>{
+        data.push(e.data);
+      };
+      mediaRecorder.start();
+      mediaRecorder.onstop = (e)=>{
+        const blob = new Blob(data, { 'type' : data[0].type });
+        data = [];
+        downloadBtn.current.href = URL.createObjectURL(blob);
+        downloadBtn.current.download = 'video.mp4';
+        downloadBtn.current.click();
+        console.log(downloadBtn);
+      }
+  }
+
+
   return (
     <div>
             <div className="header">
@@ -126,12 +150,17 @@ const Conference = () => {
       </div>
       <div className="options">
         <div className="options__left">
-          <button id="stopVideo" className="options__button">
-            <i className="fa fa-video-camera"></i>
+          <button id="stopVideo" onClick={()=>{startRecording()}} className="options__button">
+            <i class="material-icons">fiber_manual_record</i>
           </button>
           <div id="muteButton" className="options__button">
             <i className="fa fa-microphone"></i>
           </div>
+          <a ref={downloadBtn}>
+            <button id="download" className="options__button">
+              <i class="material-icons">file_download</i>
+            </button>
+          </a>
         </div>
         <div className="options__right">
           <button onClick={()=>{call(remotePeerIdValue)}} id="inviteButton" className="options__button">

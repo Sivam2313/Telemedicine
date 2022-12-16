@@ -36,7 +36,9 @@ const DoctorDash = ({setShow}) => {
     },[])
 
     function roomHandler(idx){
-      localStorage.setItem('room',patientArr[idx].patientData.registrationP)
+      localStorage.setItem('room',patientArr[idx].patientData.ticketId);
+      const doctor = JSON.parse(localStorage.getItem('DoctorOnline'));
+      localStorage.setItem('port',doctor.port);
       const path = '/prescription/'+patientArr[idx].patientData.registrationP;
       history.push(path);
     }
