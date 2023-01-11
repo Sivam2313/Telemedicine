@@ -7,6 +7,7 @@ const authAdmin = asyncHandler(async (req,res)=>{
     const {registrationID,password} = req.body
     
     const admin = await Admin.findOne({registrationID: registrationID});
+  
     // console.log(registrationID);
     // console.log(admin.registrationID);
 

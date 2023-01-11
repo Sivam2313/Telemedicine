@@ -50,8 +50,8 @@ const registerDoctor = asyncHandler(async (req,res)=>{
 const authDoctor = asyncHandler(async (req,res)=>{
     const {registrationID} = req.body
     
-    const doctor = await Doctor.findOne({registrationID});
-    
+    const doctor = await Doctor.findOne({Doctors_Registration_No:"44157"});
+    console.log(doctor)
 
     if(doctor){
         const logReport = await Log.create({
@@ -95,4 +95,9 @@ const fetchTotalDoctors = asyncHandler(async (req,res)=>{
     }
 })
 
-module.exports = {registerDoctor,authDoctor,fetchTotalDoctors};
+const getDoctors=asyncHandler(async(req,res)=>{
+    const data=await Doctor.find()
+    res.send(data)
+    console.log(data)
+})
+module.exports = {registerDoctor,authDoctor,fetchTotalDoctors,getDoctors};

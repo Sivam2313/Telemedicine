@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Patient = require('../model/patientSchema');
 const Family = require('../model/familySchema');
-
+const Consult=require('../model/consultantcySchema')
 const fetchPatient = asyncHandler(async (req,res)=>{
     const {regId} = req.body;
     const fId = regId.substring(0,regId.length-2);
@@ -88,21 +88,46 @@ const addPatient = asyncHandler(async(req,res)=>{
         res.status(201).json(patient);
     }
 })
-
+const medicinalConsultant=asyncHandler(async (req,res) =>{
+    // var {from,to}=req.body;
+    // if(!from || !to){
+    //     from = new Date(1111,12,12);
+    //     to = new Date(4000,12,12);
+    // }
+    // const patients = await Consult.find({
+    //     Consultation_Date:{$gte:from},
+    // }).find({
+    //     Consultation_Date:{$lte:to},
+    // }).find({
+    //     isVisited:'false'
+    // })
+    const patients=Consult.find()
+    console.log(patients)
+    res.send(patients)
+    // if(patients){
+    //     res.status(201).json(patients);
+    // }
+    // else{
+    //     res.statu=s(400)
+    //     throw new Error ("Error")
+    // }
+}
+)
 const appointedPatients = asyncHandler(async (req,res)=>{
     var  {from,to} = req.body;
     if(!from || !to){
         from = new Date(1111,12,12);
         to = new Date(4000,12,12);
     }
+    // from=new Date(2022,07,28);
+    // to=new Date(2023,01,11)
     // console.log(year,month-1,day+1);
-    const patients = await Patient.find({
-        appointedTime:{$gte:from},
+    const patients = await Consult.find({
+        Consultation_Date:{$gte:from},
     }).find({
-        appointedTime:{$lte:to},
-    }).find({
-        isVisited:'false'
+        Consultation_Date:{$lte:to},
     })
+    res.send(patients)
     if(patients){
         res.status(201).json(patients);
     }
@@ -155,4 +180,4 @@ const trueFetch = asyncHandler(async (req,res)=>{
     }
 })
 
-module.exports = {fetchPatient,addPatient,appointedPatients,setAppointedDate,fetchAll,changeVisited,trueFetch};
+module.exports = {fetchPatient,addPatient,appointedPatients,setAppointedDate,fetchAll,changeVisited,trueFetch,medicinalConsultant};

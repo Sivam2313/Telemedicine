@@ -16,6 +16,7 @@ const hwSchema = mongoose.Schema({
     }
 },{
     timestamp:true,
+    collection:'HealthWorker'
 });
 
 hwSchema.methods.matchPassword = async function (pass){

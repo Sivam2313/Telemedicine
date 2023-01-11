@@ -1,5 +1,5 @@
 const express = require('express');
-const { fetchPatient, addPatient, appointedPatients, setAppointedDate, fetchAll, changeVisited, trueFetch } = require('../controllers/patientController');
+const { fetchPatient, addPatient, appointedPatients, setAppointedDate, fetchAll, changeVisited, trueFetch,medicinalConsultant } = require('../controllers/patientController');
 
 const router = express.Router();
 
@@ -10,5 +10,5 @@ router.post('/setDate',setAppointedDate)
 router.get('/fetchAll',fetchAll)
 router.post('/change',changeVisited)
 router.post('/trueFetch',trueFetch)
-
+router.get('/info',medicinalConsultant)
 module.exports = router;

@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+dotenv.config({path:'../.env'});
 const connectDB = require('../backend/config/db');
 const adminRoutes = require('./Routes/adminRoutes');
 const hwRoutes = require('./Routes/hwRoutes');
@@ -8,11 +9,11 @@ const familyRoutes = require('./routes/familyRoutes');
 const patientRoutes = require('./routes/patientRoutes');
 const logRoutes = require('./routes/logRoutes');
 const prescriptionRoutes = require('./routes/prescriptionRoutes')
-
+const medicineRoutes=require('./routes/medicineRoutes')
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5000
-// const PORT = 3000;
+
 connectDB();
 const cors = require('cors')
 const http = require('http')
@@ -50,7 +51,7 @@ app.use('/api/family',familyRoutes);
 app.use('/api/patient',patientRoutes);
 app.use('/api/logs',logRoutes)
 app.use('/api/prescription',prescriptionRoutes)
-
+app.use('/api/med',medicineRoutes)
 app.get('/api',(req,res)=>{
     res.send("ok");
 })

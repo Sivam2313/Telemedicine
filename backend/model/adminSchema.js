@@ -12,6 +12,7 @@ const adminSchema = mongoose.Schema({
     }
 },{
     timestamp:true,
+    collection:'Admin'
 });
 
 const Admin = mongoose.model('Admin',adminSchema);

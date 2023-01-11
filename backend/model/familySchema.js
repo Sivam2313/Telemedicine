@@ -67,6 +67,7 @@ const familySchema = mongoose.Schema({
     }
 },{
     timestamp:true,
+    collection:'Family'
 });
 
 

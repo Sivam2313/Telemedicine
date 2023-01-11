@@ -19,6 +19,7 @@ const logSchema = mongoose.Schema({
     },
 },{
     timestamp:true,
+    collection:'Log'
 });
 
 const Log = mongoose.model('Log',logSchema);

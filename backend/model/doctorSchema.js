@@ -30,13 +30,9 @@ const doctorSchema = mongoose.Schema({
         required:true,       
     },
     timeAvailable:[{
-        day: String,
-        from: String,
-        to: String,
+       type:String
     }],
-},{
-    timestamp:true,
-});
+},{timestamp:'true',collection:'Doctor'});
 
 
 const Doctor = mongoose.model('Doctor',doctorSchema);

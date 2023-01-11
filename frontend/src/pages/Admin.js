@@ -8,6 +8,7 @@ import HwRegister from '../components/HwRegister';
 import LogRecord from '../components/LogRecord';
 import SearchFamilyCards from '../components/SearchFamilyCards';
 import SearchPrescription from '../components/SearchPrescription';
+import MedicineStore from '../components/MedicineStore';
 import mainImg from '../images/Logo.png';
 const Admin = () => {
   const [isOpen, setisOpen] = useState(false);
@@ -28,6 +29,8 @@ const Admin = () => {
           return <SearchPrescription />
       case 6:
           return <LogRecord />
+      case 5:
+          return <MedicineStore/>
     }
   }
 
