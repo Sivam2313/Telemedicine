@@ -20,3 +20,9 @@
 .med::placeholder{
     color:black;
 }
+
+.content{
+    min-height: 98vh;
+    height:fit-content;
+    background: linear-gradient(180deg, #99ebe7 10%, #DEF2F1 90%);
+}

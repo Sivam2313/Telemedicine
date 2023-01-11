@@ -1,5 +1,11 @@
 
-import { Box, Button, FormControl, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, FormControl, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import './sty.css';
@@ -8,6 +14,8 @@ const Medicine = ({user}) => {
     const [medicine, setMedicine] = useState([]);
     const [name, setName] = useState();
     const [show, setShow] = useState(0);
+    const [csvData, setCsvData] = useState();
+    const [loading, setLoading] = useState(false);
 
 
 
@@ -27,6 +35,29 @@ const Medicine = ({user}) => {
         }     
         fetch();
     }, [])
+
+    const postDetails = (csv)=>{
+      if(csv == undefined){
+        console.log("error");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const text = e.target.result;
+        setCsvData(csvToArray(text)); 
+      };
+      reader.readAsText(csv);
+    }
+
+    function csvToArray (str,delimiter=","){
+      const rows = str.split("\n");
+      const arr = rows.map(function (row) {
+          const values = row.split(delimiter);
+          return values.slice(1);
+        });
+
+      return arr;
+    }
 
     function changeHandler(idx,e){
       var arr = [...medicine]
@@ -65,25 +96,26 @@ const Medicine = ({user}) => {
                     "Content-type":"application/json"
                 },          
             }
-            const {data} = await axios.post('/api/medicine/add',{ name },config);
+            setLoading(true);
+            const {data} = await axios.post('/api/medicine/add',{ csvData },config);
+            setLoading(false);
             setShow(0);
             setMedicine(data);
-        }catch(error){
+          }catch(error){
             console.log(error);
         }
     }
 
 
-
   return (
-    <div style={{marginTop:'8vh'}}>
+    <div class="content" style={{marginTop:'8vh',paddingTop:'10vh'}}>
 
     {
       (show)?
           <div>
-            <Box display='flex' justifyContent='center' alignItems='center' sx={{backgroundColor:'#949494',opacity:'0.65',width:'100vw',height:'100vh',position:'absolute',zIndex:'2000'}}>
+            <Box display='flex' justifyContent='center' alignItems='center' sx={{backgroundColor:'#949494',opacity:'0.65',width:'100vw',height:'100vh',position:'fixed',zIndex:'2000'}}>
             </Box>
-            <Box display='flex' alignItems='center'  sx={{flexFlow:'column',backgroundColor:'#FEFFFF',height:'40vh',width:'40vw',marginRight:'4vw',borderRadius:'15px',opacity:'1',position:'absolute',zIndex:5000,top:'30vh',left:'30vw'}}>
+            <Box display='flex' alignItems='center'  sx={{flexFlow:'column',backgroundColor:'#FEFFFF',height:'40vh',width:'40vw',marginRight:'4vw',borderRadius:'15px',opacity:'1',position:'fixed',zIndex:5000,top:'30vh',left:'30vw'}}>
                 <button onClick={()=>{setShow(0)}} style={{backgroundColor:'#CF823A',border:'none',color:'#FEFFFF',position:'relative',right:'15vw',marginTop:'3vh',width:'4vh',height:'4vh',borderRadius:'50px','&:hover':{backgroundColor:'#ffa44f'}}}>
                   <i class='fas fa-arrow-left'></i>
                 </button>
@@ -91,22 +123,13 @@ const Medicine = ({user}) => {
                   Add Medicine
                 </Typography>
                 <Box sx={{ marginTop:'5vh' }} display='flex' justifyContent='center'>
-                  <Box display='flex' justifyContent='center' alignItems='center' sx={{backgroundColor:'#2B7A78',width:'56px',height:'56px',color:'#17252A',borderRadius:'5px 0px 0px 5px'}}>
-                    <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>create</i>
-                  </Box>
-                  <FormControl sx={{width:'20vw'}}>
-                    <InputLabel htmlFor="ID">Name</InputLabel>
-                    <OutlinedInput
-                    id="ID"
-                    label="Registration ID"
-                    sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
-                    onChange={(e)=>{setName(e.target.value)}}
-                    />
-                  </FormControl>
-              </Box>
+                  <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="inputGroupFile01" accept='.csv' onChange={(e)=>{postDetails(e.target.files[0])}} />
+                  </div>
+                </Box>
               <Box>
-                <button onClick={addHandler} style={{backgroundColor:'#CF823A',border:'none',color:'#FEFFFF',marginTop:'3vh',width:'5vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#ffa44f'}}}>
-                  ADD
+                <button onClick={addHandler} style={{display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'#CF823A',border:'none',color:'#FEFFFF',marginTop:'3vh',width:'5vw',height:'5vh',borderRadius:'15px','&:hover':{backgroundColor:'#ffa44f'}}}>
+                  {(loading)? <CircularProgress color="secondary" />:"ADD"}
                 </button>
               </Box>
             </Box>
@@ -116,10 +139,38 @@ const Medicine = ({user}) => {
             </div>
     }
 
-      <button onClick={()=>{setShow(1)}} style={{position:'absolute',bottom:'2vh',border:'none',backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'6vh',height:'6vh',borderRadius:'50px','&:hover':{backgroundColor:'#19414D'},fontSize:'1.2rem'}}> 
+      <button onClick={()=>{setShow(1)}} style={{position:'fixed',bottom:'2vh',border:'none',backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'6vh',height:'6vh',borderRadius:'50px','&:hover':{backgroundColor:'#19414D'},fontSize:'1.2rem'}}> 
         <i class='fas fa-plus'></i>
       </button>
-        <Box display='flex' alignItems='center' sx={{width:'80vw',marginLeft:'5vw',borderRadius:'15px',marginLeft:'10vw',paddingTop:'40px',flexFlow:'column'}}>
+      <TableContainer component={Paper} sx = {{width:"80vw",marginLeft:"10vw",marginTop:"10v"}}>
+        <Table sx={{minWidth: 650}} >
+          <TableHead >
+            <TableRow>
+              <TableCell sx={{backgroundColor:"#3CB3AC"}}>Sl.No</TableCell>
+              <TableCell sx={{backgroundColor:"#3CB3AC"}}>Name</TableCell>
+              <TableCell  sx={{backgroundColor:"#3CB3AC"}}>Unknown</TableCell>
+              <TableCell align="right" sx={{backgroundColor:"#3CB3AC"}}>Quantity</TableCell>
+              <TableCell align="right" sx={{backgroundColor:"#3CB3AC"}}>Unknown</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {
+              medicine.map((item,idx)=>{
+                return(
+                  <TableRow key={idx} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableCell>{idx+1}</TableCell>
+                    <TableCell component="th" scope="row">{item.name1}</TableCell>
+                    <TableCell>{item.name2}</TableCell>
+                    <TableCell align="right">{item.quantity}</TableCell>
+                    <TableCell align="right">{item.txt}</TableCell>
+                  </TableRow>
+                )
+              })
+            }
+          </TableBody>
+        </Table>
+      </TableContainer>
+        {/* <Box display='flex' alignItems='center' sx={{width:'80vw',marginLeft:'5vw',borderRadius:'15px',marginLeft:'10vw',paddingTop:'40px',flexFlow:'column'}}>
           <Box display='flex' justifyContent='space-between' alignItems='center' sx={{backgroundColor:'#D1D1D1',width:'80vw',height:'5vh',borderRadius:'8px',marginBottom :'15px'}}>
             <Typography variant='h7' component='div' sx={{fontFamily:'Sans Serif',display:'flex',alignItems:'center',width:'20vw',height:'9vh',paddingLeft:'30px'}}>
               Sl No
@@ -158,7 +209,7 @@ const Medicine = ({user}) => {
               )
             })
           }
-        </Box>
+        </Box> */}
     </div>
   )
 }
