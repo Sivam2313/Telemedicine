@@ -170,46 +170,6 @@ const Medicine = ({user}) => {
           </TableBody>
         </Table>
       </TableContainer>
-        {/* <Box display='flex' alignItems='center' sx={{width:'80vw',marginLeft:'5vw',borderRadius:'15px',marginLeft:'10vw',paddingTop:'40px',flexFlow:'column'}}>
-          <Box display='flex' justifyContent='space-between' alignItems='center' sx={{backgroundColor:'#D1D1D1',width:'80vw',height:'5vh',borderRadius:'8px',marginBottom :'15px'}}>
-            <Typography variant='h7' component='div' sx={{fontFamily:'Sans Serif',display:'flex',alignItems:'center',width:'20vw',height:'9vh',paddingLeft:'30px'}}>
-              Sl No
-            </Typography>
-            <Typography variant='h7' component='div' sx={{justifyContent:'center',fontFamily:'Sans Serif',display:'flex',alignItems:'center',width:'20vw',height:'5vh',paddingLeft:'30px'}}>
-              Name
-            </Typography>
-            <Typography variant='h7' component='div' sx={{justifyContent:'center',fontFamily:'Sans Serif',display:'flex',alignItems:'center',width:'20vw',height:'5vh',paddingLeft:'30px'}}>
-              Quantity
-            </Typography>
-            <Typography variant='h7' component='div' sx={{justifyContent:'center',fontFamily:'Sans Serif',display:'flex',alignItems:'center',width:'20vw',height:'5vh',paddingLeft:'52px'}}>
-              Change
-            </Typography>
-          </Box>
-          {
-            medicine.map((item,idx)=>{ 
-                return(
-                  <Paper key={idx} elevation={3} sx={{backgroundColor:'#FEFFFF',width:'80vw',height:'9vh',borderRadius:'8px',marginBottom :'15px'}}>
-                    <Box display='center' justifyContent='space-between' alignItems='center' sx={{width:'80vw'}}>
-                      <Typography variant='h5' component='div' sx={{fontFamily:'Roboto Condensed',display:'flex',alignItems:'center',width:'20vw',height:'9vh',paddingLeft:'30px'}}>
-                        {idx+1}
-                      </Typography>
-                      <Typography variant='h6' component='div' sx={{justifyContent:'center',fontFamily:'Roboto Condensed',display:'flex',alignItems:'center',width:'20vw',height:'9vh'}}>
-                        {item.name}
-                      </Typography>
-                      <Box  component='div' sx={{justifyContent:'center',fontFamily:'Roboto Condensed',display:'flex',alignItems:'center',width:'20vw',height:'9vh',paddingLeft:'30px'}}>
-                        <input className='med' value = {item.quantity} onChange={(e)=>{changeHandler(idx,e)}} type='text' style={{borderRadius:'8px',border:'1px solid rgb(170, 170, 170)',outline:'none',height:'4vh',width:'4vw',textAlign:'center'}} />
-                      </Box>
-                      <Box display='center' justifyContent='center' alignItems='center' sx={{width:'20vw'}}>
-                        <Button onClick={()=>submitHandler(idx)} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'5vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
-                          Change
-                        </Button>
-                      </Box>
-                    </Box>
-                  </Paper>
-              )
-            })
-          }
-        </Box> */}
     </div>
   )
 }
