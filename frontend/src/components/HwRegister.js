@@ -2,7 +2,7 @@ import { Box, Button, FormControl, InputLabel, OutlinedInput, Paper, TextField, 
 import axios from 'axios';
 import React, { useState } from 'react'
 import {motion} from 'framer-motion';
-const HwRegister = () => {
+const HwRegister = ({setshow}) => {
     const [name, setName] = useState();
     const [password, setPassword] = useState();
     const [userID, setUserID] = useState();
@@ -19,7 +19,7 @@ const HwRegister = () => {
         }
 
         const {data} = await axios.post('/api/hw/register',{name,userID,password},config)
-
+        setshow(0)
 
     } catch (error) {
         console.log(error);

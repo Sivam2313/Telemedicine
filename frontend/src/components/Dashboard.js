@@ -144,6 +144,7 @@ const Dashboard = () => {
             <FormControl sx={{width:'10vw'}}>
               <OutlinedInput
                 id="ID"
+                type='date'
                 placeholder='DD/MM/YYYY'
                 sx={{borderRadius:'5px',height:'5vh',marginTop:'5px'}}
                 onChange={(e)=>{setFrom(e.target.value)}}
@@ -157,6 +158,7 @@ const Dashboard = () => {
             <FormControl sx={{width:'10vw'}}>
               <OutlinedInput
                 id="ID"
+                type='date'
                 placeholder='DD/MM/YYYY'
                 sx={{borderRadius:'5px',height:'5vh',marginTop:'5px'}}
                 onChange={(e)=>{setTo(e.target.value)}}
@@ -200,14 +202,13 @@ const Dashboard = () => {
                           <AccordionDetails id={idx} sx={{display:'flex',alignItems:'flex-start',justifyContent:'center',flexFlow:'column'}}>
                               <Box sx={{ marginTop:'2vh',marginLeft:'2vw'}} display='flex' justifyContent='center'>
                                   <FormControl sx={{width:'20vw',minWidth:'350px'}}>
-                                      <InputLabel htmlFor="ID">Date to be Appointed</InputLabel>
-                                      <OutlinedInput
-                                      id="ID"
-                                      label='Date to be Appointed'
-                                      default = {(item.appointedTime)?item.appointedTime:""}
-                                      sx={{borderRadius:'5px 0px 0px 5px',backgroundColor:'#FEFFFF'}}
-                                      onChange={(e)=>{setDate(e.target.value)}}
-                                      />
+                                        <OutlinedInput
+                                          id="ID"
+                                          type='date'
+                                          placeholder='DD/MM/YYYY'
+                                          sx={{borderRadius:'5px',height:'5vh',marginTop:'5px'}}
+                                          onChange={(e)=>{setDate(e.target.value)}}
+                                        />
                                   </FormControl>
                                   <FormControl sx={{width:'20vw',minWidth:'350px',marginLeft:'10vw'}}>
                                       <InputLabel htmlFor="ID">Doctor</InputLabel>

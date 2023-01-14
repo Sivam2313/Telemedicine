@@ -20,7 +20,7 @@ const Admin = () => {
       case 0:
           return <Dashboard />
       case 1:
-          return <HwRegister />
+          return <HwRegister setshow={setshow} />
       case 2:
           return <DoctorRegister />
       case 3:

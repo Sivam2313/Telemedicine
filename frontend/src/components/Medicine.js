@@ -147,10 +147,10 @@ const Medicine = ({user}) => {
           <TableHead >
             <TableRow>
               <TableCell sx={{backgroundColor:"#3CB3AC"}}>Sl.No</TableCell>
-              <TableCell sx={{backgroundColor:"#3CB3AC"}}>Name</TableCell>
-              <TableCell  sx={{backgroundColor:"#3CB3AC"}}>Unknown</TableCell>
+              <TableCell sx={{backgroundColor:"#3CB3AC"}}>Product Name</TableCell>
+              <TableCell  sx={{backgroundColor:"#3CB3AC"}}>Generic Name</TableCell>
               <TableCell align="right" sx={{backgroundColor:"#3CB3AC"}}>Quantity</TableCell>
-              <TableCell align="right" sx={{backgroundColor:"#3CB3AC"}}>Unknown</TableCell>
+              <TableCell align="right" sx={{backgroundColor:"#3CB3AC"}}>Price</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
