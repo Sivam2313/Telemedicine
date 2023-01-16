@@ -54,7 +54,8 @@ const HwDashboard = () => {
   }
 
   function roomHandler(idx){
-    localStorage.setItem('room',patientArr[idx].patientData.ticketId)
+    // localStorage.setItem('room',patientArr[idx].patientData.ticketId)
+    console.log('Going to room')
     history.push('/conference');
   }
 
@@ -162,10 +163,10 @@ const HwDashboard = () => {
                         {idx+1}
                       </Typography>
                       <Typography variant='h6' component='div' sx={{justifyContent:'center',fontFamily:'Roboto Condensed',display:'flex',alignItems:'center',width:'20vw',height:'9vh'}}>
-                        {item.patientData.name}
+                        {item.Name}
                       </Typography>
                       <Typography variant='h6' component='div' sx={{justifyContent:'center',fontFamily:'Roboto Condensed',display:'flex',alignItems:'center',width:'20vw',height:'9vh',paddingLeft:'30px'}}>
-                        {item.doctor}
+                        {item.Assigned_Doctor}
                       </Typography>
                       <Box display='center' justifyContent='center' alignItems='center' sx={{width:'20vw'}}>
                         <Button onClick={()=>roomHandler(idx)} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'5vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>

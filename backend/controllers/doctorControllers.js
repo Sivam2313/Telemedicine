@@ -14,21 +14,21 @@ const registerDoctor = asyncHandler(async (req,res)=>{
     const isExist = await Doctor.findOne({registrationID});
 
     var timeAvailable = [...arr];
-
+    console.log(timeAvailable)
     if(isExist){
         res.status(400)
         throw new Error ("doctor already exist")
     }
     
     const doctor = await Doctor.create({
-        name,
-        ssfID,
-        registrationID,
-        mobile,
-        adress,
-        gender,
-        speciality,
-        timeAvailable,
+        doc_name:name,
+        SSF_ID:ssfID,
+        Doctors_Registration_No:registrationID,
+        Mobile:mobile,
+        Address:adress,
+        Gender:gender,
+        Speciality:speciality,
+        Availability:timeAvailable,
     });
     
     if(doctor){
@@ -50,7 +50,7 @@ const registerDoctor = asyncHandler(async (req,res)=>{
 const authDoctor = asyncHandler(async (req,res)=>{
     const {registrationID} = req.body
     
-    const doctor = await Doctor.findOne({Doctors_Registration_No:"44157"});
+    const doctor = await Doctor.findOne({Doctors_Registration_No:registrationID});
     console.log(doctor)
 
     if(doctor){

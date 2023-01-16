@@ -6,6 +6,10 @@ const patientSchema = mongoose.Schema({
             type: String,
             required: true,
         },
+        ID:{
+            type: String,
+            required:true,
+        },
         relationship:{
             type:String,
             required: true,
@@ -100,22 +104,22 @@ const patientSchema = mongoose.Schema({
             type:String,
         },
     },
-    pastHistory:{
+    pastHistory :{
         admitted:{
             type:String,
-            required:true,
+            // required:true,
         },
         currentMed:{
             type:String,
-            required:true,
+            // required:true,
         },
         healthCondition:{
             type:String,
-            required:true,
+            // required:true,
         },
         injuries:{
             type:String,
-            required:true,
+            // required:true,
         },
         otherHistory:{
             type:String,

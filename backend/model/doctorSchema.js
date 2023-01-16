@@ -1,37 +1,50 @@
 const mongoose = require('mongoose');
 
-const doctorSchema = mongoose.Schema({
-    name:{
-        type: String,
-        required: true,
-    },
-    ssfID:{
-        type: String,
-        required: true,
-    },
-    registrationID:{
-        type: String,
-        required: true,
-    },
-    adress:{
-        type: String,
-        required: true,
-    },
-    mobile:{
-        type:String,
-        required: true,
-    },
-    gender:{
+const AvailabilitySchema=mongoose.Schema({
+    day:{
         type:String,
         required:true,
     },
-    speciality:{
+    from:{
+        type:String,
+        required:true,
+    },
+    to:{
+        type:String,
+        required:true,
+    }
+
+})
+const doctorSchema = mongoose.Schema({
+    doc_name:{
+        type: String,
+        required: true,
+    },
+    SSF_ID:{
+        type: String,
+        required: true,
+    },
+    Doctors_Registration_No:{
+        type: String,
+        required: true,
+    },
+    Address:{
+        type: String,
+        required: true,
+    },
+    Mobile:{
+        type:String,
+        required: true,
+    },
+    Gender:{
+        type:String,
+        required:true,
+    },
+    Speciality:{
         type:String,
         required:true,       
     },
-    timeAvailable:[{
-       type:String
-    }],
+    Availability:[AvailabilitySchema]
 },{timestamp:'true',collection:'Doctor'});
 
 

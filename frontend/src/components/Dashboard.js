@@ -46,6 +46,7 @@ const Dashboard = () => {
       }
       const {data} = await axios.post('/api/patient/appointed',{from,to},config);
       setpatientArr(data)
+
       console.log(data);
 
     }catch(error){
@@ -194,7 +195,7 @@ const Dashboard = () => {
                                   {idx+1}
                               </Typography>
                               <Typography sx={{ color: 'text.secondary' }}>
-                                  {item.patientData.name}
+                                  {item.Name}
                               </Typography>
                           </AccordionSummary>
                           <AccordionDetails id={idx} sx={{display:'flex',alignItems:'flex-start',justifyContent:'center',flexFlow:'column'}}>

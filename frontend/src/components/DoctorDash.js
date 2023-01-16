@@ -16,7 +16,7 @@ const DoctorDash = ({setShow}) => {
               },
           }
           var today = new Date();
-          var from = new Date(today.getFullYear(),today.getMonth(),parseInt(today.getDate()));
+          var from = new Date(2022,9,9);
           var to = new Date(today.getFullYear(),today.getMonth(),parseInt(today.getDate())+1);
           console.log(from);
           const {data} = await axios.post('/api/patient/appointed',{from,to},config);
@@ -83,10 +83,10 @@ const DoctorDash = ({setShow}) => {
                       {idx+1}
                     </Typography>
                     <Typography variant='h7' display='flex' justifyContent='center' alignItems='center'  sx={{height:'8vh',fontFamily:'Sans Sherif',width:'20vw',paddingLeft:'4vw'}}>
-                      {item.patientData.name}
+                      {item.Name}
                     </Typography>
                     <Typography variant='h7' display='flex' justifyContent='center' alignItems='center'  sx={{height:'8vh',fontFamily:'Sans Sherif',width:'20vw',paddingLeft:'4vw'}}>
-                      {item.nextAppointedDate}
+                      {item.Consultation_Date}
                     </Typography>
                     <Box display='flex' justifyContent='center' alignItems='center' sx={{height:'8vh',fontFamily:'Sans Sherif',width:'20vw',paddingLeft:'4vw'}}>
                       <Button onClick={()=>roomHandler(idx)} className='btn' sx={{backgroundColor:'#19414D',color:'#FEFFFF',height:'5vh',width:'8vw',borderRadius:'15px'}}>
