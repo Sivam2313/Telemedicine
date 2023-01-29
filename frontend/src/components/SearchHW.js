@@ -12,10 +12,58 @@ const SearchHW = () => {
     const history = useHistory();
     const [arr,setArr]=useState();
     const [infoData,setInfoData]=useState({});
+    const [block,setBlock]=useState(true);
+    const [edit,setEdit]=useState(true)
     const isObjectEmpty = (objectName) => {
         return Object.keys(objectName).length === 0
     }
-   
+    const blockHandler= async () => {
+    
+        if(userID){
+            try{
+                const config = {
+                    method:"POST",
+                    headers:{
+                        "Content-type":"application/json"
+                    }
+                }
+                const {data} = await axios.post('/api/hw/blockHw',{userID},config);
+                if(data){
+                    setBlock(!block)
+                }
+               
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }
+    const handleChange = (event) => {
+        setInfoData({...infoData,[event.target.name]:event.target.value})
+    }
+    const handleEdit= async () => {
+        if(edit){
+            setEdit(false)
+            return
+        }else{
+            setEdit(true)
+        }
+        try{
+           const config= {
+                method:"POST",
+                headers:{
+                    "Content-type":"application/json"
+                }
+           } 
+           console.log(infoData)
+           const data=await axios.post('/api/hw/editHw',{infoData},config)
+           if(data) {
+                history.push('/admin')
+           }
+
+        }catch(e){
+            console.log(e)
+        }
+    }
     const processInfo=() => {
         console.log(infoData)
         const Tarr=[]
@@ -105,26 +153,30 @@ const submitHandler = async()=>{
         </motion.div>
     </Box>
    ):(
-      <div style={{padding:'20%'}}>
-        <div style={{display:'flex',flexDirection:'column',background:'#ccc'}}>
-            
+    <div style={{padding:'10% 40%'}}>
+    <div style={{display:'flex',flexDirection:'column'}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'3%'}}>
+        <button style={{padding:'5px 25px'}} onClick={()=>{const reply=window.confirm('Are you sure you want to Block?');if(reply){blockHandler()}}}>{block ? 'BLOCK':'UNBLOCK'}</button>
+        <button style={{padding:'5px 25px'}} onClick={() => handleEdit()}>{edit? "EDIT":"SAVE"}</button>
+        </div>
+        <div>
         <table style={{width:'100%'}}>
-            {arr.map((ind,key) => {
+        {arr.map((ind,key) => {
+            
+            return (
                 
-                return (
-                    
-                     <tr  style={{alignItems:'center'}}>
-                        <th >{ind.first} </th><th>  {ind.second}</th> 
-                    </tr>
+                 <tr >
+                    <th >{ind.first} </th><th> <input name={ind.first} value={ind.second} disabled={edit} onChange={handleChange}/></th>
+                </tr>
 
-                )
-                
-            })
-            }
-            </table>
-    
+            )
+            
+        }) 
+        }
+        </table>
         </div>
     </div>
+</div>
    )
   )
 }

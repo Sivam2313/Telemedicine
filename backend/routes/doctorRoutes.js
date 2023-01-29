@@ -1,5 +1,5 @@
 const express = require('express');
-const { authDoctor, registerDoctor, fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc} = require('../controllers/doctorControllers');
+const { authDoctor, registerDoctor, fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc,editDoc} = require('../controllers/doctorControllers');
 
 const router = express.Router();
 
@@ -10,4 +10,5 @@ router.get('/Doctor',getDoctors);
 router.get('/search',searchDoctor);
 router.post('/findDoc',findDoc);
 router.post('/blockDoc',blockDoc);
+router.post('/editDoc',editDoc)
 module.exports = router;

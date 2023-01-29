@@ -104,6 +104,35 @@ const authHw = asyncHandler(async (req,res)=>{
     }
 })
 
+const blockHw= asyncHandler( async (req,res) => {
+    const {userID}=req.body
+    let hw= await Hw.findOne({userID});
+    if(hw){
+        try{
+            hw.blocked=(!hw.blocked)
+            await hw.save()
+            res.status(201)
+        }catch(e){
+            console.log(e)
+        }
+    }else{
+        res.status(400)
+        throw new Eroor ("HealthWorker with this reg ID doesnt exist")
+    }
+})
+
+const editHw=asyncHandler(async(req,res) => {
+    const {infoData}=req.body
+    const hw= await Hw.findOne({userID:infoData.userID})
+    if(hw){
+        
+        hw.name=infoData.name
+        await hw.save()
+    }else{
+        res.send(400)
+        throw new Error("HealthWorker with given Registration Id doesnt exist")
+    }
+})
 const fetchTotalHw = asyncHandler(async (req,res)=>{
     const count = await Hw.countDocuments({}); 
     if(count){
@@ -117,4 +146,4 @@ const fetchTotalHw = asyncHandler(async (req,res)=>{
     }
 })
 
-module.exports = {registerHw,authHw,fetchTotalHw,findHw};
+module.exports = {registerHw,authHw,fetchTotalHw,findHw,blockHw,editHw};

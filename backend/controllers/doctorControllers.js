@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const Doctor = require('../model/doctorSchema');
 const generateToken = require('../config/tokenGen');
 const Log = require('../model/logSchema');
-const expressAsyncHandler = require('express-async-handler');
+
 
 const registerDoctor = asyncHandler(async (req,res)=>{
     const {name,ssfID,registrationID,mobile,adress,gender,speciality,arr} = req.body;
@@ -125,6 +125,24 @@ const fetchTotalDoctors = asyncHandler(async (req,res)=>{
     }
 })
 
+const editDoc=asyncHandler(async(req,res) => {
+    const {infoData}=req.body
+    console.log(req.body)
+    const doctor= await Doctor.findOne({Doctors_Registration_No:infoData.Doctors_Registration_No})
+    if(doctor){
+        console.log(doctor)
+        doctor.doc_name=infoData.doc_name
+        doctor.SSF_ID=infoData.SSF_ID
+        doctor.Address=infoData.Address
+        doctor.Mobile=infoData.Mobile
+        doctor.Gender=infoData.Gender
+        doctor.Speciality=infoData.Speciality
+        await doctor.save()
+    }else{
+        res.send(400)
+        throw new Error("Docotr with given Registration Id doesnt exist")
+    }
+})
 const getDoctors=asyncHandler(async(req,res)=>{
     const data=await Doctor.find()
     res.send(data)
@@ -143,4 +161,4 @@ const searchDoctor=asyncHandler(async(req,res) => {
     }
 
 })
-module.exports = {registerDoctor,authDoctor,fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc};
+module.exports = {registerDoctor,authDoctor,fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc,editDoc};
