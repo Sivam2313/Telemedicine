@@ -5,49 +5,58 @@ import { Redirect, useHistory } from 'react-router-dom';
 import Logo from '../images/Logo.png';
 import {motion} from 'framer-motion';
 
-const SearchFamilyCards = ({title,routeName}) => {
+const SearchHW = () => {
     const [searchType, setSearchType] = useState('1');
-    const [input, setInput] = useState();
+    const [userID, setInput] = useState();
     const [search,setSearch]=useState(true)
     const history = useHistory();
-    const [arr,setArr]=useState([]);
-    const [infoData,setInfoData]=useState({
-        name:'Parth',
-        mbNum:'9327086671',
-        money: 0
-    });
-  
+    const [arr,setArr]=useState();
+    const [infoData,setInfoData]=useState({});
+    const isObjectEmpty = (objectName) => {
+        return Object.keys(objectName).length === 0
+    }
    
     const processInfo=() => {
+        console.log(infoData)
         const Tarr=[]
         for(let key in infoData){
             const Temp={
                 first:key,
                 second:infoData[key]
             }
-            Tarr.push(Temp)
+            if(Temp.second)
+                 Tarr.push(Temp)
         }
         setArr(Tarr)
+       
+        setSearch(false)
     }
     useEffect(() => {
-       processInfo(); 
-    },[])
+       if(isObjectEmpty(infoData)==false)
+            processInfo()
+    },[infoData])
 const submitHandler = async()=>{
-    if(!input){
+    
+    if(!userID){
         setSearch(false)
         return;
     }
     try{
         const config = {
+          
             headers: {
                 "Content-type":"application/json"
-            },          
+            },   
+                  
         }
-        const {data} = await axios.post(`/api/`,{input},config);
-        localStorage.setItem('familyData',JSON.stringify(data));
-        console.log(data);
-        setSearch(false)
-        history.push('/info')
+    
+        const {data} = await axios.post('/api/hw/findHw',{userID},config);
+        console.log(data)
+        setInfoData(data)
+        // while(isObjectEmpty(infoData))
+        // processInfo()
+        
+        
     }
     catch(error){
         console.log(error);
@@ -57,6 +66,7 @@ const submitHandler = async()=>{
   return (
     search==true ?
     (    
+
     <Box sx={{
         width: '98vw',
         height:'34vh',
@@ -70,7 +80,7 @@ const submitHandler = async()=>{
                     <Box display='flex' alignItems='center' sx={{flexFlow:'column'}}>
                         <img src={Logo} alt='not found' style={{borderRadius:'50%',position:'absolute',top:'5vh'}}></img>
                         <Typography variant='h4' component='div' sx={{fontFamily:'Roboto Slab',color:'#17252A',marginTop:'12vh'}}>
-                            Search Family Cards
+                            Search HW
                         </Typography>
                         <Box sx={{ marginTop:'5vh',alignSelf:'start',marginLeft:'3vw' }} display='flex' justifyContent='center'>
                             <Box display='flex' justifyContent='center' alignItems='center' sx={{backgroundColor:'#2B7A78',width:'56px',height:'56px',color:'#17252A',borderRadius:'5px 0px 0px 5px'}}>
@@ -98,18 +108,20 @@ const submitHandler = async()=>{
       <div style={{padding:'20%'}}>
         <div style={{display:'flex',flexDirection:'column',background:'#ccc'}}>
             
-            {arr.map((ind) => {
-                console.log(ind)
+        <table style={{width:'100%'}}>
+            {arr.map((ind,key) => {
+                
                 return (
                     
-                     <div style={{alignItems:'center'}}>
-                        <p>{ind.first} :  {ind.second}</p> 
-                    </div>
+                     <tr  style={{alignItems:'center'}}>
+                        <th >{ind.first} </th><th>  {ind.second}</th> 
+                    </tr>
 
                 )
                 
             })
             }
+            </table>
     
         </div>
     </div>
@@ -117,4 +129,4 @@ const submitHandler = async()=>{
   )
 }
 
-export default SearchFamilyCards
+export default SearchHW;

@@ -5,49 +5,88 @@ import { Redirect, useHistory } from 'react-router-dom';
 import Logo from '../images/Logo.png';
 import {motion} from 'framer-motion';
 
-const SearchFamilyCards = ({title,routeName}) => {
+const SearchDoctor = () => {
     const [searchType, setSearchType] = useState('1');
-    const [input, setInput] = useState();
+    const [userID, setInput] = useState();
     const [search,setSearch]=useState(true)
     const history = useHistory();
     const [arr,setArr]=useState([]);
-    const [infoData,setInfoData]=useState({
-        name:'Parth',
-        mbNum:'9327086671',
-        money: 0
-    });
-  
+    const [infoData,setInfoData]=useState({});
+    const [block,setBlock]=useState(true)
+    const isObjectEmpty = (objectName) => {
+        return Object.keys(objectName).length === 0
+    }
    
     const processInfo=() => {
+        console.log(infoData)
         const Tarr=[]
         for(let key in infoData){
-            const Temp={
-                first:key,
-                second:infoData[key]
+            if(key!='Availability' ){
+                if(key=='blocked'){
+                    setBlock(!infoData[key])
+                }else{
+                 const Temp={
+                    first:key,
+                    second:infoData[key]
+                }
+                Tarr.push(Temp)
+               }
+                
+                     
+            
             }
-            Tarr.push(Temp)
         }
         setArr(Tarr)
+       
+       
     }
     useEffect(() => {
-       processInfo(); 
-    },[])
+
+    },[block])
+    useEffect(() => {
+       if(isObjectEmpty(infoData)==false)
+            processInfo()
+    },[infoData])
+    useEffect(() => {
+        if(search && arr.length>0){
+            setSearch(false)
+        }
+    },[arr])
+const blockHandler= async () => {
+    if(userID){
+        try{
+            const config = {
+                method:"POST",
+                headers:{
+                    "Content-type":"application/json"
+                }
+            }
+            const {data} = await axios.post('/api/doctor/blockDoc',{userID},config);
+            if(data){
+                setBlock(!block)
+            }
+        }catch(e){
+            console.log(e)
+        }
+    }
+}
 const submitHandler = async()=>{
-    if(!input){
-        setSearch(false)
+    
+    if(!userID){
         return;
     }
     try{
         const config = {
+          
             headers: {
                 "Content-type":"application/json"
-            },          
+            },   
+                  
         }
-        const {data} = await axios.post(`/api/`,{input},config);
-        localStorage.setItem('familyData',JSON.stringify(data));
-        console.log(data);
-        setSearch(false)
-        history.push('/info')
+    
+        const {data} = await axios.post('/api/doctor/findDoc',{userID},config);
+        console.log(data)
+        setInfoData(data)
     }
     catch(error){
         console.log(error);
@@ -57,6 +96,7 @@ const submitHandler = async()=>{
   return (
     search==true ?
     (    
+
     <Box sx={{
         width: '98vw',
         height:'34vh',
@@ -70,7 +110,7 @@ const submitHandler = async()=>{
                     <Box display='flex' alignItems='center' sx={{flexFlow:'column'}}>
                         <img src={Logo} alt='not found' style={{borderRadius:'50%',position:'absolute',top:'5vh'}}></img>
                         <Typography variant='h4' component='div' sx={{fontFamily:'Roboto Slab',color:'#17252A',marginTop:'12vh'}}>
-                            Search Family Cards
+                            Search Doctor
                         </Typography>
                         <Box sx={{ marginTop:'5vh',alignSelf:'start',marginLeft:'3vw' }} display='flex' justifyContent='center'>
                             <Box display='flex' justifyContent='center' alignItems='center' sx={{backgroundColor:'#2B7A78',width:'56px',height:'56px',color:'#17252A',borderRadius:'5px 0px 0px 5px'}}>
@@ -95,26 +135,27 @@ const submitHandler = async()=>{
         </motion.div>
     </Box>
    ):(
-      <div style={{padding:'20%'}}>
-        <div style={{display:'flex',flexDirection:'column',background:'#ccc'}}>
-            
-            {arr.map((ind) => {
-                console.log(ind)
+      <div style={{padding:'10% 20%'}}>
+        <div>
+            <button style={{width:'20%'}} onClick={()=> blockHandler()}>{block ? 'BLOCK':'UNBLOCK'}</button>
+            <table style={{width:'100%'}}>
+            {arr.map((ind,key) => {
+                
                 return (
                     
-                     <div style={{alignItems:'center'}}>
-                        <p>{ind.first} :  {ind.second}</p> 
-                    </div>
+                     <tr >
+                        <th >{ind.first} </th><th>  {ind.second}</th>
+                    </tr>
 
                 )
                 
             })
             }
-    
+            </table>
         </div>
     </div>
    )
   )
 }
 
-export default SearchFamilyCards
+export default SearchDoctor;

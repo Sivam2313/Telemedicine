@@ -44,7 +44,11 @@ const doctorSchema = mongoose.Schema({
         type:String,
         required:true,       
     },
-    Availability:[AvailabilitySchema]
+    Availability:[AvailabilitySchema],
+    blocked:{
+        type:Boolean,
+        required:true,
+    }
 },{timestamp:'true',collection:'Doctor'});
 
 

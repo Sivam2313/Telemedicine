@@ -2,11 +2,12 @@ import { Box, Button, FormControl, InputLabel, OutlinedInput, Paper, TextField, 
 import axios from 'axios';
 import React, { useState } from 'react'
 import {motion} from 'framer-motion';
+import { useHistory } from "react-router-dom";
 const HwRegister = () => {
     const [name, setName] = useState();
     const [password, setPassword] = useState();
     const [userID, setUserID] = useState();
-    
+    const history=useHistory()
     const submitHandler = async ()=>{
     if(!name||!userID||!password){
         return;

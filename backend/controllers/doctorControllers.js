@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const Doctor = require('../model/doctorSchema');
 const generateToken = require('../config/tokenGen');
 const Log = require('../model/logSchema');
+const expressAsyncHandler = require('express-async-handler');
 
 const registerDoctor = asyncHandler(async (req,res)=>{
     const {name,ssfID,registrationID,mobile,adress,gender,speciality,arr} = req.body;
@@ -29,6 +30,7 @@ const registerDoctor = asyncHandler(async (req,res)=>{
         Gender:gender,
         Speciality:speciality,
         Availability:timeAvailable,
+        blocked:false,
     });
     
     if(doctor){
@@ -47,13 +49,41 @@ const registerDoctor = asyncHandler(async (req,res)=>{
 
 })
 
+const findDoc = asyncHandler(async (req,res) =>{
+    const {userID}=req.body
+    console.log(req.body)
+    const doctor = await Doctor.findOne({Doctors_Registration_No:userID});
+    if(doctor){
+        res.send(doctor)
+    }else{
+        res.status(400)
+        throw new Error ("Doctor with this reg ID doesnt exist")
+    }
+
+})
+const blockDoc= asyncHandler( async (req,res) => {
+    const {userID}=req.body
+    let doctor= await Doctor.findOne({Doctors_Registration_No:userID});
+    if(doctor){
+        try{
+            doctor.blocked=(!doctor.blocked)
+            await doctor.save()
+            res.status(201)
+        }catch(e){
+            console.log(e)
+        }
+    }else{
+        res.status(400)
+        throw new Eroor ("Doctor with this reg ID doesnt exist")
+    }
+})
 const authDoctor = asyncHandler(async (req,res)=>{
     const {registrationID} = req.body
     
     const doctor = await Doctor.findOne({Doctors_Registration_No:registrationID});
     console.log(doctor)
 
-    if(doctor){
+    if(doctor && doctor.blocked==false){
         const logReport = await Log.create({
             user:'Doctor',
             registrationId:registrationID,
@@ -100,4 +130,17 @@ const getDoctors=asyncHandler(async(req,res)=>{
     res.send(data)
     console.log(data)
 })
-module.exports = {registerDoctor,authDoctor,fetchTotalDoctors,getDoctors};
+
+const searchDoctor=asyncHandler(async(req,res) => {
+    const {regId}=req.body
+    const doctor= await Doctor.findOne({Doctors_Registration_No:regId})
+    if(doctor){
+        res.send(doctor)
+        console.log(doctor)
+    }else{
+        res.status(400)
+        throw new Error("check your internet"); 
+    }
+
+})
+module.exports = {registerDoctor,authDoctor,fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc};

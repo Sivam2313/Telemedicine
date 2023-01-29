@@ -22,6 +22,7 @@ const registerHw = asyncHandler(async (req,res)=>{
         name,
         userID,
         password,
+        blocked:false,
     });
     
     if(hw){
@@ -53,6 +54,21 @@ const registerHw = asyncHandler(async (req,res)=>{
     }
 
 })
+
+const findHw = asyncHandler(async (req,res) => {
+    console.log(req.body)
+    const {userID} = req.body
+   
+    const hw=await Hw.findOne({userID})
+
+    if(hw){
+        res.send(hw)
+    }else{
+        res.status(400)
+        throw new Error ("HealthWorker doesnt exisit with given ID")
+    }
+})
+
 
 const authHw = asyncHandler(async (req,res)=>{
     const {userID,password} = req.body
@@ -101,4 +117,4 @@ const fetchTotalHw = asyncHandler(async (req,res)=>{
     }
 })
 
-module.exports = {registerHw,authHw,fetchTotalHw};
+module.exports = {registerHw,authHw,fetchTotalHw,findHw};

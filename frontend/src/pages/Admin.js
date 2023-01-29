@@ -3,13 +3,13 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import Dashboard from '../components/Dashboard';
-import DoctorRegister from '../components/DoctorRegister';
-import HwRegister from '../components/HwRegister';
 import LogRecord from '../components/LogRecord';
-import SearchFamilyCards from '../components/SearchFamilyCards';
+import SearchCards from '../components/SearchFamilyCards';
 import SearchPrescription from '../components/SearchPrescription';
 import MedicineStore from '../components/MedicineStore';
 import mainImg from '../images/Logo.png';
+import HealthWorkerPortal from '../components/HealthWorkerPortal';
+import DoctorPortal from '../components/DoctorPortal';
 const Admin = () => {
   const [isOpen, setisOpen] = useState(false);
   const [show,setshow] = useState(0);
@@ -20,11 +20,11 @@ const Admin = () => {
       case 0:
           return <Dashboard />
       case 1:
-          return <HwRegister />
+          return <HealthWorkerPortal />
       case 2:
-          return <DoctorRegister />
+          return <DoctorPortal />
       case 3:
-          return <SearchFamilyCards />
+          return <SearchCards title='Search Family Cards' routeName='family/fetch' />
       case 4:
           return <SearchPrescription />
       case 6:
@@ -76,7 +76,7 @@ const Admin = () => {
             backgroundColor:'#DEDEDE'
           }}}>
           <List>
-            {['Dashboard','Health Worker Registration','Doctor Registration','Search Family Cards','Search Prescription','Issue Medicine','View Logs'].map((text,idx)=>(
+            {['Dashboard','Health Worker Portal','Doctor Portal','Search Family Cards','Search Prescription','Issue Medicine','View Logs'].map((text,idx)=>(
               <ListItem key={text} disablePadding>
                 <ListItemButton onClick={()=>setshow(idx)} sx={{
                   height:'8vh',
