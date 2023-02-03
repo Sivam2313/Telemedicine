@@ -159,6 +159,7 @@ const patientSchema = mongoose.Schema({
     }
 },{
     timestamp:true,
+    collection:'PatientRegistration'
 });
 
 patientSchema.statics.findByDate = function (from,to){

@@ -9,11 +9,15 @@ const DoctorPortal = () =>{
         history.push('Doctor/search')
     }
     return(
-        <div style={{margin:'30%'}}>
-            <h1>Hello You are in DoctorPortal</h1>
-            <button onClick={()=> redirect()}>Registration</button>
-            <button>Block</button>
-            <button onClick={() => redirectSearch()}>Info</button>
+        <div style={{width:'100vw',height:'100vh'}}>
+            
+            <div style={{display:'flex',justifyContent:'center',alignItems:'center',width:'100%',height:"100%"}}>
+            
+            <button style={{margin:"5%",padding:" 10px 40px"}}onClick={()=> redirect()}>Registration</button>
+           
+            <button style={{margin:"5%",padding:" 10px 40px"}}onClick={() => redirectSearch()}>Info</button>
+            </div>
+            
         </div>
     );
 }

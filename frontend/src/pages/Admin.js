@@ -10,6 +10,7 @@ import MedicineStore from '../components/MedicineStore';
 import mainImg from '../images/Logo.png';
 import HealthWorkerPortal from '../components/HealthWorkerPortal';
 import DoctorPortal from '../components/DoctorPortal';
+import PatientInformation from '../components/PatientInformation';
 const Admin = () => {
   const [isOpen, setisOpen] = useState(false);
   const [show,setshow] = useState(0);
@@ -31,6 +32,8 @@ const Admin = () => {
           return <LogRecord />
       case 5:
           return <MedicineStore/>
+      case 7:
+          return <PatientInformation />
     }
   }
 
@@ -76,7 +79,7 @@ const Admin = () => {
             backgroundColor:'#DEDEDE'
           }}}>
           <List>
-            {['Dashboard','Health Worker Portal','Doctor Portal','Search Family Cards','Search Prescription','Issue Medicine','View Logs'].map((text,idx)=>(
+            {['Dashboard','Health Worker Portal','Doctor Portal','Search Family Cards','Search Prescription','Issue Medicine','View Logs','Patient Info'].map((text,idx)=>(
               <ListItem key={text} disablePadding>
                 <ListItemButton onClick={()=>setshow(idx)} sx={{
                   height:'8vh',

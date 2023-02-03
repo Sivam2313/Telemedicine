@@ -31,7 +31,20 @@ const HwLogin = () => {
         const {data} = await axios.post('/api/hw/login',{userID,password},config)
         localStorage.setItem("HwOnline", JSON.stringify(data))
         localStorage.setItem('isAuth',true);
-        history.push('/healthWorker');
+     
+      
+        if (data.status === 304) {
+            console.log('user is blocked...')
+            window.alert("User Is Blocked");
+        }else if(data.status===400){
+          window.alert("Invalid Cred")
+        }
+        if(data){
+          history.push('/healthWorker');
+        }
+        
+        
+        
 
     } catch (error) {
         console.log(error);

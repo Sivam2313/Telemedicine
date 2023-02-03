@@ -76,7 +76,8 @@ const authHw = asyncHandler(async (req,res)=>{
     const hw = await Hw.findOne({userID});
     
 
-    if(hw && hw.matchPassword(password)){
+    if(hw && hw.matchPassword(password) && hw.blocked===false){
+        
         const login = new Date()
         const logReport = await Log.create({
             user:"Health Worker",
@@ -99,8 +100,16 @@ const authHw = asyncHandler(async (req,res)=>{
         }
     }
     else{
+        
+       
+        if(hw.blocked){
+            // res.send("You have been blocked by admin pl contact for unblock")
+     
+            res.status(301)
+        }else{
         res.status(400)
         throw new Error ("invalid email or password")
+        }
     }
 })
 

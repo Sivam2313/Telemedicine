@@ -168,6 +168,30 @@ const fetchAll = asyncHandler(async (req,res)=>{
     }
 })
 
+const searchPatient= asyncHandler( async (req,res) => {
+    const {regNo}=req.body
+    console.log(regNo)
+    const patient=await Patient.findOne({'patientData.registrationNumber':regNo})
+    if(patient){
+        res.send(patient)
+    }else{
+        res.status(400)
+        throw new Error("Patient doesnt exist with the given registration Number")
+    }
+})
+
+
+const editPat=asyncHandler(async(req,res) => {
+    const {infoData}=req.body
+    const Pat= await Patient.findOne({'patientData.registrationNumber':infoData.patientData.registrationNumber})
+    if(Pat){
+        Object.assign(Pat,infoData);
+        await Pat.save()
+    }else{
+        res.send(400).send("HealthWorker with given Registration Id doesnt exist")
+        throw new Error("HealthWorker with given Registration Id doesnt exist")
+    }
+})
 const trueFetch = asyncHandler(async (req,res)=>{
     const {id} = req.body;
     console.log(id);
@@ -180,4 +204,4 @@ const trueFetch = asyncHandler(async (req,res)=>{
     }
 })
 
-module.exports = {fetchPatient,addPatient,appointedPatients,setAppointedDate,fetchAll,changeVisited,trueFetch,medicinalConsultant};
+module.exports = {fetchPatient,addPatient,appointedPatients,setAppointedDate,fetchAll,changeVisited,trueFetch,medicinalConsultant,searchPatient,editPat};

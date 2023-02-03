@@ -14,6 +14,7 @@ import DoctorRegister from './components/DoctorRegister';
 import SearchFamilyCards from './components/SearchFamilyCards';
 import SearchHW from './components/SearchHW';
 import SearchDoctor from './components/SearchDoctor';
+import PatientInformation from './components/PatientInformation';
 function App() {
   return (
     <div className="App">
@@ -29,6 +30,7 @@ function App() {
         <Route path='/Doctor/registration' component={DoctorRegister} exact/>
         <Route path='/HealthWorker/search' component={SearchHW} exact />
         <Route path='/Doctor/search' component={SearchDoctor} exact />
+        {/* <Route path='/Patient/search' component={PatientInformation} exact/> */}
       </Protect>
 
     </div>
