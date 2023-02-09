@@ -103,9 +103,11 @@ const authHw = asyncHandler(async (req,res)=>{
         
        
         if(hw.blocked){
-            // res.send("You have been blocked by admin pl contact for unblock")
-     
-            res.status(301)
+            res.status(400).json({
+                message: "Contact Admin you are blocked"
+            })
+            throw new Error("Contact Healthw");
+            
         }else{
         res.status(400)
         throw new Error ("invalid email or password")

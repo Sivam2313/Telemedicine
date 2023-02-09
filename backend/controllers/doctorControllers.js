@@ -107,6 +107,12 @@ const authDoctor = asyncHandler(async (req,res)=>{
 
     }
     else{
+        if(doctor.blocked){
+            res.status(400).json({
+                message: "Contact Admin you are blocked"
+            })
+            throw new Error("Contact Admin");
+        }
         res.status(400)
         throw new Error ("invalid email or password")
     }
