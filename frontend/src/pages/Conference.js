@@ -18,6 +18,7 @@ const Conference = () => {
   useEffect(() => {
     const peer = new Peer();
     const room = localStorage.getItem('room')
+    console.log(room)
     peer.on('open', (id) => {
       setPeerId(id)
       socket.emit('join-room',room,id)

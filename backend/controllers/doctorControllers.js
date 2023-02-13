@@ -81,7 +81,7 @@ const authDoctor = asyncHandler(async (req,res)=>{
     const {registrationID} = req.body
     
     const doctor = await Doctor.findOne({Doctors_Registration_No:registrationID});
-    console.log(doctor)
+    // console.log(doctor)
 
     if(doctor && doctor.blocked==false){
         const logReport = await Log.create({
@@ -93,10 +93,10 @@ const authDoctor = asyncHandler(async (req,res)=>{
         if(logReport){
             res.status(201).json({
                 _id: doctor._id,
-                ssfID: doctor.ssfID,
-                name:doctor.name,
-                registrationID: doctor.registrationID,
-                timeAvailable: doctor.timeAvailable,
+                ssfID: doctor.SSF_ID,
+                name:doctor.doc_name,
+                registrationID: doctor.Doctors_Registration_No,
+                timeAvailable: doctor.Availability,
                 token: generateToken(doctor._id),
                 logId:logReport._id,
             })
@@ -152,7 +152,6 @@ const editDoc=asyncHandler(async(req,res) => {
 const getDoctors=asyncHandler(async(req,res)=>{
     const data=await Doctor.find()
     res.send(data)
-    console.log(data)
 })
 
 const searchDoctor=asyncHandler(async(req,res) => {
@@ -160,7 +159,6 @@ const searchDoctor=asyncHandler(async(req,res) => {
     const doctor= await Doctor.findOne({Doctors_Registration_No:regId})
     if(doctor){
         res.send(doctor)
-        console.log(doctor)
     }else{
         res.status(400)
         throw new Error("check your internet"); 

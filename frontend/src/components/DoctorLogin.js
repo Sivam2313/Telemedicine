@@ -30,9 +30,10 @@ const DoctorLogin = () => {
             },
         }
         const {data} = await axios.post('/api/doctor/login',{registrationID},config);
+        const doc_name=data.name
         localStorage.setItem("DoctorOnline", JSON.stringify(data))
         localStorage.setItem('isAuth',true);
-        history.push('/doctor');
+        history.push(`/doctor?DoctorName=${doc_name}`);
     }
     catch(error){
        alert(error.response.data.message)

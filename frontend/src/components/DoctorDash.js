@@ -2,11 +2,14 @@ import { Box, List, ListItem, Toolbar, Drawer, ListItemText, ListItemButton, Css
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-
+import { useLocation } from 'react-router-dom';
 const DoctorDash = ({setShow}) => {
   const [patientArr, setPatientArr] = useState(["None Found"]);
   const history = useHistory();
-
+  const location = useLocation();
+  const urlParams = new URLSearchParams(location.search);
+  const doc_name = urlParams.get('DoctorName');
+  console.log(doc_name)
     useEffect(()=>{
       async function fetch (){
         try{
@@ -16,10 +19,9 @@ const DoctorDash = ({setShow}) => {
               },
           }
           var today = new Date();
-          var from = new Date(2022,9,9);
+          var from = new Date(2020,9,9);
           var to = new Date(today.getFullYear(),today.getMonth(),parseInt(today.getDate())+1);
-          console.log(from);
-          const {data} = await axios.post('/api/patient/appointed',{from,to},config);
+          const {data} = await axios.post('/api/patient/appointed',{doc_name,from,to},config);
           if(data.length===0){
             setPatientArr(['None Found'])
           }

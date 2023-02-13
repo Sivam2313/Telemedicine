@@ -114,18 +114,20 @@ const medicinalConsultant=asyncHandler(async (req,res) =>{
 }
 )
 const appointedPatients = asyncHandler(async (req,res)=>{
-    var  {from,to} = req.body;
-    if(!from || !to){
-        from = new Date(1111,12,12);
+    var  {from,to,doc_name} = req.body;
+    if(!from || !to ){
+        from = new Date(2020,12,12);
         to = new Date(4000,12,12);
     }
-    // from=new Date(2022,07,28);
-    // to=new Date(2023,01,11)
-    // console.log(year,month-1,day+1);
+    if (!doc_name || doc_name=='') {
+        doc_name = /.*/;
+      }
     const patients = await Consult.find({
         Consultation_Date:{$gte:from},
     }).find({
         Consultation_Date:{$lte:to},
+    }).find({
+       Assigned_Doctor:{$regex:doc_name}
     })
     res.send(patients)
     if(patients){

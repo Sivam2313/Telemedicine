@@ -5,9 +5,12 @@ import { useHistory } from 'react-router-dom';
 import DoctorDash from '../components/DoctorDash';
 import mainImg from '../images/Logo.png';
 
+
 const Doctor = () => {
   const history = useHistory();
   const [show, setShow] = useState(0);
+  
+
     useEffect(() => {
       if(localStorage.getItem('isAuth')==='false' ){
         history.push('/');
