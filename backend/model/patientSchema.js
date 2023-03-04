@@ -154,7 +154,7 @@ const patientSchema = mongoose.Schema({
         default:'false',
     },
     nextAppointedDate:{
-        type:String,
+        type:Date,
         default:''
     }
 },{

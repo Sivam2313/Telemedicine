@@ -22,6 +22,7 @@ const DoctorDash = ({setShow}) => {
           var from = new Date(2020,9,9);
           var to = new Date(today.getFullYear(),today.getMonth(),parseInt(today.getDate())+1);
           const {data} = await axios.post('/api/patient/appointed',{doc_name,from,to},config);
+
           if(data.length===0){
             setPatientArr(['None Found'])
           }
@@ -85,10 +86,10 @@ const DoctorDash = ({setShow}) => {
                       {idx+1}
                     </Typography>
                     <Typography variant='h7' display='flex' justifyContent='center' alignItems='center'  sx={{height:'8vh',fontFamily:'Sans Sherif',width:'20vw',paddingLeft:'4vw'}}>
-                      {item.Name}
+                      {item.patientData.name}
                     </Typography>
                     <Typography variant='h7' display='flex' justifyContent='center' alignItems='center'  sx={{height:'8vh',fontFamily:'Sans Sherif',width:'20vw',paddingLeft:'4vw'}}>
-                      {item.Consultation_Date}
+                      {item.nextAppointedDate}
                     </Typography>
                     <Box display='flex' justifyContent='center' alignItems='center' sx={{height:'8vh',fontFamily:'Sans Sherif',width:'20vw',paddingLeft:'4vw'}}>
                       <Button onClick={()=>roomHandler(idx)} className='btn' sx={{backgroundColor:'#19414D',color:'#FEFFFF',height:'5vh',width:'8vw',borderRadius:'15px'}}>

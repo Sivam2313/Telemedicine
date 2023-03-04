@@ -195,7 +195,7 @@ const Dashboard = () => {
                                   {idx+1}
                               </Typography>
                               <Typography sx={{ color: 'text.secondary' }}>
-                                  {item.Name}
+                                  {item.patientData.name}
                               </Typography>
                           </AccordionSummary>
                           <AccordionDetails id={idx} sx={{display:'flex',alignItems:'flex-start',justifyContent:'center',flexFlow:'column'}}>

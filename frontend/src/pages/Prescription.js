@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AppBar, Box, Button, FormControl, InputLabel, OutlinedInput, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { AppBar, Box, Button,Typography, Autocomplete, TextField } from '@mui/material'
 import mainImg from '../images/Logo.png'
 import './style.css'
 import axios from 'axios'
@@ -21,7 +21,9 @@ const Prescription = () => {
   const [other, setOther] = useState();
   const para = useParams();
   const [id, setId] = useState(para.id);
+  const [allMed,setAllMed]=useState([])
   const history = useHistory();
+
   const [patient, setPatient] = useState({
     patientData:{
       name:"afhajf;la",
@@ -38,6 +40,40 @@ const Prescription = () => {
     }
 
   })
+  const options = [
+    { label: 'Apple', value: 'apple' },
+    { label: 'Banana', value: 'banana' },
+    { label: 'Cherry', value: 'cherry' },
+    { label: 'Date', value: 'date' },
+    { label: 'Elderberry', value: 'elderberry' },
+  ];
+  const handleSelectChange = (event, value) => {
+    console.log(value);
+  };
+  const filterOptions = (options, { inputValue }) => {
+    return options.filter((option) =>
+      option.Product_name.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  };
+  async function getMedicines(){
+    try{
+        const res = await fetch('/api/med/Medicine', {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            credentials: "include"
+        })
+        const dat = await res.json()
+        console.log(dat)
+            setAllMed(dat)
+        
+    }
+    catch(e){
+        console.log(e)
+    }
+}
   const currDate = new Date();
   const today = currDate.getDate()+'/'+(currDate.getMonth()+1)+'/'+currDate.getFullYear();
 
@@ -57,6 +93,8 @@ const Prescription = () => {
       }
     }
     fetch();
+    
+    getMedicines();
   }, [])
   
 
@@ -218,13 +256,29 @@ const Prescription = () => {
         </Typography>
         <input id='name' onChange={(e)=>{setNumber(e.target.value)}} placeholder='Total Medicine' style={{width:'70vw',height:'3vh',borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'8px',outline:'none'}}/>
       </Box>
-      <Button onClick={()=>{history.push('/conference')}} className='btn' sx={{backgroundColor:'#19414D',color:'#FEFFFF',height:'4vh',width:'8vw',padding:'2vh',marginLeft:'4vw',fontSize:'0.8rem',borderRadius:'15px'}}>
+      <Button onClick={()=>{history.push('/conference')}} className='btn' sx={{backgroundColor:'#19414D',color:'#FEFFFF',height:'6vh',width:'8vw',padding:'2vh',marginLeft:'4vw',fontSize:'0.8rem',borderRadius:'15px'}}>
         Start Meeting
       </Button>
       <Box sx={{marginTop:'5vh',marginLeft:'4vw'}}> 
         <Typography>
           MEDICINES | DURATION | FREQUENCY | NO OF MEDICINE:
         </Typography>
+        <Box sx={{width:'80%'}}>
+       < Autocomplete
+          
+           options={allMed}
+           getOptionLabel={(option) => option.Product_name}
+           onChange={handleSelectChange}
+           filterOptions={filterOptions}
+           renderInput={(params) => (
+             <TextField
+                 {...params}
+                 label="Search for available medicine"
+                 variant="outlined"
+            />
+        )}
+        />
+        </Box>
         <Button className='btn' onClick={addHandler} sx={{position:'relative',top:'5vh',left:'75vw',height:'5vh',width:'5vh',borderRadius:'15px',backgroundColor:'#19414D',color:'#FEFFFF'}}>
           <i class='fas fa-plus'></i>
         </Button>

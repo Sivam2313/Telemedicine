@@ -75,8 +75,21 @@ const HwDashboard = () => {
     }
     setpatientArr(patientArr.filter((_, i) => (i !== idx )));
   }
+  const dequeueHandler = (idx) => {
+    const item=queue[idx]
+    if(patientArr.length==1){
+      if(patientArr[0]=='None Found'){
+        setpatientArr(item)
+      }else{
+        setpatientArr([...patientArr,item])
+      }
+    }else{
+      setpatientArr([...patientArr,item])
+    }
+    setQueue(queue.filter((_,i) => (i!==idx)))
+  }
   function roomHandler(idx){
-    // localStorage.setItem('room',patientArr[idx].patientData.ticketId)
+    localStorage.setItem('room',patientArr[idx].patientData.ticketId)
     console.log('Going to room')
     history.push('/conference');
   }
@@ -214,17 +227,17 @@ const HwDashboard = () => {
                       {idx+1}
                     </Typography>
                     <Typography variant='h6' component='div' sx={{justifyContent:'center',fontFamily:'Roboto Condensed',display:'flex',alignItems:'center',width:'16vw',height:'9vh'}}>
-                      {item.Name}
+                      {item.patientData.name}
                     </Typography>
                     <Typography variant='h6' component='div' sx={{justifyContent:'center',fontFamily:'Roboto Condensed',display:'flex',alignItems:'center',width:'16vw',height:'9vh',paddingLeft:'30px'}}>
-                      {item.Assigned_Doctor}
+                      {item.doctor}
                     </Typography>
                     <Box display='center' justifyContent='center' alignItems='center' sx={{width:'32vw'}}>
                       <Button onClick={()=>roomHandler(idx)} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'8vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
                         Start
                       </Button>
-                      <Button onClick={()=>queueHandler(idx)} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'8vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
-                        Add
+                      <Button onClick={()=>dequeueHandler(idx)} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'8vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
+                        Remove
                       </Button>
                     </Box>
                   </Box>
@@ -252,13 +265,13 @@ const HwDashboard = () => {
                         {idx+1}
                       </Typography>
                       <Typography variant='h6' component='div' sx={{justifyContent:'center',fontFamily:'Roboto Condensed',display:'flex',alignItems:'center',width:'16vw',height:'9vh'}}>
-                        {item.Name}
+                        {item.patientData.name}
                       </Typography>
                       <Typography variant='h6' component='div' sx={{justifyContent:'center',fontFamily:'Roboto Condensed',display:'flex',alignItems:'center',width:'16vw',height:'9vh',paddingLeft:'30px'}}>
-                        {item.Assigned_Doctor}
+                        {item.doctor}
                       </Typography>
                       <Box display='center' justifyContent='center' alignItems='center' sx={{width:'32vw'}}>
-                        <Button onClick={()=>roomHandler(idx)} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'8vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
+                        <Button onClick={()=>roomHandler(idx)} sx={{backgroundColor:'#FFF',color:'#000',marginLeft:'5vw',width:'8vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}} disabled>
                           Start
                         </Button>
                         <Button onClick={()=>queueHandler(idx)} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'8vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>

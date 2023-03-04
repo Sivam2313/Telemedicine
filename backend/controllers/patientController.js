@@ -122,13 +122,15 @@ const appointedPatients = asyncHandler(async (req,res)=>{
     if (!doc_name || doc_name=='') {
         doc_name = /.*/;
       }
-    const patients = await Consult.find({
-        Consultation_Date:{$gte:from},
+    
+    const patients = await Patient.find({
+        nextAppointedDate:{$gte:from},
     }).find({
-        Consultation_Date:{$lte:to},
+        nextAppointedDate:{$lte:to},
     }).find({
-       Assigned_Doctor:{$regex:doc_name}
+       doctor:{$regex:doc_name}
     })
+    // const patients=await Patient.find();
     res.send(patients)
     if(patients){
         res.status(201).json(patients);
@@ -144,7 +146,7 @@ const setAppointedDate = asyncHandler(async (req,res)=>{
     const {date,id,doctor} = req.body;
     const [day,month,year] = date.split('/');
     const appointedDate = new Date(year,month - 1,day);
-    const patient = await Patient.updateOne({'patientData.ticketId':id},{appointedTime:appointedDate,doctor:doctor})
+    const patient = await Patient.updateOne({'patientData.ticketId':id},{nextAppointedDate:appointedDate,doctor:doctor})
     if(patient){
         const updated = await Patient.findOne({'patientData.ticketId':id})
         res.status(201).json(updated);
