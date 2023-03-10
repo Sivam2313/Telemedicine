@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const Doctor = require('../model/doctorSchema');
 const generateToken = require('../config/tokenGen');
 const Log = require('../model/logSchema');
-
+const PatientQ=require('../model/PatientQSchema');
 
 const registerDoctor = asyncHandler(async (req,res)=>{
     const {name,ssfID,registrationID,mobile,adress,gender,speciality,arr} = req.body;
@@ -165,4 +165,72 @@ const searchDoctor=asyncHandler(async(req,res) => {
     }
 
 })
-module.exports = {registerDoctor,authDoctor,fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc,editDoc};
+
+const popQ=asyncHandler(async(req,res) => {
+    const {doc_name}=req.body
+    console.log(doc_name)
+    const queue=await PatientQ.findOne({doc_name})
+    console.log('pop initiated')
+    if(queue){
+        queue.Patients.shift()
+        await queue.save()
+        res.status(201).json({
+            name: queue.doc_name,
+            TicketId: queue.Patients, 
+        })
+    }else{
+        res.status(400)
+        throw new Error ("Couldnt submit properly")
+    }
+
+})
+const getQ=asyncHandler(async(req,res) => {
+    const {doc_name}=req.body
+    console.log('GetQ Init')
+    const queue= await PatientQ.findOne({doc_name})
+    // console.log(queue)
+    if(queue){
+        res.send(queue.Patients[0])
+    }else{
+        const doc=await PatientQ.create({
+            doc_name:doc_name,
+            Patients:[]
+        })
+        if(doc){
+            res.status(201).json({
+                name: doc.doc_name,
+                TicketId: doc.Patients, 
+            })
+        }
+        else{
+            res.status(400)
+            throw new Error ("Couldnt load Patients queue")
+        }
+    }
+})
+const modifyQ= asyncHandler(async(req,res) => {
+    const {doc_name,queue}=req.body
+    const doctor= await PatientQ.findOne({doc_name})
+    // console.log(queue)
+    if(doctor){
+        doctor.Patients=queue
+        await doctor.save()
+    }else{
+        const doc=await PatientQ.create({
+            doc_name:doc_name,
+            Patients:queue
+        })
+        if(doc){
+            res.status(201).json({
+                name: doc.doc_name,
+                TicketId: doc.Patients, 
+            })
+        }
+        else{
+            res.status(400)
+            throw new Error ("failed to modify queue")
+        }
+    }
+
+})
+module.exports = {registerDoctor,authDoctor,fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc,editDoc,modifyQ,getQ,popQ};

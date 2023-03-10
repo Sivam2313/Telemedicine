@@ -37,7 +37,20 @@ const HwDashboard = () => {
       history.push('/')
     }
   }, [])
+  const modifyQ = async () => {
+    try{
+      const config={
+        headers:{
+          "Content-type":"application/json"
+        },
+      }
+      const doc_name=docName
+      const {data}=await axios.post('/api/doctor/modifyQ',{doc_name,queue},config)
 
+    }catch(e){
+      console.log(e)
+    }
+  }
   const submitHandler = async()=>{
     
     try{
@@ -61,7 +74,7 @@ const HwDashboard = () => {
     }
   }
  
-  const queueHandler = (idx) => {
+  const queueHandler = async (idx) => {
     const item = patientArr[idx];
     if(queue.length==1){
       if(queue[0]=='Empty'){
@@ -73,6 +86,7 @@ const HwDashboard = () => {
     }else{
     setQueue([...queue, item]);
     }
+    //  modifyQ()
     setpatientArr(patientArr.filter((_, i) => (i !== idx )));
   }
   const dequeueHandler = (idx) => {
@@ -87,9 +101,15 @@ const HwDashboard = () => {
       setpatientArr([...patientArr,item])
     }
     setQueue(queue.filter((_,i) => (i!==idx)))
+    // modifyQ()
   }
+  useEffect(() => {
+    modifyQ()
+  },[queue])
   function roomHandler(idx){
-    localStorage.setItem('room',patientArr[idx].patientData.ticketId)
+    localStorage.setItem('room',queue[idx].patientData.ticketId)
+    console.log(queue[idx].patientData.name)
+    console.log(queue[idx].patientData.ticketId)
     console.log('Going to room')
     history.push('/conference');
   }

@@ -23,7 +23,12 @@ const Prescription = () => {
   const [id, setId] = useState(para.id);
   const [allMed,setAllMed]=useState([])
   const history = useHistory();
-
+  const [breakFast,setBreakFast]=useState("None")
+  const [lunch,setLunch]=useState("None")
+  const [evening,setEvening]=useState("None")
+  const [dinner,setDinner]=useState("None")
+  const [selectedMed,setSelectedMed]=useState("")
+  const [currTID,setCurrTID]=useState(0)
   const [patient, setPatient] = useState({
     patientData:{
       name:"afhajf;la",
@@ -40,15 +45,22 @@ const Prescription = () => {
     }
 
   })
-  const options = [
-    { label: 'Apple', value: 'apple' },
-    { label: 'Banana', value: 'banana' },
-    { label: 'Cherry', value: 'cherry' },
-    { label: 'Date', value: 'date' },
-    { label: 'Elderberry', value: 'elderberry' },
-  ];
+ 
+  const handleBreakfastChange=(e) => {
+    console.log(e.target.value)
+    setBreakFast(e.target.value)
+  }
+  const handleLunchChange = (e) => {
+    setLunch(e.target.value)
+  }
+  const handleEveChange = (e) => {
+    setEvening(e.target.value)
+  }
+  const handleDinnerChange = (e) => {
+    setDinner(e.target.value)
+  }
   const handleSelectChange = (event, value) => {
-    console.log(value);
+    setSelectedMed(event.target.innerText)
   };
   const filterOptions = (options, { inputValue }) => {
     return options.filter((option) =>
@@ -66,8 +78,7 @@ const Prescription = () => {
             credentials: "include"
         })
         const dat = await res.json()
-        console.log(dat)
-            setAllMed(dat)
+        setAllMed(dat)
         
     }
     catch(e){
@@ -78,6 +89,8 @@ const Prescription = () => {
   const today = currDate.getDate()+'/'+(currDate.getMonth()+1)+'/'+currDate.getFullYear();
 
   useEffect(() => {
+    const room=localStorage.getItem('room')
+    setCurrTID(room)
     async function fetch (){
       try{
         const config = {
@@ -97,7 +110,7 @@ const Prescription = () => {
     getMedicines();
   }, [])
   
-
+ 
   const addHandler = ()=>{
     if(!name){
       return;
@@ -117,39 +130,76 @@ const Prescription = () => {
     setArray(arr);
     setName("");
   }
-
-  const submitHandler = async ()=>{
-    if(!symptoms){
-      console.log("??");
-      return;
-    }
-    console.log(medicines)
-    var arr = [...medicines]
-    if(!(name==="")){
-      var data = {
-        name,
-        duration,
-        dose,
-        total
-      }
-      console.log(medicines);
-      arr.push(data);
-      setMedicines(arr);
-    }
+  const getQ = async() => {
+    console.log('Inside getQ'+currTID)
     try{
       const config = {
-          headers: {
-              "Content-type":"application/json"
-          },
+        headers: {
+            "Content-type":"application/json"
+        },
       }
-      const dateMade = currDate;
-      const {data} = await axios.post('/api/prescription/add',{id,dateMade,symptoms,instructions,diagnosis,arr,number,date,tests,other},config);
-      history.goBack();
-    }catch(error){
-      console.log(error);
+      const doc_name=patient.doctor
+      console.log(doc_name)
+      const {data}=await axios.post('/api/doctor/getQ',{doc_name},config)
+      console.log(data.patientData.ticketId)
+      const path = '/prescription/'+data.patientData.ticketId;
+      setCurrTID(data.patientData.ticketId)
+      history.push(path)
+      window.location.reload()
+    }catch(e){
+      console.log(e)
     }
   }
+  const popQ = async()=> {
+    try{
+      const config = {
+        headers: {
+            "Content-type":"application/json"
+        },
+      }
+      const doc_name=patient.doctor
+      console.log(doc_name)
+      const {data}=await axios.post('/api/doctor/popQ',{doc_name},config)
+    }catch(e){
+      console.log(e)
+    }
+  } 
+  const submitHandler = async ()=>{
+    // if(!symptoms){
+    //   console.log("??");
+    //   return;
+    // }
+    // console.log(medicines)
+    // var arr = [...medicines]
+    // if(!(name==="")){
+    //   var data = {
+    //     name,
+    //     duration,
+    //     dose,
+    //     total
+    //   }
+    //   console.log(medicines);
+    //   arr.push(data);
+    //   setMedicines(arr);
+    // }
+    popQ()
+    
+    // try{
+    //   const config = {
+    //       headers: {
+    //           "Content-type":"application/json"
+    //       },
+    //   }
+    //   const dateMade = currDate;
+    //   const {data} = await axios.post('/api/prescription/add',{id,dateMade,symptoms,instructions,diagnosis,arr,number,date,tests,other},config);
+    //   history.goBack();
+    // }catch(error){
+    //   console.log(error);
+    // }
 
+    getQ()
+  }
+  
   return (
     <Box backgroundColor='#FEFFFF' sx={{height:'fit-content',minHeight:'115vh',paddingBottom:'4vh',paddingTop:'2vh'}}>
       <Box display='flex' justifyContent='center' alignItems='center' sx={{margin:'8px', padding:'30px'}}>
@@ -265,7 +315,6 @@ const Prescription = () => {
         </Typography>
         <Box sx={{width:'80%'}}>
        < Autocomplete
-          
            options={allMed}
            getOptionLabel={(option) => option.Product_name}
            onChange={handleSelectChange}
@@ -288,8 +337,29 @@ const Prescription = () => {
               return(
                 <Box sx={{paddingTop:'1vh',width:'70vw',padding:'20px',borderRadius:'8px',marginBottom:'3vh',border:'1px solid rgb(170, 170, 170)'}}>
                   <Box display='flex' style={{width:'90%',marginBottom:'2vh',justifyContent:'space-between'}}>
-                    <input type='text' onChange={(e)=>{setName(e.target.value)}} placeholder='Medicine Name' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
-                    <input type='text' onChange={(e)=>{setDuration(e.target.value)}} placeholder='Duration' style={{width:'30%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    <input type='text' onChange={(e)=>{setName(e.target.value)}} value={selectedMed} placeholder='Medicine Name' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    <div style={{display:'flex',flexDirection:'column',width:'35%'}}>
+                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
+                          <span  style={{width:'30%'}}>Breakfast</span>
+                          <input type="radio" value="Before" checked={breakFast==='Before'}  onChange={handleBreakfastChange} /> Before
+                          <input type="radio" value="After" checked={breakFast==='After'}  onChange={handleBreakfastChange} />   After
+                      </div>
+                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
+                          <span style={{width:'30%'}}>Lunch</span>
+                          <input type="radio" value="Before" checked={lunch==='Before'} onChange={handleLunchChange} /> Before
+                          <input type="radio" value="After" checked={lunch==='After'} onChange={handleLunchChange} />   After
+                      </div>
+                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
+                           <span style={{width:'30%'}}>Evening</span>
+                          <input type="radio" value="Before" checked={evening==='Before'} onChange={handleEveChange} /> Before
+                          <input type="radio" value="After" checked={evening==='After'} onChange={handleEveChange} />   After
+                      </div>
+                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
+                          <span style={{width:'30%'}}> Dinner</span>
+                          <input type="radio" value="Before" checked={dinner==='Before'} onChange={handleDinnerChange} /> Before
+                          <input type="radio" value="After" checked={dinner==='After'} onChange={handleDinnerChange} />   After
+                      </div>
+                    </div>
                   </Box>
                   <Box display='flex' style={{width:'90%',justifyContent:'space-between'}}>
                     <input type='text' onChange={(e)=>{setDose(e.target.value)}} placeholder='Frequency' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>

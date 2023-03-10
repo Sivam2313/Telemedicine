@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useHistory } from 'react-router-dom';
 import io from 'socket.io-client';
 import Peer from 'peerjs';
 import './style.css';
 const socket = io.connect("http://localhost:5000")
+
 const Conference = () => {
     const [message, setMessage] = useState();
     const [messageList, setMessageList] = useState([]);
@@ -12,8 +14,8 @@ const Conference = () => {
     const remoteVideoRef = useRef(null);
     const currentUserVideoRef = useRef(null);
     const peerInstance = useRef(null);
-    const peer = new Peer()
-
+    // var peer;
+    const history = useHistory();
 
   useEffect(() => {
     const peer = new Peer();
@@ -53,11 +55,24 @@ const Conference = () => {
         const arr = [...messageList]
         setMessageList((arr)=>[...arr,data])
         const room = localStorage.getItem('room');
-        // console.log('yes');
         socket.emit("send-message",message,room)
 
     }
+    
+    const endCall = () => {
+        const room = localStorage.getItem('room')
+        socket.emit('leave-room',room,peerId)
 
+        peerInstance.current.disconnect()
+        if(localStorage.getItem('DoctorOnline')){
+        const path = '/prescription/'+room;
+        history.push(path);
+        }else{
+          const path='/HealthWorker';
+          history.push(path)
+        }
+
+    }
 
     useEffect(() => {
         socket.off('recieve-message').on('recieve-message', message=>{
@@ -79,7 +94,15 @@ const Conference = () => {
             setRemotePeerIdValue(id);
             call(id);
         })
-        
+        socket.on('user-disconnected',id => {
+          const data={
+            message:`User Disconnected with ${id}`,
+            alignment:'center',
+          }
+          const arr=[...messageList]
+          setMessageList((arr) => [...arr,data])
+          
+        })
         
     }, [socket])
 
@@ -128,6 +151,9 @@ const Conference = () => {
           </div>
           <div id="muteButton" className="options__button">
             <i className="fa fa-microphone"></i>
+          </div>
+          <div>
+            <button onClick={endCall}>End </button>
           </div>
         </div>
         <div className="options__right">

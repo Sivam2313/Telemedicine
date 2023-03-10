@@ -5,6 +5,8 @@ import { useHistory } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 const DoctorDash = ({setShow}) => {
   const [patientArr, setPatientArr] = useState(["None Found"]);
+  const [meet,setMeet]=useState(['No Patient Meet Scheduled']);
+  const [currTID,setCurrTID]=useState()
   const history = useHistory();
   const location = useLocation();
   const urlParams = new URLSearchParams(location.search);
@@ -29,14 +31,41 @@ const DoctorDash = ({setShow}) => {
           else{
             setPatientArr(data)
           }
+          
+
         }
         catch (error){
           console.log(error);
         }
       }
+      const getPatientQ =async  () => {
+        try{
+          const config={
+            headers: {
+                "Content-type":"application/json"
+            },
+          }
+          console.log(doc_name)
+          const {data}= await axios.post('/api/doctor/getQ',{doc_name},config)
+          console.log(data.patientData.ticketId)
+          if(data){
+            setMeet('MEET')
+            localStorage.setItem('room',data.patientData.ticketId)
+            setCurrTID(data.patientData.ticketId);
+          }
+
+        }catch(e){
+          console.log(e)
+        }
+      }
       fetch()
+      getPatientQ()
     },[])
 
+    const meetHandler = () => {
+      const path = '/prescription/'+currTID;
+      history.push(path);
+    }
     function roomHandler(idx){
       localStorage.setItem('room',patientArr[idx].patientData.ticketId)
       const path = '/prescription/'+patientArr[idx].patientData.ticketId;
@@ -103,7 +132,8 @@ const DoctorDash = ({setShow}) => {
           })
         }
       </Box>
-    </Box>
+      <button onClick={meetHandler}>{meet}</button>    
+      </Box>
   )
 }
 

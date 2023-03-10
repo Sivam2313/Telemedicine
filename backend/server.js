@@ -28,15 +28,22 @@ const io = new Server(server,{
 })
 
 io.on('connection',(socket)=>{
-    console.log(socket.id)
+    console.log('Socket ID is'+socket.id)
 
     socket.on('send-message',(msg,room)=>{
-        socket.to(room).emit('recieve-message',msg)
+        if(socket.rooms.has(room)){
+            socket.to(room).emit('recieve-message',msg)
+        }
     })
     socket.on('join-room',(room,userId)=>{
         // console.log(room);
         socket.join(room);
         socket.to(room).emit('user-connected',userId);
+    })
+    socket.on('leave-room',(room,userId) => {
+        socket.leave(room);
+        console.log('leaving room with id' + socket.id)
+        socket.to(room).emit('user-disconnected',userId)
     })
 })
 
