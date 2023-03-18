@@ -69,7 +69,7 @@ const HwDashboard = () => {
             <Box display='flex' justifyContent='space-between' alignItems='center' sx={{backgroundColor:'#3A94AF',width:'40%',marginLeft:'30px',height:'10vh',borderRadius:'5px',marginTop:'10vh'}}>
               <Box display='flex' justifyContent='center' sx={{flexFlow:'column',paddingLeft:'20px'}}>
                 <Typography variant='h5' component='div' sx={{fontFamily:'Roboto Slab',color:'#19414D'}}>
-                  Total Patient
+                  Total Families
                 </Typography>
                 <Typography variant='h6' component='div' sx={{fontFamily:'Sans Sherif',color:'#'}}>
                   SSF Total Patient

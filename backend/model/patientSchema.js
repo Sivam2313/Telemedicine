@@ -4,97 +4,97 @@ const patientSchema = mongoose.Schema({
     patientData:{
         name:{
             type: String,
-            required: true,
+            // required: true,
         },
         relationship:{
             type:String,
-            required: true,
+            // required: true,
         },
         registrationP:{
             type: String,
-            required: true,
+            // required: true,
         },
         registrationNumber:{
             type: String,
-            required: true,
+            // required: true,
         },
         ticketId:{
             type:String,
-            required:true,
+            // required:true,
         },
     },
     marital:{
         type: String,
-        required: true,
+        // required: true,
     },
     gender:{
         type: String,
-        required: true,
+        // required: true,
     },
     DOB:{
         type: String,
-        required: true,
+        // required: true,
     },
     education:{
         type: String,
-        required: true,
+        // required: true,
     },
     profession:{
         type: String,
-        required: true,
+        // required: true,
     },
     mobile:{
         type: String,
-        required: true,
+        // required: true,
     },
     medical:{
         height:{
             type:String,
-            required:true,
+            // required:true,
         },
         weight:{
             type:String,
-            required:true,
+            // required:true,
         },
         temperature:{
             type:String,
-            required:true,
+            // required:true,
         },
         pulse:{
             type:String,
-            required:true,
+            // required:true,
         },
         sbp:{
             type:String,
-            required:true,
+            // required:true,
         },
         dbp:{
             type:String,
-            required:true,
+            // required:true,
         },
         alcohol:{
             type:String,
-            required:true,
+            // required:true,
         },
         asthama:{
             type:String,
-            required:true,
+            // required:true,
         },
         diabetes:{
             type:String,
-            required:true,
+            // required:true,
         },
         familyIll:{
             type:String,
-            required:true,
+            // required:true,
         },
         smoking:{
             type:String,
-            required:true,
+            // required:true,
         },
         spo2:{
             type:String,
-            required:true,
+            // required:true,
         },
         others:{
             type:String,
@@ -103,19 +103,19 @@ const patientSchema = mongoose.Schema({
     pastHistory:{
         admitted:{
             type:String,
-            required:true,
+            // required:true,
         },
         currentMed:{
             type:String,
-            required:true,
+            // required:true,
         },
         healthCondition:{
             type:String,
-            required:true,
+            // required:true,
         },
         injuries:{
             type:String,
-            required:true,
+            // required:true,
         },
         otherHistory:{
             type:String,

@@ -3,46 +3,46 @@ const mongoose = require('mongoose');
 const familySchema = mongoose.Schema({
     name:{
         type: String,
-        required: true,
+        // required: true,
     },
     mobile:{
         type: String,
-        required: true,
+        // required: true,
     },
     address:{
         type: String,
-        required: true,
+        // required: true,
     },
     date:{
         type: String,
-        required: true,
+        // required: true,
     },
     locationCode:{
         type: String,
-        required: true,
+        // required: true,
     },
     members:[{
         name:{
             type: String,
-            required: true,
+            // required: true,
         },
         relationship:{
             type: String,
-            required: true,
+            // required: true,
         },
         id:{
             type:String,
-            required:true,
+            // required:true,
         }
     }],
     additionalMembers:[{
         name:{
             type:String,
-            required:true,
+            // required:true,
         },
         id:{
             type:String,
-            required:true,
+            // required:true,
         },
         relationship:{
             type:String,
@@ -51,19 +51,19 @@ const familySchema = mongoose.Schema({
     }],
     education:{
         type:String,
-        required:true,
+        // required:true,
     },
     familyIncome:{
         type:String,
-        required:true,
+        // required:true,
     },
     maritalStatus:{
         type:String,
-        required:true,
+        // required:true,
     },
     id:{
         type:String,
-        required:true,
+        // required:true,
     }
 },{
     timestamp:true,

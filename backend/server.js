@@ -24,7 +24,8 @@ const {Server} = require('socket.io');
 const server = http.createServer(app);
 const io = new Server(server,{
     cors:{
-        origin:"http://localhost:"+PORT,
+        origin:"https://telemedicine-nitd.azurewebsites.net/",
+        // origin:"https://localhost:3000/",
     },
 })
 

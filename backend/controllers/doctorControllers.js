@@ -53,7 +53,7 @@ const authDoctor = asyncHandler(async (req,res)=>{
     const {registrationID} = req.body
     
     const doctor = await Doctor.findOne({registrationID});
-    
+    console.log(registrationID);
 
     if(doctor){
         const logReport = await Log.create({

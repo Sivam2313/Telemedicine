@@ -21,6 +21,7 @@ const Conference = () => {
     const room = localStorage.getItem('room');
     const port = localStorage.getItem('port');
     socket = io("https://telemedicine-nitd.azurewebsites.net/")
+
     peer.on('open', (id) => {
       setPeerId(id)
       socket.emit('join-room',room,id)

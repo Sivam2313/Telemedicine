@@ -58,7 +58,6 @@ const FBasicInfo = ({setMobile,setMainName,setAddress,setLocationCode}) => {
             label="Date"
             value={date}
             sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
-            disabled
         />
         </FormControl>                
       </Box>

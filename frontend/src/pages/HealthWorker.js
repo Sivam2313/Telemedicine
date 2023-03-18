@@ -7,6 +7,7 @@ import FamilyRegistration from '../components/FamilyRegistration';
 import HwDashboard from '../components/HwDashboard';
 import MedicalConsultation from '../components/MedicalConsultation';
 import Medicine from '../components/Medicine';
+import MedicineLog from '../components/MedicineLog';
 import PatientForm from '../components/PatientForm';
 import PatientInfo from '../components/PatientInfo';
 import PrescriptionDetails from '../components/PrescriptionDetails';
@@ -51,7 +52,9 @@ const HealthWorker = () => {
             case 9:
               return <PrescriptionDetails data = {prescription}/>
             case 7:
-              return <Medicine user={'hw'} />
+              return <Medicine logs = {setshow}/>
+            case 11:
+              return <MedicineLog />
         }
     }
 

@@ -9,16 +9,16 @@ import TableRow from '@mui/material/TableRow';
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import './sty.css';
+import './logs.css';
 
-const Medicine = ({user}) => {
+const Medicine = ({logs}) => {
     const [medicine, setMedicine] = useState([]);
     const [name, setName] = useState();
     const [show, setShow] = useState(0);
     const [csvData, setCsvData] = useState();
     const [loading, setLoading] = useState(false);
 
-
-
+    const user = JSON.parse(localStorage.getItem("HwOnline"));
     useEffect(() => {
         async function fetch(){
           try{
@@ -97,7 +97,7 @@ const Medicine = ({user}) => {
                 },          
             }
             setLoading(true);
-            const {data} = await axios.post('/api/medicine/add',{ csvData },config);
+            const {data} = await axios.post('/api/medicine/add',{ csvData,user },config);
             setLoading(false);
             setShow(0);
             setMedicine(data);
@@ -108,7 +108,10 @@ const Medicine = ({user}) => {
 
 
   return (
-    <div class="content" style={{marginTop:'8vh',paddingTop:'10vh'}}>
+    <div class="content main" style={{marginTop:'8vh',paddingTop:'10vh'}}>
+      <button onClick={(e)=>{logs(11)}} style={{position:'absolute',right:'2vw',top:'12vh',backgroundColor:'#193D47',outline:'none',border:'none',borderRadius:'15px',padding:'10px',width:'5vw',color:'#FFFFFF'}}>
+        Logs
+      </button>
 
     {
       (show)?

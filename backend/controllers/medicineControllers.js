@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler');
+const MedicineLogs = require('../model/medicineLogs');
 const Medicine = require('../model/medicineSchema');
 
 const changeNumber = asyncHandler(async (req,res)=>{
@@ -14,7 +15,7 @@ const fetch = asyncHandler(async(req,res)=>{
 })
 
 const add = asyncHandler(async(req,res)=>{
-    const {csvData} = req.body;
+    const {csvData,user} = req.body;
     for(var i = 0;i<csvData.length;i++){
         const med = {
             name1: csvData[i][0],
@@ -27,10 +28,24 @@ const add = asyncHandler(async(req,res)=>{
         }
         const isPresent = await Medicine.find({name1:med.name1})
         var medicine;
+        var logs;
         if(isPresent.length===0){
             medicine = await Medicine.create(med)
+            logs = await MedicineLogs.create({
+                name:med.name1,
+                add:med.quantity,
+                changer:user.userID,
+            })
         }
         else{
+            medicine = await Medicine.findOne({name1:med.name1});
+            if(med.quantity!=medicine.quantity){
+                logs = await MedicineLogs.create({
+                    name:med.name1,
+                    add:med.quantity-medicine.quantity,
+                    changer:user.userID,
+                })
+            }
             medicine = await Medicine.findOneAndUpdate({name1:med.name1},{quantity:med.quantity})
         }
     }
@@ -38,4 +53,14 @@ const add = asyncHandler(async(req,res)=>{
     res.status(201).json(medicines)
 })
 
-module.exports = {changeNumber,fetch,add}
+const fetchLogs = asyncHandler(async (req,res)=>{
+    const logs = await MedicineLogs.find({});
+    if(logs){
+        res.json(logs);
+    }
+    else{
+        res.status(500);
+        console.log("error");
+    }
+})
+module.exports = {changeNumber,fetch,add,fetchLogs}
