@@ -20,7 +20,7 @@ const Conference = () => {
     const peer = new Peer();
     const room = localStorage.getItem('room');
     const port = localStorage.getItem('port');
-    socket = io("https://telemedicine-nitd.azurewebsites.net/")
+    socket = io("https://production-production-2583.up.railway.app/")
 
     peer.on('open', (id) => {
       setPeerId(id)
