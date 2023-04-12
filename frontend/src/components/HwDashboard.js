@@ -86,7 +86,7 @@ const HwDashboard = () => {
     }else{
     setQueue([...queue, item]);
     }
-    //  modifyQ()
+    
     setpatientArr(patientArr.filter((_, i) => (i !== idx )));
   }
   const dequeueHandler = (idx) => {
@@ -101,7 +101,7 @@ const HwDashboard = () => {
       setpatientArr([...patientArr,item])
     }
     setQueue(queue.filter((_,i) => (i!==idx)))
-    // modifyQ()
+    
   }
   useEffect(() => {
     modifyQ()

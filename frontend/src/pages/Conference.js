@@ -67,9 +67,11 @@ const Conference = () => {
         if(localStorage.getItem('DoctorOnline')){
         const path = '/prescription/'+room;
         history.push(path);
+        window.location.reload()
         }else{
           const path='/HealthWorker';
           history.push(path)
+          window.location.reload()
         }
 
     }

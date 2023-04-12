@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState ,useRef} from 'react'
 import { AppBar, Box, Button,Typography, Autocomplete, TextField } from '@mui/material'
 import mainImg from '../images/Logo.png'
 import './style.css'
 import axios from 'axios'
 import { useHistory, useParams } from 'react-router-dom'
-
+import {useReactToPrint} from 'react-to-print'
 const Prescription = () => {
+  const compoRef=useRef()
   const [symptoms, setSymptoms] = useState();
   const [instructions, setInstructions] = useState();
   const [diagnosis, setDiagnosis] = useState();
   const [medicines, setMedicines] = useState([]);
-  const [array,setArray] = useState([1]);
-  const [name, setName] = useState();
-  const [duration, setDuration] = useState();
-  const [dose, setDose] = useState();
-  const [total, setTotal] = useState();
+  const [array,setArray] = useState([]);
+  const [name, setName] = useState("");
+  const [duration, setDuration] = useState("");
+  const [dose, setDose] = useState("");
+  const [total, setTotal] = useState(0);
   const [number, setNumber] = useState();
   const [date, setDate] = useState();
   const [tests, setTests] = useState();
@@ -45,7 +46,15 @@ const Prescription = () => {
     }
 
   })
- 
+  const sysRef=useRef()
+  const handleTextArea =  (e) =>{
+    const textareaLineHeight=parseInt(getComputedStyle(sysRef.current).lineHeight)
+    const currentRows = Math.ceil(e.target.scrollHeight /14);
+    console.log(e.target.scrollHeight)
+    console.log(textareaLineHeight)
+    e.target.rows = currentRows;
+    console.log(currentRows)
+  }
   const handleBreakfastChange=(e) => {
     console.log(e.target.value)
     setBreakFast(e.target.value)
@@ -112,23 +121,35 @@ const Prescription = () => {
   
  
   const addHandler = ()=>{
-    if(!name){
+    // console.log(medicines)
+    if(!selectedMed){
       return;
     }
     var arr = [...medicines]
     var data = {
-      name,
+      selectedMed,
       duration,
       dose,
-      total
+      total,
+      breakFast,
+      lunch,
+      evening,
+      dinner
     }
     arr.push(data);
-    console.log(arr);
     setMedicines(arr);
     arr = [...array];
     arr.push(array.length);
+    console.log(arr)
     setArray(arr);
     setName("");
+    setSelectedMed("")
+    setBreakFast("None")
+    setLunch("None")
+    setEvening("None")
+    setDinner("None")
+    setDose("")
+    setTotal("")
   }
   const getQ = async() => {
     console.log('Inside getQ'+currTID)
@@ -164,6 +185,12 @@ const Prescription = () => {
       console.log(e)
     }
   } 
+  const printHandler = useReactToPrint(
+    {
+      content: () => compoRef.current,
+      documentTitle:'Prescription'
+    }
+  );
   const submitHandler = async ()=>{
     // if(!symptoms){
     //   console.log("??");
@@ -199,8 +226,12 @@ const Prescription = () => {
 
     getQ()
   }
-  
+  useEffect(() => {
+    console.log(array)
+  },[array])
   return (
+    <div ref={compoRef}>
+    
     <Box backgroundColor='#FEFFFF' sx={{height:'fit-content',minHeight:'115vh',paddingBottom:'4vh',paddingTop:'2vh'}}>
       <Box display='flex' justifyContent='center' alignItems='center' sx={{margin:'8px', padding:'30px'}}>
         <img src={mainImg} alt='img goes here' style={{width:'6vw',margin:'0px'}}></img>
@@ -282,12 +313,12 @@ const Prescription = () => {
         </Box>
         
       </Box>
-      <Box sx={{alignSelf:'flex-start',marginLeft:'4vw',marginBottom:'2vh'}}>
+      <div style={{alignSelf:'flex-start',marginLeft:'4vw',marginBottom:'2vh'}}>
         <Typography sx={{fontSize:'0.8rem'}}>
           Symptoms Summary:
         </Typography>
-        <textarea id='name' onChange={(e)=>{setSymptoms(e.target.value)}} style={{width:'70vw',height:'8vh',borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'5px',color:'black',outline:'none',padding:'8px'}}/>
-      </Box>
+        <textarea ref={sysRef} onInput={handleTextArea} id='name' onChange={(e)=>{setSymptoms(e.target.value)}} style={{width:'70vw',borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'5px',color:'black',outline:'none',padding:'8px'}}/>
+      </div>
       <Box sx={{alignSelf:'flex-start',marginLeft:'4vw',marginBottom:'2vh'}}>
         <Typography sx={{fontSize:'0.8rem'}}>
           Instructions:
@@ -331,11 +362,7 @@ const Prescription = () => {
         <Button className='btn' onClick={addHandler} sx={{position:'relative',top:'5vh',left:'75vw',height:'5vh',width:'5vh',borderRadius:'15px',backgroundColor:'#19414D',color:'#FEFFFF'}}>
           <i class='fas fa-plus'></i>
         </Button>
-        <Box style={{width:'100%'}}>
-          {
-            array.map((item,idx)=>{
-              return(
-                <Box sx={{paddingTop:'1vh',width:'70vw',padding:'20px',borderRadius:'8px',marginBottom:'3vh',border:'1px solid rgb(170, 170, 170)'}}>
+        <Box sx={{paddingTop:'1vh',width:'70vw',padding:'20px',borderRadius:'8px',marginBottom:'3vh',border:'1px solid rgb(170, 170, 170)'}}>
                   <Box display='flex' style={{width:'90%',marginBottom:'2vh',justifyContent:'space-between'}}>
                     <input type='text' onChange={(e)=>{setName(e.target.value)}} value={selectedMed} placeholder='Medicine Name' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
                     <div style={{display:'flex',flexDirection:'column',width:'35%'}}>
@@ -366,6 +393,42 @@ const Prescription = () => {
                     <input type='text' onChange={(e)=>{setTotal(e.target.value)}} placeholder='Total Number of Medicine' style={{width:'30%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
                   </Box>
                 </Box>
+        <Box style={{width:'100%'}}>
+          {
+            medicines.map((item,idx)=>{
+              console.log(item)
+              return(
+                <Box sx={{paddingTop:'1vh',width:'70vw',padding:'20px',borderRadius:'8px',marginBottom:'3vh',border:'1px solid rgb(170, 170, 170)'}}>
+                  <Box display='flex' style={{width:'90%',marginBottom:'2vh',justifyContent:'space-between'}}>
+                    <input type='text' onChange={(e)=>{setName(e.target.value)}} value={item.selectedMed} placeholder='Medicine Name' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    <div style={{display:'flex',flexDirection:'column',width:'35%'}}>
+                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
+                          <span  style={{width:'30%'}}>Breakfast</span>
+                          <input type="radio" value="Before" checked={item.breakFast==='Before'}  onChange={handleBreakfastChange} /> Before
+                          <input type="radio" value="After" checked={item.breakFast==='After'}  onChange={handleBreakfastChange} />   After
+                      </div>
+                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
+                          <span style={{width:'30%'}}>Lunch</span>
+                          <input type="radio" value="Before" checked={item.lunch==='Before'} onChange={handleLunchChange} /> Before
+                          <input type="radio" value="After" checked={item.lunch==='After'} onChange={handleLunchChange} />   After
+                      </div>
+                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
+                           <span style={{width:'30%'}}>Evening</span>
+                          <input type="radio" value="Before" checked={item.evening==='Before'} onChange={handleEveChange} /> Before
+                          <input type="radio" value="After" checked={item.evening==='After'} onChange={handleEveChange} />   After
+                      </div>
+                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
+                          <span style={{width:'30%'}}> Dinner</span>
+                          <input type="radio" value="Before" checked={item.dinner==='Before'} onChange={handleDinnerChange} /> Before
+                          <input type="radio" value="After" checked={item.dinner==='After'} onChange={handleDinnerChange} />   After
+                      </div>
+                    </div>
+                  </Box>
+                  <Box display='flex' style={{width:'90%',justifyContent:'space-between'}}>
+                    <input type='text' onChange={(e)=>{setDose(e.target.value)}} value={item.dose}placeholder='Frequency' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    <input type='text' onChange={(e)=>{setTotal(e.target.value)}} value={item.total} placeholder='Total Number of Medicine' style={{width:'30%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                  </Box>
+                </Box>
               )
             })
           }
@@ -392,7 +455,9 @@ const Prescription = () => {
       <Button className='btn' onClick={submitHandler} sx={{backgroundColor:'#19414D',color:'#FEFFFF',width:'7vw',height:'4vh',marginLeft:'7vh'}}>
         Submit
       </Button>
+      <Button onClick={printHandler}>Print</Button>
     </Box>
+    </div>
   )
 }
 
