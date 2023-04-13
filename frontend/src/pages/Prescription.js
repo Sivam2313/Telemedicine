@@ -5,9 +5,10 @@ import './style.css'
 import axios from 'axios'
 import { useHistory, useParams } from 'react-router-dom'
 import {useReactToPrint} from 'react-to-print'
+import jsPDF from 'jspdf' 
 const Prescription = () => {
   const compoRef=useRef()
-  const [symptoms, setSymptoms] = useState();
+  const [symptoms, setSymptoms] = useState('');
   const [instructions, setInstructions] = useState();
   const [diagnosis, setDiagnosis] = useState();
   const [medicines, setMedicines] = useState([]);
@@ -47,13 +48,69 @@ const Prescription = () => {
 
   })
   const sysRef=useRef()
-  const handleTextArea =  (e) =>{
-    const textareaLineHeight=parseInt(getComputedStyle(sysRef.current).lineHeight)
-    const currentRows = Math.ceil(e.target.scrollHeight /14);
-    console.log(e.target.scrollHeight)
-    console.log(textareaLineHeight)
-    e.target.rows = currentRows;
-    console.log(currentRows)
+  const printParas= (doc,y,textLines) => {
+    for (var i = 0; i < textLines.length; i++) {
+      if (y > doc.internal.pageSize.height - 20) { 
+        doc.addPage();
+        y = 40;
+      }
+      doc.text(textLines[i], 10, y);
+      y += 15;
+    }
+    return y + 40;
+  }
+  const printMedicines=(doc,y) => {
+    doc.text('Medicines',10,y)
+    // doc.text('Dose',200,y)
+    // doc.text('Total',280,y)
+    doc.text('Breakfast',200,y)
+    doc.text('Lunch',280,y)
+    doc.text('Evening',360,y)
+    doc.text('Dinner',440,y)
+    doc.text('Total',520,y)
+    y+=20
+    medicines.map((item,idx) => {
+      if (y > doc.internal.pageSize.height - 20) { 
+        doc.addPage();
+        y = 40;
+      }
+      doc.text(`${item.selectedMed}`,10,y)
+      // doc.text(`${item.dose}`,200,y)
+      // doc.text(`${item.total}`,280,y)
+      doc.text(`${item.breakFast}`,200,y)
+      doc.text(`${item.lunch}`,280,y)
+      doc.text(`${item.evening}`,360,y)
+      doc.text(`${item.dinner}`,480,y)
+      doc.text(`${item.total}`,540,y)
+      console.log(item);
+      y+=15
+    })
+    return y+40
+  }
+  const generatePDF = () => {
+    var doc = new jsPDF('p', 'pt','a4');
+    var y = 40; 
+    doc.text('Symptoms Summary',10,10)
+    var textLines = doc.splitTextToSize(symptoms,550); 
+    y=printParas(doc,y,textLines)
+
+    doc.text('Test Summary',10,y)
+    y+=20
+    textLines=doc.splitTextToSize(tests,550)
+    y=printParas(doc,y,textLines)
+
+    doc.text('Instructions Summary',10,y)
+    y+=20
+    textLines=doc.splitTextToSize(instructions,550)
+    y=printParas(doc,y,textLines)
+
+    doc.text('Diagnosis',10,y)
+    y+=20
+    textLines=doc.splitTextToSize(diagnosis,550)
+    y=printParas(doc,y,textLines)
+    
+    y=printMedicines(doc,y)
+    doc.save(`${patient.patientData.name} ${patient.patientData.id}.pdf`)
   }
   const handleBreakfastChange=(e) => {
     console.log(e.target.value)
@@ -209,6 +266,7 @@ const Prescription = () => {
     //   arr.push(data);
     //   setMedicines(arr);
     // }
+    generatePDF()
     popQ()
     
     // try{
@@ -317,7 +375,7 @@ const Prescription = () => {
         <Typography sx={{fontSize:'0.8rem'}}>
           Symptoms Summary:
         </Typography>
-        <textarea ref={sysRef} onInput={handleTextArea} id='name' onChange={(e)=>{setSymptoms(e.target.value)}} style={{width:'70vw',borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'5px',color:'black',outline:'none',padding:'8px'}}/>
+        <textarea ref={sysRef}  id='name' onChange={(e)=>{setSymptoms(e.target.value)}} style={{width:'70vw',height:"7vh",borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'5px',color:'black',outline:'none',padding:'8px'}}/>
       </div>
       <Box sx={{alignSelf:'flex-start',marginLeft:'4vw',marginBottom:'2vh'}}>
         <Typography sx={{fontSize:'0.8rem'}}>
@@ -455,7 +513,7 @@ const Prescription = () => {
       <Button className='btn' onClick={submitHandler} sx={{backgroundColor:'#19414D',color:'#FEFFFF',width:'7vw',height:'4vh',marginLeft:'7vh'}}>
         Submit
       </Button>
-      <Button onClick={printHandler}>Print</Button>
+      {/* <Button onClick={generatePDF}>Print</Button> */}
     </Box>
     </div>
   )

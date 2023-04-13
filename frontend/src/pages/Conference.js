@@ -14,6 +14,9 @@ const Conference = () => {
     const remoteVideoRef = useRef(null);
     const currentUserVideoRef = useRef(null);
     const peerInstance = useRef(null);
+    const [audio,setAudio]=useState(true)
+    const [video,setVideo]=useState(true)
+    const [record,setRecord]=useState(false)
     // var peer;
     const history = useHistory();
 
@@ -42,8 +45,36 @@ const Conference = () => {
 
     peerInstance.current = peer;
   }, [])
+   let recorder; 
+  const startScreenCapture = async () => {
+    const stream = await navigator.mediaDevices.getDisplayMedia({ video: true,audio:true });
+    recorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+    const data = [];
+  
+    recorder.ondataavailable = (event) => {
+      data.push(event.data);
+    };
+  
+    recorder.onstop = () => {
+      const blob = new Blob(data, { type: 'video/webm' });
+      
+      // Save the recording to a file
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'screen-capture.webm';
+      a.click();
     
-
+      // Alternatively, display the recording in a video element
+      const video = document.createElement('video');
+      video.src = url;
+      document.body.appendChild(video);
+    };
+    recorder.start();
+  };
+  const stopScreenCapture = () => {
+    recorder.stop();
+  };
     const sendMessage = ()=>{
         if (!message)
             return;
@@ -68,7 +99,8 @@ const Conference = () => {
         const path = '/prescription/'+room;
         history.push(path);
         window.location.reload()
-        }else{
+        }
+        if(localStorage.getItem('HwOnline')){
           const path='/HealthWorker';
           history.push(path)
           window.location.reload()
@@ -149,13 +181,25 @@ const Conference = () => {
       <div className="options">
         <div className="options__left">
           <div id="stopVideo" className="options__button">
-            <i className="fa fa-video-camera"></i>
+              {video===true ? (
+                <i className="fa fa-video" onClick={() => {setVideo(!video)}}></i>
+              ):(
+                <i className="fa fa-video-slash" onClick={() => {setVideo(!video)}}></i>
+              )}
+             
           </div>
           <div id="muteButton" className="options__button">
-            <i className="fa fa-microphone"></i>
+            {audio?(
+             <i className="fa fa-microphone" onClick={() => {setAudio(!audio)}}></i>):
+             (
+            <i className="fa fa-microphone-slash" onClick={() => {setAudio(!audio)}}></i>)
+            }
           </div>
-          <div>
-            <button onClick={endCall}>End </button>
+          <div className="options__button">
+            <i onClick={endCall} className="fa fa-phone"></i>
+          </div>
+          <div className="options__button">
+            <i onClick={() => {if(record){stopScreenCapture()}else{startScreenCapture()}}} className="fa fa-camera"></i>
           </div>
         </div>
         <div className="options__right">

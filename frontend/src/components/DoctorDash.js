@@ -132,7 +132,10 @@ const DoctorDash = ({setShow}) => {
           })
         }
       </Box>
-      <button onClick={meetHandler}>{meet}</button>    
+      <div style={{width:"100%",display:'flex',justifyContent:'center',marginTop:"10vh"}}>
+      
+      <button onClick={meetHandler} style={{width:"10vw",height:"5vh"}}>{meet}</button>   
+      </div> 
       </Box>
   )
 }

@@ -32,11 +32,25 @@ const HwDashboard = () => {
       setDocNames(Temp)
     }
     fetch();
+   
     const isAuth = localStorage.getItem('isAuth');
     if(isAuth=='false'){
       history.push('/')
     }
   }, [])
+  const  getAllQueue= async() => {
+    const config = {
+      headers:{
+        "Content-type":"application/json"
+      },
+    }
+    const doc_name=docName
+    var {data}= await axios.post('/api/doctor/getAllQ',{doc_name},config);
+    if(data){
+      setQueue(data)
+    }
+    console.log(data)
+  }
   const modifyQ = async () => {
     try{
       const config={
@@ -54,6 +68,7 @@ const HwDashboard = () => {
   const submitHandler = async()=>{
     
     try{
+      getAllQueue()
       const config={
         headers: {
           "Content-type":"application/json"
@@ -67,8 +82,8 @@ const HwDashboard = () => {
       else{
         setpatientArr(data)
       }
-      console.log(data);
-
+      // console.log(data);
+      
     }catch(error){
       console.log(error);
     }

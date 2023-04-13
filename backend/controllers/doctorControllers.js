@@ -184,9 +184,32 @@ const popQ=asyncHandler(async(req,res) => {
     }
 
 })
+const getAllQ=asyncHandler(async(req,res) => {
+    const {doc_name}=req.body
+    console.log('getAllq doc name is '+doc_name)
+    const queue= await PatientQ.findOne({doc_name})
+    if(queue){
+        res.send(queue.Patients)
+    }else{
+        const doc=await PatientQ.create({
+            doc_name:doc_name,
+            Patients:[]
+        })
+        if(doc){
+            res.status(201).json({
+                name: doc.doc_name,
+                TicketId: doc.Patients, 
+            })
+        }
+        else{
+            res.status(400)
+            throw new Error ("Couldnt load Patients queue")
+        }
+    }
+})
 const getQ=asyncHandler(async(req,res) => {
     const {doc_name}=req.body
-    console.log('GetQ Init')
+    // console.log('GetQ Init')
     const queue= await PatientQ.findOne({doc_name})
     // console.log(queue)
     if(queue){
@@ -233,4 +256,4 @@ const modifyQ= asyncHandler(async(req,res) => {
     }
 
 })
-module.exports = {registerDoctor,authDoctor,fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc,editDoc,modifyQ,getQ,popQ};
+module.exports = {registerDoctor,authDoctor,fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc,editDoc,modifyQ,getQ,popQ,getAllQ};
