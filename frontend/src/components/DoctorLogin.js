@@ -33,6 +33,7 @@ const DoctorLogin = () => {
         const doc_name=data.name
         localStorage.setItem("DoctorOnline", JSON.stringify(data))
         localStorage.setItem('isAuth',true);
+        localStorage.setItem("DoctorName",data.name)
         history.push(`/doctor?DoctorName=${doc_name}`);
     }
     catch(error){

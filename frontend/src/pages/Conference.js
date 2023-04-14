@@ -17,11 +17,12 @@ const Conference = () => {
     const [audio,setAudio]=useState(true)
     const [video,setVideo]=useState(true)
     const [record,setRecord]=useState(false)
-    // var peer;
+     let peer;
     const history = useHistory();
-
+     let myStream;
+     
   useEffect(() => {
-    const peer = new Peer();
+     peer = new Peer();
     const room = localStorage.getItem('room')
     console.log(room)
     peer.on('open', (id) => {
@@ -33,11 +34,16 @@ const Conference = () => {
       var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
       getUserMedia({ video: true, audio: true }, (mediaStream) => {
-        currentUserVideoRef.current.srcObject = mediaStream;
+        myStream=mediaStream
+        currentUserVideoRef.current.srcObject = myStream;
         currentUserVideoRef.current.play();
-        call.answer(mediaStream)
+        // console.log(myStream.getVideoTracks())
+        // myStream.getVideoTracks()[0].enabled=false
+        // call.answer(mediaStream)
+        call.answer(myStream)
         call.on('stream', function(remoteStream) {
-          remoteVideoRef.current.srcObject = remoteStream
+
+          remoteVideoRef.current.srcObject = remoteStream   
           remoteVideoRef.current.play();
         });
       });
@@ -56,16 +62,13 @@ const Conference = () => {
     };
   
     recorder.onstop = () => {
+      console.log('Stop Recording')
       const blob = new Blob(data, { type: 'video/webm' });
-      
-      // Save the recording to a file
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = 'screen-capture.webm';
       a.click();
-    
-      // Alternatively, display the recording in a video element
       const video = document.createElement('video');
       video.src = url;
       document.body.appendChild(video);
@@ -75,6 +78,20 @@ const Conference = () => {
   const stopScreenCapture = () => {
     recorder.stop();
   };
+  const videoPause = () => {
+    setVideo(!video)
+    console.log('video pause ho')
+    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    getUserMedia({ video: true, audio: true }, (mediaStream) => {
+      // myStream=mediaStream
+      // console.log(mediaStream.getVideoTracks())
+      mediaStream.getVideoTracks()[0].enabled = !(mediaStream.getVideoTracks()[0].enabled);
+      // mediaStream.active=!(mediaStream.active)
+    })
+
+   
+    
+  }
     const sendMessage = ()=>{
         if (!message)
             return;
@@ -150,11 +167,11 @@ const Conference = () => {
     var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
     getUserMedia({ video: true, audio: true }, (mediaStream) => {
-
-      currentUserVideoRef.current.srcObject = mediaStream;
+      myStream=mediaStream
+      currentUserVideoRef.current.srcObject = myStream;
       currentUserVideoRef.current.play();
 
-      const call = peerInstance.current.call(remotePeerId, mediaStream)
+      const call = peerInstance.current.call(remotePeerId, myStream)
 
       call.on('stream', (remoteStream) => {
         remoteVideoRef.current.srcObject = remoteStream
@@ -182,9 +199,9 @@ const Conference = () => {
         <div className="options__left">
           <div id="stopVideo" className="options__button">
               {video===true ? (
-                <i className="fa fa-video" onClick={() => {setVideo(!video)}}></i>
+                <i className="fa fa-video" onClick={() => {videoPause()}}></i>
               ):(
-                <i className="fa fa-video-slash" onClick={() => {setVideo(!video)}}></i>
+                <i className="fa fa-video-slash" onClick={() => {videoPause()}}></i>
               )}
              
           </div>
@@ -199,7 +216,7 @@ const Conference = () => {
             <i onClick={endCall} className="fa fa-phone"></i>
           </div>
           <div className="options__button">
-            <i onClick={() => {if(record){stopScreenCapture()}else{startScreenCapture()}}} className="fa fa-camera"></i>
+            <i onClick={() => {if(record){stopScreenCapture(); setRecord(!record)}else{startScreenCapture();setRecord(!record)}}} className="fa fa-camera"></i>
           </div>
         </div>
         <div className="options__right">

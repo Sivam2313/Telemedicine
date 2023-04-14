@@ -16,7 +16,7 @@ const Prescription = () => {
   const [name, setName] = useState("");
   const [duration, setDuration] = useState("");
   const [dose, setDose] = useState("");
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState("");
   const [number, setNumber] = useState();
   const [date, setDate] = useState();
   const [tests, setTests] = useState();
@@ -31,6 +31,7 @@ const Prescription = () => {
   const [dinner,setDinner]=useState("None")
   const [selectedMed,setSelectedMed]=useState("")
   const [currTID,setCurrTID]=useState(0)
+  const [medaval,setMedaval]=useState(true)
   const [patient, setPatient] = useState({
     patientData:{
       name:"afhajf;la",
@@ -48,6 +49,10 @@ const Prescription = () => {
 
   })
   const sysRef=useRef()
+
+
+
+
   const printParas= (doc,y,textLines) => {
     for (var i = 0; i < textLines.length; i++) {
       if (y > doc.internal.pageSize.height - 20) { 
@@ -60,58 +65,81 @@ const Prescription = () => {
     return y + 40;
   }
   const printMedicines=(doc,y) => {
+    doc.setFontSize(15)
+    doc.setFont("times");
+    doc.setTextColor(255,0,0)
     doc.text('Medicines',10,y)
-    // doc.text('Dose',200,y)
-    // doc.text('Total',280,y)
     doc.text('Breakfast',200,y)
     doc.text('Lunch',280,y)
     doc.text('Evening',360,y)
     doc.text('Dinner',440,y)
     doc.text('Total',520,y)
-    y+=20
+    y+=25
+
+    doc.setFontSize(12)
+    doc.setFont('Helvetica')
+    doc.setTextColor(0,0,0)
     medicines.map((item,idx) => {
       if (y > doc.internal.pageSize.height - 20) { 
         doc.addPage();
         y = 40;
       }
       doc.text(`${item.selectedMed}`,10,y)
-      // doc.text(`${item.dose}`,200,y)
-      // doc.text(`${item.total}`,280,y)
+      if(!(item.medaval)){
+          doc.text('(Unavailable)',10,y+15)
+      }
+     
       doc.text(`${item.breakFast}`,200,y)
       doc.text(`${item.lunch}`,280,y)
       doc.text(`${item.evening}`,360,y)
-      doc.text(`${item.dinner}`,480,y)
-      doc.text(`${item.total}`,540,y)
+      doc.text(`${item.dinner}`,440,y)
+      doc.text(`${item.total}`,520,y)
       console.log(item);
+      if(!(item.medaval)){
+        y+=15
+      }
       y+=15
     })
     return y+40
   }
+
+  const printSections = (sectionTitle,sectionData,y,doc) => {
+    doc.setFontSize(20)
+    doc.setFont("times");
+    doc.setTextColor(255,0,0)
+    doc.text(`${sectionTitle}`,10,y)
+    y+=25
+    doc.setFontSize(12)
+    doc.setFont('Helvetica')
+    doc.setTextColor(0,0,0)
+    var textLines = doc.splitTextToSize(sectionData,550); 
+    y=printParas(doc,y,textLines)
+    return y
+  }
   const generatePDF = () => {
     var doc = new jsPDF('p', 'pt','a4');
-    var y = 40; 
-    doc.text('Symptoms Summary',10,10)
-    var textLines = doc.splitTextToSize(symptoms,550); 
-    y=printParas(doc,y,textLines)
-
-    doc.text('Test Summary',10,y)
-    y+=20
-    textLines=doc.splitTextToSize(tests,550)
-    y=printParas(doc,y,textLines)
-
-    doc.text('Instructions Summary',10,y)
-    y+=20
-    textLines=doc.splitTextToSize(instructions,550)
-    y=printParas(doc,y,textLines)
-
-    doc.text('Diagnosis',10,y)
-    y+=20
-    textLines=doc.splitTextToSize(diagnosis,550)
-    y=printParas(doc,y,textLines)
-    
+    var y = 30; 
+    doc.setFontSize(20)
+    doc.setFont("times");
+    doc.setTextColor(255,0,0)
+    const docname=localStorage.getItem('DoctorName')
+    doc.text(`Doctor :  ${docname}`,400,y)
+    y+=30
+    doc.text(`Patient :  ${patient.patientData.name}`,400,y)
+    y+=50
+    doc.setFont('Helvetica')
+    doc.setTextColor(0,0,0)
+    y=printSections('Symptoms Summary',symptoms,y,doc)
+    y=printSections('Diagnosis',diagnosis,y,doc)
     y=printMedicines(doc,y)
-    doc.save(`${patient.patientData.name} ${patient.patientData.id}.pdf`)
+    y=printSections('Test',tests,y,doc)
+    y=printSections('Instructions Summary',instructions,y,doc)
+    doc.save(`${patient.patientData.name}_${patient.patientData.ID}_${patient.patientData.ticketId}.pdf`)
   }
+
+
+
+
   const handleBreakfastChange=(e) => {
     console.log(e.target.value)
     setBreakFast(e.target.value)
@@ -125,9 +153,14 @@ const Prescription = () => {
   const handleDinnerChange = (e) => {
     setDinner(e.target.value)
   }
-  const handleSelectChange = (event, value) => {
+  const handleSelectChange = (event) => {
     setSelectedMed(event.target.innerText)
   };
+
+
+
+
+
   const filterOptions = (options, { inputValue }) => {
     return options.filter((option) =>
       option.Product_name.toLowerCase().includes(inputValue.toLowerCase())
@@ -178,8 +211,20 @@ const Prescription = () => {
   
  
   const addHandler = ()=>{
-    // console.log(medicines)
     if(!selectedMed){
+      alert("Pl select Medicine")
+      return;
+    }
+    if(breakFast=='None' && dinner=='None' && evening=='None' && lunch=='None'){
+      alert("Pl select Dosage")
+      return;
+    }
+    if(dose==""){
+      alert("Pl prescribe dosage")
+      return;
+    }
+    if(total==""){
+      alert("Pl prescribe total medicines")
       return;
     }
     var arr = [...medicines]
@@ -191,7 +236,8 @@ const Prescription = () => {
       breakFast,
       lunch,
       evening,
-      dinner
+      dinner,
+      medaval,
     }
     arr.push(data);
     setMedicines(arr);
@@ -207,6 +253,7 @@ const Prescription = () => {
     setDinner("None")
     setDose("")
     setTotal("")
+    setMedaval(true)
   }
   const getQ = async() => {
     console.log('Inside getQ'+currTID)
@@ -242,46 +289,9 @@ const Prescription = () => {
       console.log(e)
     }
   } 
-  const printHandler = useReactToPrint(
-    {
-      content: () => compoRef.current,
-      documentTitle:'Prescription'
-    }
-  );
   const submitHandler = async ()=>{
-    // if(!symptoms){
-    //   console.log("??");
-    //   return;
-    // }
-    // console.log(medicines)
-    // var arr = [...medicines]
-    // if(!(name==="")){
-    //   var data = {
-    //     name,
-    //     duration,
-    //     dose,
-    //     total
-    //   }
-    //   console.log(medicines);
-    //   arr.push(data);
-    //   setMedicines(arr);
-    // }
     generatePDF()
     popQ()
-    
-    // try{
-    //   const config = {
-    //       headers: {
-    //           "Content-type":"application/json"
-    //       },
-    //   }
-    //   const dateMade = currDate;
-    //   const {data} = await axios.post('/api/prescription/add',{id,dateMade,symptoms,instructions,diagnosis,arr,number,date,tests,other},config);
-    //   history.goBack();
-    // }catch(error){
-    //   console.log(error);
-    // }
-
     getQ()
   }
   useEffect(() => {
@@ -422,7 +432,7 @@ const Prescription = () => {
         </Button>
         <Box sx={{paddingTop:'1vh',width:'70vw',padding:'20px',borderRadius:'8px',marginBottom:'3vh',border:'1px solid rgb(170, 170, 170)'}}>
                   <Box display='flex' style={{width:'90%',marginBottom:'2vh',justifyContent:'space-between'}}>
-                    <input type='text' onChange={(e)=>{setName(e.target.value)}} value={selectedMed} placeholder='Medicine Name' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    <input type='text' value={selectedMed}  onChange={(e)=>{setSelectedMed(e.target.value); setMedaval(false)}} placeholder='Medicine Name' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
                     <div style={{display:'flex',flexDirection:'column',width:'35%'}}>
                       <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
                           <span  style={{width:'30%'}}>Breakfast</span>
@@ -447,8 +457,8 @@ const Prescription = () => {
                     </div>
                   </Box>
                   <Box display='flex' style={{width:'90%',justifyContent:'space-between'}}>
-                    <input type='text' onChange={(e)=>{setDose(e.target.value)}} placeholder='Frequency' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
-                    <input type='text' onChange={(e)=>{setTotal(e.target.value)}} placeholder='Total Number of Medicine' style={{width:'30%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    <input type='text' onChange={(e)=>{setDose(e.target.value)}} value={dose} placeholder='Frequency' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    <input type='text' onChange={(e)=>{setTotal(e.target.value)}} value={total} placeholder='Total Number of Medicine' style={{width:'30%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
                   </Box>
                 </Box>
         <Box style={{width:'100%'}}>

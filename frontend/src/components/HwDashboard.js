@@ -102,19 +102,19 @@ const HwDashboard = () => {
     setQueue([...queue, item]);
     }
     
-    setpatientArr(patientArr.filter((_, i) => (i !== idx )));
+    // setpatientArr(patientArr.filter((_, i) => (i !== idx )));
   }
   const dequeueHandler = (idx) => {
     const item=queue[idx]
-    if(patientArr.length==1){
-      if(patientArr[0]=='None Found'){
-        setpatientArr(item)
-      }else{
-        setpatientArr([...patientArr,item])
-      }
-    }else{
-      setpatientArr([...patientArr,item])
-    }
+    // if(patientArr.length==1){
+    //   if(patientArr[0]=='None Found'){
+    //     setpatientArr(item)
+    //   }else{
+    //     setpatientArr([...patientArr,item])
+    //   }
+    // }else{
+    //   setpatientArr([...patientArr,item])
+    // }
     setQueue(queue.filter((_,i) => (i!==idx)))
     
   }
