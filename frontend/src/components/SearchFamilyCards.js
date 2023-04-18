@@ -43,7 +43,7 @@ const submitHandler = async()=>{
                 "Content-type":"application/json"
             },          
         }
-        const {data} = await axios.post(`/api/`,{input},config);
+        const {data} = await axios.post(`/api/family/fetch`,{input},config);
         localStorage.setItem('familyData',JSON.stringify(data));
         console.log(data);
         setSearch(false)

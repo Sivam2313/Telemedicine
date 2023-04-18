@@ -3,7 +3,7 @@ const Doctor = require('../model/doctorSchema');
 const generateToken = require('../config/tokenGen');
 const Log = require('../model/logSchema');
 const PatientQ=require('../model/PatientQSchema');
-
+const PrescriptionPdf=require('../model/PrescriptionPdf')
 const registerDoctor = asyncHandler(async (req,res)=>{
     const {name,ssfID,registrationID,mobile,adress,gender,speciality,arr} = req.body;
     if (!name||!ssfID||!registrationID||!mobile||!adress||!gender||!speciality||!arr) {
@@ -231,6 +231,22 @@ const getQ=asyncHandler(async(req,res) => {
         }
     }
 })
+const makePdf =asyncHandler(async (req,res) => {
+    const {name,data}=req.body;
+    console.log(name)
+    console.log(data)
+    const pdf=new PrescriptionPdf({name,data})
+    
+    if(pdf){
+        console.log('pdf created')
+        await pdf.save()
+    }
+    else{
+            res.status(400)
+            throw new Error ("failed to create a prescriptionPdf")
+    }
+    
+})
 const modifyQ= asyncHandler(async(req,res) => {
     const {doc_name,queue}=req.body
     const doctor= await PatientQ.findOne({doc_name})
@@ -256,4 +272,4 @@ const modifyQ= asyncHandler(async(req,res) => {
     }
 
 })
-module.exports = {registerDoctor,authDoctor,fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc,editDoc,modifyQ,getQ,popQ,getAllQ};
+module.exports = {registerDoctor,authDoctor,fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc,editDoc,modifyQ,getQ,popQ,getAllQ,makePdf};

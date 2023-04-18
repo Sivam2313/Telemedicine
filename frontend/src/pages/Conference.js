@@ -17,12 +17,15 @@ const Conference = () => {
     const [audio,setAudio]=useState(true)
     const [video,setVideo]=useState(true)
     const [record,setRecord]=useState(false)
-     let peer;
+    const [peeer, setPeer] = useState(null);
+    const [MyStream,setMyStream]=useState(null)
     const history = useHistory();
      let myStream;
      
   useEffect(() => {
-     peer = new Peer();
+     const peer = new Peer();
+     setPeer(peer);
+
     const room = localStorage.getItem('room')
     console.log(room)
     peer.on('open', (id) => {
@@ -35,11 +38,9 @@ const Conference = () => {
 
       getUserMedia({ video: true, audio: true }, (mediaStream) => {
         myStream=mediaStream
+        setMyStream(mediaStream)
         currentUserVideoRef.current.srcObject = myStream;
         currentUserVideoRef.current.play();
-        // console.log(myStream.getVideoTracks())
-        // myStream.getVideoTracks()[0].enabled=false
-        // call.answer(mediaStream)
         call.answer(myStream)
         call.on('stream', function(remoteStream) {
 
@@ -80,17 +81,11 @@ const Conference = () => {
   };
   const videoPause = () => {
     setVideo(!video)
-    console.log('video pause ho')
-    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-    getUserMedia({ video: true, audio: true }, (mediaStream) => {
-      // myStream=mediaStream
-      // console.log(mediaStream.getVideoTracks())
-      mediaStream.getVideoTracks()[0].enabled = !(mediaStream.getVideoTracks()[0].enabled);
-      // mediaStream.active=!(mediaStream.active)
-    })
-
-   
-    
+    MyStream.getVideoTracks()[0].enabled=!(MyStream.getVideoTracks()[0].enabled)
+  }
+  const audioPause = () => {
+    setAudio(!audio)
+    MyStream.getAudioTracks()[0].enabled=!(MyStream.getAudioTracks()[0].enabled)
   }
     const sendMessage = ()=>{
         if (!message)
@@ -170,6 +165,9 @@ const Conference = () => {
       myStream=mediaStream
       currentUserVideoRef.current.srcObject = myStream;
       currentUserVideoRef.current.play();
+      // console.log(myStream)
+  
+        setMyStream(mediaStream)
 
       const call = peerInstance.current.call(remotePeerId, myStream)
 
@@ -207,9 +205,9 @@ const Conference = () => {
           </div>
           <div id="muteButton" className="options__button">
             {audio?(
-             <i className="fa fa-microphone" onClick={() => {setAudio(!audio)}}></i>):
+             <i className="fa fa-microphone" onClick={() => {audioPause()}}></i>):
              (
-            <i className="fa fa-microphone-slash" onClick={() => {setAudio(!audio)}}></i>)
+            <i className="fa fa-microphone-slash" onClick={() => {audioPause()}}></i>)
             }
           </div>
           <div className="options__button">

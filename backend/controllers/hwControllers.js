@@ -2,7 +2,8 @@ const asyncHandler = require('express-async-handler');
 const Hw = require('../model/hwSchema');
 const generateToken = require('../config/tokenGen');
 const Log = require('../model/logSchema');
-
+const PrescriptionPdf=require('../model/PrescriptionPdf');
+const jsPDF=require('jspdf')
 const registerHw = asyncHandler(async (req,res)=>{
     const { name, userID, password } = req.body;
     if (!name || !userID || !password) {
@@ -157,4 +158,18 @@ const fetchTotalHw = asyncHandler(async (req,res)=>{
     }
 })
 
-module.exports = {registerHw,authHw,fetchTotalHw,findHw,blockHw,editHw};
+
+
+const fetchPdf =asyncHandler(async (req,res) => {
+    const {name} = req.body;
+    const pdf=PrescriptionPdf.findOne({name});
+    if(pdf){
+         var doc=new jsPDF()
+         doc.loadFile(pdf.data)
+         doc.save(pdf.name)
+    }else{
+        res.status(400)
+        throw new Error ("failed to create a prescriptionPdf")
+    }
+})
+module.exports = {registerHw,authHw,fetchTotalHw,findHw,blockHw,editHw,fetchPdf};

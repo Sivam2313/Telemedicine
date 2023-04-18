@@ -6,6 +6,7 @@ import axios from 'axios'
 import { useHistory, useParams } from 'react-router-dom'
 import {useReactToPrint} from 'react-to-print'
 import jsPDF from 'jspdf' 
+
 const Prescription = () => {
   const compoRef=useRef()
   const [symptoms, setSymptoms] = useState('');
@@ -52,7 +53,13 @@ const Prescription = () => {
 
 
 
-
+  function getCurrentDate(separator=''){
+    let newDate = new Date()
+    let date = newDate.getDate();
+    let month = newDate.getMonth() + 1;
+    let year = newDate.getFullYear(); 
+    return `${date}${separator}${month<10?`0${month}`:`${month}`}${separator}${year}`
+  }
   const printParas= (doc,y,textLines) => {
     for (var i = 0; i < textLines.length; i++) {
       if (y > doc.internal.pageSize.height - 20) { 
@@ -116,6 +123,37 @@ const Prescription = () => {
     y=printParas(doc,y,textLines)
     return y
   }
+  // const makePrescriptionPdf =async (name,data) => {
+    
+  //   try{
+  //     const config = {
+  //       headers: {
+  //           "Content-type":"application/json"
+  //       },
+  //     }
+  //     console.log(data)
+  //     const pdfCreated=await axios.post('/api/doctor/makePdf',{name,data},config)
+  //   }catch(e){
+  //     alert(e)
+  //   }
+  // } 
+  const addPrescription = async () => {
+    const patientId=patient.patientData.ID
+    const ticketId=patient.patientData.ticketId
+    const docname=localStorage.getItem('DoctorName')
+    const patName=patient.patientData.name
+    const date=getCurrentDate('/');
+    try{
+      const config = {
+              headers: {
+                  "Content-type":"application/json"
+              },
+            }
+      const addPrescription = await axios.post('/api/Prescription/add',{docname,date,patName,symptoms,diagnosis,medicines,instructions,tests,patientId,ticketId},config)
+    }catch(e){
+      alert(e)
+    }
+  }
   const generatePDF = () => {
     var doc = new jsPDF('p', 'pt','a4');
     var y = 30; 
@@ -125,7 +163,11 @@ const Prescription = () => {
     const docname=localStorage.getItem('DoctorName')
     doc.text(`Doctor :  ${docname}`,400,y)
     y+=30
+    const patName=patient.patientData.name
     doc.text(`Patient :  ${patient.patientData.name}`,400,y)
+    const date=getCurrentDate('/');
+    y+=30
+    doc.text(date,400,y)
     y+=50
     doc.setFont('Helvetica')
     doc.setTextColor(0,0,0)
@@ -134,7 +176,13 @@ const Prescription = () => {
     y=printMedicines(doc,y)
     y=printSections('Test',tests,y,doc)
     y=printSections('Instructions Summary',instructions,y,doc)
-    doc.save(`${patient.patientData.name}_${patient.patientData.ID}_${patient.patientData.ticketId}.pdf`)
+    const pdfName=`${patient.patientData.name}_${patient.patientData.ID}_${patient.patientData.ticketId}.pdf`
+    const pdfData=doc.output('arraybuffer')
+    doc.save(pdfName)
+    
+    console.log(pdfData)
+    // makePrescriptionPdf(pdfName,pdfData)
+    addPrescription()
   }
 
 
@@ -323,7 +371,7 @@ const Prescription = () => {
           <Typography sx={{fontSize:'0.8rem'}}>
             Patient Id:
           </Typography>
-          <input id='name' disabled value={id} placeholder='name' style={{width:'25vw',height:'3vh',borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'5px'}}/>
+          <input id='name' disabled value={patient.patientData.ID} placeholder='name' style={{width:'25vw',height:'3vh',borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'5px'}}/>
         </Box>
         <Box sx={{alignSelf:'flex-start',marginLeft:'4vw',marginBottom:'2vh',marginTop:'2vh'}}>
           <Typography sx={{fontSize:'0.8rem'}}>

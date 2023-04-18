@@ -14,6 +14,7 @@ const HwDashboard = () => {
   const [docNames,setDocNames]=useState([]);
   const [docName,setDocName]=useState("")
   const [queue,setQueue]=useState(['Empty'])
+  const [prescriptions,setPrescriptions]=useState([]);
   const history = useHistory();
   useEffect(() => {
     async function fetch(){
@@ -38,6 +39,22 @@ const HwDashboard = () => {
       history.push('/')
     }
   }, [])
+
+  const fetchPrescriptions =async () => {
+      try{
+        const config={
+          headers: {
+            "Content-type":"application/json"
+          },
+        }
+        console.log(docName)
+        const {data}=await axios.post('/api/prescription/fetchAll',{docName},config)
+        console.log(data)
+        setPrescriptions(data)
+      }catch(e){
+        alert(e)
+      }
+  }
   const  getAllQueue= async() => {
     const config = {
       headers:{
@@ -319,6 +336,7 @@ const HwDashboard = () => {
             })
           }
         </Box>
+        <button style={{marginLeft:'10vw'}} onClick={fetchPrescriptions}>Prescriptions</button>
       </motion.div>
   )
 }

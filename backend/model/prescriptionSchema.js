@@ -1,14 +1,21 @@
 const mongoose = require('mongoose');
 
+
 const prescriptionSchema = mongoose.Schema({
-    patientData:{
-        type:Object
+    patientName:{
+        type:String
+    },
+    doctorName:{
+        type:String
     },
     id:{
         type:String,
     },
+    patientId:{
+        type:String
+    },
     dateMade:{
-        type:Date,
+        type:String,
     },
     symptoms:{
         type:String,
@@ -30,11 +37,23 @@ const prescriptionSchema = mongoose.Schema({
             dose:{
                 type:String,
             },
-            duration:{
+            breakFast:{
+                type:String,
+            },
+            lunch:{
+                type:String,
+            },
+            evening:{
+                type:String,
+            },
+            dinner:{
                 type:String,
             },
             total:{
                 type:String,
+            },
+            medaval:{
+                type:Boolean
             }
         }
     ],
@@ -45,7 +64,7 @@ const prescriptionSchema = mongoose.Schema({
         type:String,
     },
 },{
-    collection:'Prescription',
+    collection:'prescriptionD',
     timestamp:true,
 });
 
