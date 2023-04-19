@@ -50,7 +50,7 @@ const PatientInfo = ({setShow,setPatientData}) => {
                                 <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>create</i>
                             </Box>
                             <FormControl sx={{width:'20vw'}}>
-                            <InputLabel htmlFor="ID">Patient Registration No</InputLabel>
+                            <InputLabel htmlFor="ID">Patient Registration No (ex :K0722XXXXXX)</InputLabel>
                             <OutlinedInput
                                 id="ID"
                                 label="Registration ID"

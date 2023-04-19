@@ -1,16 +1,18 @@
-import { Box, Button, FormControl, InputLabel, OutlinedInput, Paper, TextField, Typography} from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, FormControl, InputLabel, OutlinedInput, Paper, TextField, Typography} from '@mui/material'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import {motion} from 'framer-motion';
-import DatePicker from 'react-date-picker';
-const HwDashboard = () => {
 
+const Dashboard = () => {
   const [familyCount,setFamilyCount] = useState(0);
   const [doctorCount,setDoctorCount] = useState(0);
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
   const [patientArr, setpatientArr] = useState(['None Found']);
+  const [expanded, setExpanded] = useState();
+  const [date, setDate] = useState();
+  const [doctor, setDoctor] = useState()
   const history = useHistory();
   useEffect(() => {
     async function fetch(){
@@ -30,22 +32,20 @@ const HwDashboard = () => {
       history.push('/')
     }
   }, [])
-
-  const submitHandler = async()=>{
-    
+  
+  const submitHandler = async ()=>{
+    if(!from || !to){
+      return;
+    }
     try{
+      
       const config={
         headers: {
           "Content-type":"application/json"
         }, 
       }
       const {data} = await axios.post('/api/patient/appointed',{from,to},config);
-      if(data.length===0){
-        setpatientArr(["None Found"])
-      }
-      else{
-        setpatientArr(data)
-      }
+      setpatientArr(data)
       console.log(data);
 
     }catch(error){
@@ -53,14 +53,53 @@ const HwDashboard = () => {
     }
   }
 
-  function roomHandler(idx){
-    localStorage.setItem('room',patientArr[idx].patientData.ticketId)
-    const hw = JSON.parse(localStorage.getItem('HwOnline'));
-    localStorage.setItem('port',hw.port);
-    history.push('/conference');
+  const fetchAll = async()=>{
+      const config={
+        headers: {
+          "Content-type":"application/json"
+        }, 
+      }
+      const {data} = await axios.get('/api/patient/fetchall',config)
+      if(data.length==0){
+        setpatientArr(["None Found"])
+      }
+      else{
+        setpatientArr(data);
+      }
   }
 
-    return (
+
+    const handleChange = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+    };
+
+
+  async function addHandler (item){
+    if(!date ||!doctor){
+      return;
+    }
+    try{
+      const config={
+        headers: {
+          "Content-type":"application/json"
+        }, 
+      }
+      const id = item.patientData.ticketId;
+      var {data} = await axios.post('/api/patient/setDate',{id,date,doctor},config)
+      const items = await axios.get('/api/patient/fetchAll',config)
+      if(items.data.length==0){
+        setpatientArr(["None Found"])
+      }
+      else{
+        setpatientArr(data);
+      }
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+
+  return (
       <motion.div animate={{opacity:1}} initial={{opacity:0}}>
         <Box sx={{
           width: '98vw',
@@ -72,7 +111,7 @@ const HwDashboard = () => {
                   Total Families
                 </Typography>
                 <Typography variant='h6' component='div' sx={{fontFamily:'Sans Sherif',color:'#'}}>
-                  SSF Total Patient
+                  SSF Total Families
                 </Typography>
               </Box>
               <Box display='flex' justifyContent='center' alignItems='center' paddingRight='20px'>
@@ -124,28 +163,16 @@ const HwDashboard = () => {
                 sx={{borderRadius:'5px',height:'5vh',marginTop:'5px'}}
                 onChange={(e)=>{setTo(e.target.value)}}
               />
-              {/* <DatePicker onChange={(e)=>setTo(e)} selected={to} /> */}
             </FormControl>
           </Box>
-          <Button onClick={submitHandler} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'5vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
+          <Button onClick={submitHandler} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'8vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
             Fetch
+          </Button>
+          <Button onClick={fetchAll} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'23vw',width:'8vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
+            Fetch New 
           </Button>
         </Box>
         <Box display='flex' alignItems='center' sx={{width:'80vw',marginLeft:'5vw',borderRadius:'15px',marginLeft:'10vw',paddingTop:'40px',flexFlow:'column'}}>
-          <Box display='flex' justifyContent='space-between' alignItems='center' sx={{backgroundColor:'#D1D1D1',width:'80vw',height:'5vh',borderRadius:'8px',marginBottom :'15px'}}>
-            <Typography variant='h7' component='div' sx={{fontFamily:'Sans Serif',display:'flex',alignItems:'center',width:'20vw',height:'9vh',paddingLeft:'30px'}}>
-              Sl No
-            </Typography>
-            <Typography variant='h7' component='div' sx={{justifyContent:'center',fontFamily:'Sans Serif',display:'flex',alignItems:'center',width:'20vw',height:'5vh',paddingLeft:'30px'}}>
-              Name
-            </Typography>
-            <Typography variant='h7' component='div' sx={{justifyContent:'center',fontFamily:'Sans Serif',display:'flex',alignItems:'center',width:'20vw',height:'5vh',paddingLeft:'30px'}}>
-              Doctor Appointed
-            </Typography>
-            <Typography variant='h7' component='div' sx={{justifyContent:'center',fontFamily:'Sans Serif',display:'flex',alignItems:'center',width:'20vw',height:'5vh',paddingLeft:'52px'}}>
-              Visited
-            </Typography>
-          </Box>
           {
             patientArr.map((item,idx)=>{
               if(item==='None Found'){
@@ -158,24 +185,47 @@ const HwDashboard = () => {
                 )
               }  
                 return(
-                  <Paper key={idx} elevation={3} sx={{backgroundColor:'#FEFFFF',width:'80vw',height:'9vh',borderRadius:'8px',marginBottom :'15px'}}>
-                    <Box display='center' justifyContent='space-between' alignItems='center' sx={{width:'80vw'}}>
-                      <Typography variant='h5' component='div' sx={{fontFamily:'Roboto Condensed',display:'flex',alignItems:'center',width:'20vw',height:'9vh',paddingLeft:'30px'}}>
-                        {idx+1}
-                      </Typography>
-                      <Typography variant='h6' component='div' sx={{justifyContent:'center',fontFamily:'Roboto Condensed',display:'flex',alignItems:'center',width:'20vw',height:'9vh'}}>
-                        {item.patientData.name}
-                      </Typography>
-                      <Typography variant='h6' component='div' sx={{justifyContent:'center',fontFamily:'Roboto Condensed',display:'flex',alignItems:'center',width:'20vw',height:'9vh',paddingLeft:'30px'}}>
-                        {item.doctor}
-                      </Typography>
-                      <Box display='center' justifyContent='center' alignItems='center' sx={{width:'20vw'}}>
-                        <Button onClick={()=>roomHandler(idx)} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'5vw',width:'5vw',height:'4vh',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
-                          Start
-                        </Button>
-                      </Box>
-                    </Box>
-                  </Paper>
+                    <Accordion key={idx} expanded={expanded === idx}  onChange={handleChange(idx)} sx={{marginBottom:'10px'}}>
+                          <AccordionSummary
+                          expandIcon={<i class="material-icons">arrow_drop_down</i>}
+                          aria-controls="panel1bh-content"
+                          id={idx}
+                          sx={{height:'8vh',width:'80vw',borderBottom:'1.5px solid grey',borderRadius:'5px 5px 0px 0px'}}
+                          >
+                              <Typography sx={{ width: '10%', flexShrink: 0 }}>
+                                  {idx+1}
+                              </Typography>
+                              <Typography sx={{ color: 'text.secondary' }}>
+                                  {item.patientData.name}
+                              </Typography>
+                          </AccordionSummary>
+                          <AccordionDetails id={idx} sx={{display:'flex',alignItems:'flex-start',justifyContent:'center',flexFlow:'column'}}>
+                              <Box sx={{ marginTop:'2vh',marginLeft:'2vw'}} display='flex' justifyContent='center'>
+                                  <FormControl sx={{width:'20vw',minWidth:'350px'}}>
+                                        <OutlinedInput
+                                          id="ID"
+                                          type='date'
+                                          placeholder='DD/MM/YYYY'
+                                          sx={{borderRadius:'5px',height:'5vh',marginTop:'5px'}}
+                                          onChange={(e)=>{setDate(e.target.value)}}
+                                        />
+                                  </FormControl>
+                                  <FormControl sx={{width:'20vw',minWidth:'350px',marginLeft:'10vw'}}>
+                                      <InputLabel htmlFor="ID">Doctor</InputLabel>
+                                      <OutlinedInput
+                                      id="ID"
+                                      label='Date to be Appointed'
+                                      default = {(item.doctor==='0')?"":item.doctor}
+                                      sx={{borderRadius:'5px 0px 0px 5px',backgroundColor:'#FEFFFF'}}
+                                      onChange={(e)=>{setDoctor(e.target.value)}}
+                                      />
+                                  </FormControl>
+                                  <Button onClick={()=>{addHandler(item)}} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'12vw',width:'8vw',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
+                                    Change
+                                  </Button>
+                              </Box>
+                          </AccordionDetails>
+                      </Accordion>
               )
             })
           }
@@ -184,4 +234,4 @@ const HwDashboard = () => {
   )
 }
 
-export default HwDashboard
+export default Dashboard
