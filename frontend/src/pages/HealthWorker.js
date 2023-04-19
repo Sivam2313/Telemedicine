@@ -34,21 +34,19 @@ const HealthWorker = () => {
             case 1:
                 return <FamilyRegistration />
             case 2:
-                return <PatientInfo setShow={setshow} setPatientData={setPatientData}/>
+                return <PatientForm patientData={patientData}/>
             case 3:
-                return <MedicalConsultation />
-            case 4:
                 return <DoctorRegister />
-            case 5:
+            case 4:
                 return <SearchFamilyCards />
-            case 6:
+            case 5:
                 return <SearchPrescription setPrescription={setPrescription} setShow={setshow}/>
-            case 7:
+            case 6:
               return <PatientForm patientData={patientData}/>
-            case 8:
-              return <ShowPrescription data = {prescription} setData={setPrescription} setShow={setshow}/>
-            case 9:
-              return <PrescriptionDetails data = {prescription}/>
+            // case 6:
+            //   return <ShowPrescription data = {prescription} setData={setPrescription} setShow={setshow}/>
+            // case 8:
+            //   return <PrescriptionDetails data = {prescription}/>
         }
     }
 
@@ -94,7 +92,7 @@ const HealthWorker = () => {
             backgroundColor:'#DEDEDE'
           }}}>
           <List>
-            {['Dashboard','Family Registration','Patient Registration','Medical Consultation', 'Doctor Registration', 'Search Family Card','Search Prescription','Issue Medicine'].map((text,idx)=>(
+            {['Dashboard','Family Registration','Patient Registration', 'Doctor Registration', 'Search Family Card','Search Prescription','Issue Medicine'].map((text,idx)=>(
               <ListItem key={text} disablePadding>
                 <ListItemButton onClick={()=>setshow(idx)} sx={{
                   height:'8vh',

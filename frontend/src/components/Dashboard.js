@@ -60,7 +60,7 @@ const Dashboard = () => {
           "Content-type":"application/json"
         }, 
       }
-      const {data} = await axios.get('/api/patient/fetchall',config)
+      const {data} = await axios.get('/api/patient/fetchAll',config)
       if(data.length==0){
         setpatientArr(["None Found"])
       }

@@ -166,7 +166,7 @@ const changeVisited = asyncHandler (async (req,res)=>{
 })
 
 const fetchAll = asyncHandler(async (req,res)=>{
-    const patients = await Patient.find({doctor:"0"})
+    const patients = await Patient.find({})
     if(patients){
         res.status(201).json(patients)
     }
