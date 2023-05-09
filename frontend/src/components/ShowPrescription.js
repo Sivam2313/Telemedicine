@@ -6,7 +6,7 @@ const ShowPrescription = ({data,setData,setShow}) => {
     function detailsHandler(idx){
         console.log(idx);
         setData(data[idx]);
-        setShow(9);
+        setShow(12);
     }
 
   return (

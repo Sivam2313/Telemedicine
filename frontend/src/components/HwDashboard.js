@@ -37,6 +37,10 @@ const HwDashboard = () => {
       history.push('/')
     }
   }, [])
+
+
+
+
   const modifyQ = async () => {
     try{
       const config={
@@ -45,6 +49,7 @@ const HwDashboard = () => {
         },
       }
       const doc_name=docName
+      console.log(doc_name);
       const {data}=await axios.post('/api/doctor/modifyQ',{doc_name,queue},config)
 
     }catch(e){
@@ -75,6 +80,7 @@ const HwDashboard = () => {
   }
  
   const queueHandler = async (idx) => {
+    setDocName(patientArr[idx].doctor)
     const item = patientArr[idx];
     if(queue.length==1){
       if(queue[0]=='Empty'){

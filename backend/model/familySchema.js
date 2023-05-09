@@ -70,6 +70,9 @@ const familySchema = mongoose.Schema({
     collection:'Family'
 });
 
+familySchema.statics.byDate = function(date){
+      
+}
 
 const Family = mongoose.model('Family',familySchema);
 

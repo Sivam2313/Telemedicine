@@ -1,15 +1,15 @@
 import React,{useState} from 'react';
 import {useHistory} from 'react-router-dom'
-const HealthWorkerPortal = () =>{
+const HealthWorkerPortal = ({setShow}) =>{
     
     const history=useHistory()
    
     const redirect = () =>{
-        history.push('HealthWorker/registration')
+        setShow(8)
     }
   
     const redirectSearch = () => {
-        history.push('/HealthWorker/search')
+        setShow(12)
     }
     return(
         <div style={{width:'100vw',height:'100vh'}}>

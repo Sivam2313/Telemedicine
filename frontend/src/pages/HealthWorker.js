@@ -13,6 +13,8 @@ import SearchFamilyCards from '../components/SearchFamilyCards';
 import SearchPrescription from '../components/SearchPrescription';
 import ShowPrescription from '../components/ShowPrescription';
 import mainImg from '../images/Logo.png';
+import MedicineStore from '../components/MedicineStore';
+import MedicineLog from '../components/MedicineLog';
 const HealthWorker = () => {
 
     const [isOpen, setisOpen] = useState(false);
@@ -36,19 +38,23 @@ const HealthWorker = () => {
             case 2:
                 return <PatientInfo setShow={setshow} setPatientData={setPatientData}/>
             case 3:
-                return <MedicalConsultation />
-            case 4:
                 return <DoctorRegister />
-            case 5:
+            case 4:
                 return <SearchFamilyCards />
-            case 6:
+            case 5:
                 return <SearchPrescription setPrescription={setPrescription} setShow={setshow}/>
+            case 6:
+              return <MedicineStore logs = {setshow}/>
             case 7:
+              return <MedicalConsultation />
+            case 10:
               return <PatientForm patientData={patientData}/>
-            case 8:
+            case 11:
               return <ShowPrescription data = {prescription} setData={setPrescription} setShow={setshow}/>
-            case 9:
+            case 12:
               return <PrescriptionDetails data = {prescription}/>
+            case 13:
+              return <MedicineLog />
         }
     }
 
@@ -94,7 +100,7 @@ const HealthWorker = () => {
             backgroundColor:'#DEDEDE'
           }}}>
           <List>
-            {['Dashboard','Family Registration','Patient Registration','Medical Consultation', 'Doctor Registration', 'Search Family Card','Search Prescription','Issue Medicine'].map((text,idx)=>(
+            {['Dashboard','Family Registration','Patient Registration', 'Doctor Registration', 'Search Family Card','Search Prescription','Issue Medicine','Medical Consultation'].map((text,idx)=>(
               <ListItem key={text} disablePadding>
                 <ListItemButton onClick={()=>setshow(idx)} sx={{
                   height:'8vh',

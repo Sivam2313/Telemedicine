@@ -32,7 +32,10 @@ const addPrescription = asyncHandler(async (req,res)=>{
                 res.send("failed")
             }
         }
-        res.status(500).send("error")
+        else{
+            const patient = await Patient.findOneAndUpdate({"patientData.ticketId":id},{isVisited:"true"});
+        }
+        res.status(201).send("ok")
     }
     else{
         res.send("failed")

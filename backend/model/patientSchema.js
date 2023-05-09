@@ -6,10 +6,6 @@ const patientSchema = mongoose.Schema({
             type: String,
             required: true,
         },
-        ID:{
-            type: String,
-            required:true,
-        },
         relationship:{
             type:String,
             required: true,

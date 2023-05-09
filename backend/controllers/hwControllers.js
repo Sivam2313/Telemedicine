@@ -65,7 +65,7 @@ const findHw = asyncHandler(async (req,res) => {
         res.send(hw)
     }else{
         res.status(400)
-        throw new Error ("HealthWorker doesnt exisit with given ID")
+        throw new Error ("HealthWorker doesnt exist with given ID")
     }
 })
 
@@ -138,6 +138,10 @@ const editHw=asyncHandler(async(req,res) => {
     if(hw){
         
         hw.name=infoData.name
+        if(hw.password == ""){}
+        else{
+            hw.password = infoData.password;    
+        }
         await hw.save()
     }else{
         res.send(400)

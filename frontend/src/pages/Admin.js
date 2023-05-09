@@ -11,6 +11,12 @@ import mainImg from '../images/Logo.png';
 import HealthWorkerPortal from '../components/HealthWorkerPortal';
 import DoctorPortal from '../components/DoctorPortal';
 import PatientInformation from '../components/PatientInformation';
+import HwRegister from '../components/HwRegister';
+import SearchFamilyCards from '../components/SearchFamilyCards';
+import SearchHW from '../components/SearchHW';
+import SearchDoctor from '../components/SearchDoctor';
+import DoctorRegister from '../components/DoctorRegister';
+import MedicineLog from '../components/MedicineLog';
 const Admin = () => {
   const [isOpen, setisOpen] = useState(false);
   const [show,setshow] = useState(0);
@@ -21,19 +27,29 @@ const Admin = () => {
       case 0:
           return <Dashboard />
       case 1:
-          return <HealthWorkerPortal />
+          return <HealthWorkerPortal setShow={setshow}/>
       case 2:
-          return <DoctorPortal />
+          return <DoctorPortal setShow={setshow}/>
       case 3:
-          return <SearchCards title='Search Family Cards' routeName='family/fetch' />
+          return <SearchFamilyCards />
       case 4:
           return <SearchPrescription />
       case 6:
           return <LogRecord />
       case 5:
-          return <MedicineStore/>
+          return <MedicineStore logs = {setshow}/>
       case 7:
           return <PatientInformation />
+      case 8:
+          return <HwRegister />
+      case 11:
+          return <MedicineLog />
+      case 12:
+          return <SearchHW />
+      case 13:
+          return <SearchDoctor />
+      case 14:
+        return <DoctorRegister />
     }
   }
 

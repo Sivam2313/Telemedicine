@@ -31,7 +31,6 @@ const DoctorDash = ({setShow}) => {
           else{
             setPatientArr(data)
           }
-          
 
         }
         catch (error){
@@ -131,8 +130,12 @@ const DoctorDash = ({setShow}) => {
 
           })
         }
+        <Button onClick={meetHandler} className='btn' sx={{backgroundColor:'#19414D',color:'#FEFFFF',height:'5vh',width:'10vw',borderRadius:'15px',marginTop:'2vh'}}
+        disabled = {
+          (meet === 'MEET')? false:true
+        } > <Typography sx={{color:'white',fontSize:'0.8rem'}}>{meet}</Typography> </Button>
       </Box>
-      <button onClick={meetHandler}>{meet}</button>    
+            
       </Box>
   )
 }

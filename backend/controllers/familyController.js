@@ -30,8 +30,14 @@ const registerFamily = asyncHandler(async (req,res)=>{
     else{
         monthNo = (today.getMonth()+1)+'';
     }
-    
-    const id = locationCode + monthNo + (today.getFullYear()%100) + number ;
+    var day;
+    if(today.getDate()<10){
+        day = '0'+(today.getDate());
+    }
+    else{
+        day = (today.getDate())+'';
+    }
+    const id = locationCode + monthNo + day + (today.getFullYear()%100) + number ;
 
     var memberArr=[];
     members.map((item,idx)=>{

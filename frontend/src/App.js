@@ -26,9 +26,8 @@ function App() {
         <Route path='/info' component={FamilyCardsView} exact />
         <Route path='/conference' component={Conference} exact />
         <Route path='/prescription/:id' component={Prescription} exact />
-        <Route path='/HealthWorker/registration' component={HwRegister} exact/>
+        {/* <Route path='/HealthWorker/registration' component={HwRegister} exact/> */}
         <Route path='/Doctor/registration' component={DoctorRegister} exact/>
-        <Route path='/HealthWorker/search' component={SearchHW} exact />
         <Route path='/Doctor/search' component={SearchDoctor} exact />
         {/* <Route path='/Patient/search' component={PatientInformation} exact/> */}
       </Protect>
