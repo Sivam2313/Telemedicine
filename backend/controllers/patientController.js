@@ -129,6 +129,8 @@ const appointedPatients = asyncHandler(async (req,res)=>{
         nextAppointedDate:{$lte:to},
     }).find({
        doctor:{$regex:doc_name}
+    }).find({
+        isVisited:"false"
     })
     // const patients=await Patient.find();
     res.send(patients)

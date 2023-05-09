@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Logo from '../images/Logo.png';
 import {motion} from 'framer-motion';
 import axios from 'axios';
-const SearchPrescription = ({setPrescription,setShow}) => {
+const SearchPrescription = ({setPrescription,setShow,setPatient}) => {
     const [id, setId] = useState();
 
     const submitHandler = async ()=>{
@@ -17,7 +17,9 @@ const SearchPrescription = ({setPrescription,setShow}) => {
                 },          
             }
             const {data} = await axios.post('/api/prescription/fetch',{id},config);
+            const p = await axios.post('/api/patient/trueFetch',{id},config);
             setPrescription(data);
+            setPatient(p.data);
             if(data.length===0){
                 setPrescription("None Found")
             }

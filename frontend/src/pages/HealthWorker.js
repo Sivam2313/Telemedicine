@@ -22,6 +22,7 @@ const HealthWorker = () => {
     const [patientData, setPatientData] = useState({});
     const history = useHistory();
     const [prescription, setPrescription] = useState()
+    const [patient, setPatient] = useState();
     useEffect(() => {
       if(localStorage.getItem('isAuth')==='false' ){
         history.push('/');
@@ -42,7 +43,7 @@ const HealthWorker = () => {
             case 4:
                 return <SearchFamilyCards />
             case 5:
-                return <SearchPrescription setPrescription={setPrescription} setShow={setshow}/>
+                return <SearchPrescription setPrescription={setPrescription} setShow={setshow} setPatient={setPatient}/>
             case 6:
               return <MedicineStore logs = {setshow}/>
             case 7:
@@ -52,7 +53,7 @@ const HealthWorker = () => {
             case 11:
               return <ShowPrescription data = {prescription} setData={setPrescription} setShow={setshow}/>
             case 12:
-              return <PrescriptionDetails data = {prescription}/>
+              return <PrescriptionDetails data = {prescription} patient={patient}/>
             case 13:
               return <MedicineLog />
         }

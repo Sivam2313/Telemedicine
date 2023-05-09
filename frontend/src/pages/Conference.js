@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import io from 'socket.io-client';
 import Peer from 'peerjs';
 import './style.css';
+// const socket = io.connect("http://localhost:5000")
 const socket = io.connect("http://localhost:5000")
 
 const Conference = () => {
@@ -153,7 +154,7 @@ const Conference = () => {
             <i className="fa fa-microphone"></i>
           </div>
           <div>
-            <button onClick={endCall}>End </button>
+            <button className="options__button" onClick={endCall}>End </button>
           </div>
         </div>
         <div className="options__right">
