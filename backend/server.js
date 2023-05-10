@@ -60,9 +60,26 @@ app.use('/api/patient',patientRoutes);
 app.use('/api/logs',logRoutes)
 app.use('/api/prescription',prescriptionRoutes)
 app.use('/api/med',medicineRoutes)
-app.get('/api',(req,res)=>{
-    res.send("ok");
-})
+
+
+// app.get('/api',(req,res)=>{
+//     res.send("ok");
+// })
+
+const __dirname1 = path.resolve();
+
+if(process.env.Node_Env=='production'){
+    app.use(express.static(path.join(__dirname1,'./frontend/build')));
+    app.get('*',(req,res)=>{
+        res.sendFile(path.resolve(__dirname1,"./frontend/build/index.html"))
+    })
+}
+else{
+    
+    app.get('/',(req,res)=>{
+        res.send('ok');
+    })
+}
 
 
 server.listen(PORT,console.log("server at " + PORT))
