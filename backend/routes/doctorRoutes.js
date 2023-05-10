@@ -1,5 +1,5 @@
 const express = require('express');
-const { authDoctor, registerDoctor, fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc,editDoc,modifyQ,getQ,popQ} = require('../controllers/doctorControllers');
+const { authDoctor, registerDoctor, fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc,editDoc,modifyQ,getQ,popQ, fetchQ} = require('../controllers/doctorControllers');
 
 const router = express.Router();
 
@@ -14,4 +14,5 @@ router.post('/editDoc',editDoc);
 router.post('/modifyQ',modifyQ);
 router.post('/getQ',getQ);
 router.post('/popQ',popQ)
+router.post('/fetchQ',fetchQ);
 module.exports = router;

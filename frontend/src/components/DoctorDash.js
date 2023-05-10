@@ -61,6 +61,10 @@ const DoctorDash = ({setShow}) => {
       getPatientQ()
     },[])
 
+    function reload (){
+      window.location.reload();
+    }
+
     const meetHandler = () => {
       const path = '/prescription/'+currTID;
       history.push(path);
@@ -96,6 +100,9 @@ const DoctorDash = ({setShow}) => {
         </Typography>
       </Box>
       <Box display='flex' justifyContent='space-around' alignItems='center' sx={{flexFlow:'column'}}>
+        <Button onClick={()=> reload()} sx={{position:'absolute',top:'30vh',left:'92vw',backgroundColor:'#17252A',color:'#FEFFFF',padding:'1rem',borderRadius:'50px','&:hover':{backgroundColor:'#333333'}}}>
+            <i className="material-icons" sx={{fontSize:'1rem'}}>refresh</i>
+        </Button>
         {
           patientArr.map((item,idx)=>{
             if(item==="None Found"){

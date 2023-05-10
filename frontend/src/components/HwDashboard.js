@@ -15,6 +15,31 @@ const HwDashboard = () => {
   const [docName,setDocName]=useState("")
   const [queue,setQueue]=useState(['Empty'])
   const history = useHistory();
+
+
+  useEffect(() => {
+    async function fetch(){
+      const config = {
+          headers: {
+            "Content-type":"application/json"
+          },
+      }
+      try{
+        if(!docName){
+          console.log("no doc");
+          return;
+        }
+        var {data} = await axios.post('/api/doctor/fetchQ',{docName},config);
+        setQueue(data.Patients);
+      }
+      catch(error){
+        console.log(error);
+      }
+    }
+    fetch();
+  }, [docName])
+
+
   useEffect(() => {
     async function fetch(){
       const config = {
@@ -39,7 +64,7 @@ const HwDashboard = () => {
   }, [])
 
 
-
+  
 
   const modifyQ = async () => {
     try{

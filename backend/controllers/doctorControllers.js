@@ -215,6 +215,10 @@ const modifyQ= asyncHandler(async(req,res) => {
     if(doctor){
         doctor.Patients=queue
         await doctor.save()
+        res.status(201).json({
+            name: doctor.doc_name,
+            TicketId: doctor.Patients, 
+        })
     }else{
         const doc=await PatientQ.create({
             doc_name:doc_name,
@@ -233,4 +237,21 @@ const modifyQ= asyncHandler(async(req,res) => {
     }
 
 })
-module.exports = {registerDoctor,authDoctor,fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc,editDoc,modifyQ,getQ,popQ};
+
+const fetchQ = asyncHandler(async(req,res)=>{
+    const {docName} = req.body;
+    if(!docName){
+        res.status(400).send("not found");
+    }
+    const queue = await PatientQ.findOne({doc_name:docName});
+    if(queue){
+        res.status(201).json({
+            Patients:queue.Patients,
+        })
+    }
+    else{
+        res.status(400)
+        throw new Error ("failed")
+    }
+})
+module.exports = {registerDoctor,authDoctor,fetchTotalDoctors,getDoctors,searchDoctor,findDoc,blockDoc,editDoc,modifyQ,getQ,popQ,fetchQ};

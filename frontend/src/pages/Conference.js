@@ -41,6 +41,19 @@ const Conference = () => {
       });
     })
 
+    peer.on('disconnected',()=>{
+      currentUserVideoRef.current.srcObject?.getVideoTracks().forEach((track) => {
+        if (track.kind === 'video') {
+          track.stop();
+        }
+      });
+      currentUserVideoRef.current.srcObject = undefined
+    })
+
+    peer.on('close',()=>{
+      remoteVideoRef.current.srcObject = undefined;
+    })
+
     peerInstance.current = peer;
   }, [])
     
@@ -64,14 +77,15 @@ const Conference = () => {
         const room = localStorage.getItem('room')
         socket.emit('leave-room',room,peerId)
 
-        peerInstance.current.disconnect()
-        if(localStorage.getItem('DoctorOnline')){
-        const path = '/prescription/'+room;
-        history.push(path);
-        }else{
-          const path='/HealthWorker';
-          history.push(path)
-        }
+        peerInstance.current.disconnect();
+        // if(localStorage.getItem('DoctorOnline')){
+        // const path = '/prescription/'+room;
+        // history.push(path);
+        // }else{
+        //   const path='/HealthWorker';
+        //   history.push(path)
+        // }
+        history.goBack()
 
     }
 
@@ -154,7 +168,7 @@ const Conference = () => {
             <i className="fa fa-microphone"></i>
           </div>
           <div>
-            <button className="options__button" onClick={endCall}>End </button>
+            <button className="options__button" onClick={()=>{endCall()}}>End </button>
           </div>
         </div>
         <div className="options__right">

@@ -196,6 +196,9 @@ const Prescription = () => {
       <Box display='flex' justifyContent='center' alignItems='center' sx={{margin:'8px', padding:'30px'}}>
         <img src={mainImg} alt='img goes here' style={{width:'6vw',margin:'0px'}}></img>
       </Box>
+      <Button onClick={()=>{history.push('/doctor')}} sx={{position:'absolute',top:'6vh',left:'2vw',backgroundColor:'#CF823A',color:'#FEFFFF',padding:'1rem',borderRadius:'50px','&:hover':{backgroundColor:'#CF9D6E'}}}>
+        <i className="material-icons" sx={{fontSize:'1rem'}}>keyboard_backspace</i>
+      </Button>
       <Box display='flex' alignItems='center' sx={{flexFlow:'column'}}>
         <Box sx={{alignSelf:'flex-start',marginLeft:'4vw'}}>
           <Typography sx={{fontSize:'0.8rem'}}>
