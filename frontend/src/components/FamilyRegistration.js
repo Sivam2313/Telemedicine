@@ -11,7 +11,7 @@ import axios from 'axios';
 import FamilyMember2 from './stepperComponents/FamilyMember2';
 import {motion} from 'framer-motion';
 const FamilyRegistration = () => {
-    const steps = ['Basic Info', 'Family Members 1','Family Members 2', 'Additional Members', 'Other Info'];
+    const steps = ['Basic Info', 'Family Members 1','Family Members 2', 'Other Info'];
     const today = new Date();
     const [active, setActive] = useState(0);
     const [name, setName] = useState();
@@ -47,11 +47,11 @@ const FamilyRegistration = () => {
                 return <FamilyMembers name={name} setName={setName} relationship={relationship} setRelationship={setRelationship} members={members} setMembers={setMembers} memberArr={memberArr} setMemberArr={setMemberArr}/>
             case 2:
                 return <FamilyMember2 name={name} setName={setName} relationship={relationship} setRelationship={setRelationship} members={members} setMembers={setMembers} memberArr2={memberArr2} setMemberArr2={setMemberArr2}/>
+            // case 3:
+            //     return <AdditionalMembers name={name} setName={setName} additionalMembers={additionalMembers} setAdditionalMembers={setAdditionalMembers} memberArr={memberArr} setMemberArr={setMemberArr}/>
             case 3:
-                return <AdditionalMembers name={name} setName={setName} additionalMembers={additionalMembers} setAdditionalMembers={setAdditionalMembers} memberArr={memberArr} setMemberArr={setMemberArr}/>
-            case 4:
                 return <OtherInfo setEducation={setEducation} setFamilyIncome={setFamilyIncome} setMaritalStatus={setMaritalStatus}/>
-            case 5:
+            case 4:
                 return <Success subject='Family' result={result}/>
         }
     }
@@ -82,9 +82,9 @@ const FamilyRegistration = () => {
         setMemberArr2([1]);
         if(active===0)
             return;
-        if(active===4){
-            setAdditionalMembers([])
-        }
+        // if(active===4){
+        //     setAdditionalMembers([])
+        // }
         if(active===3){
             setMembers([])
         }
@@ -92,7 +92,7 @@ const FamilyRegistration = () => {
         setActive(newActive)
     }
     const stepperHandler = ()=>{
-        if(active===4){
+        if(active===3){
             console.log(active);
             submitHandler();
         }
@@ -186,7 +186,7 @@ const FamilyRegistration = () => {
                         Back
                     </Button>
                     <Button onClick={stepperHandler} sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',alignSelf:'end',marginRight:'8vw','&:hover':{backgroundColor:'#CF9D6E'}}}>
-                        {(active===4)? 'Register' : 'Next'}
+                        {(active===3)? 'Register' : 'Next'}
                     </Button>
                 </motion.div>
             </Paper>

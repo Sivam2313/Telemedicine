@@ -10,7 +10,7 @@ const FamilyMembers = ({name,relationship,setRelationship,setName,members,setMem
       name:name,
       relationship:relationship
     }
-    if(!name){
+    if(!name || name===""){
       return;
     }
     if(memberArr.length<=5){
