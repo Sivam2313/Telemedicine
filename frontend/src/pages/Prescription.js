@@ -100,7 +100,7 @@ const Prescription = () => {
               "Content-type":"application/json"
           },
         }
-        const {data} = await axios.post('/api/patient/truefetch',{id},config);
+        const {data} = await axios.post('/api/patient/ticketFetch',{id},config);
         setPatient(data);
       }
       catch(error){

@@ -209,5 +209,16 @@ const trueFetch = asyncHandler(async (req,res)=>{
         res.send('not found')
     }
 })
+const ticketFetch = asyncHandler(async (req,res)=>{
+    const {id} = req.body;
+    console.log(id);
+    const patient = await Patient.findOne({'patientData.ticketId':id})
+    if(patient){
+        res.json(patient)
+    }
+    else{
+        res.send('not found')
+    }
+})
 
-module.exports = {fetchPatient,addPatient,appointedPatients,setAppointedDate,fetchAll,changeVisited,trueFetch,medicinalConsultant,searchPatient,editPat};
+module.exports = {fetchPatient,addPatient,appointedPatients,setAppointedDate,fetchAll,changeVisited,trueFetch,medicinalConsultant,searchPatient,editPat,ticketFetch};
