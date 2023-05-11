@@ -16,8 +16,8 @@ const SearchPrescription = ({setPrescription,setShow,setPatient}) => {
                     "Content-type":"application/json"
                 },          
             }
-            const {data} = await axios.post('/api/prescription/fetch',{id},config);
             const p = await axios.post('/api/patient/trueFetch',{id},config);
+            const {data} = await axios.post('/api/prescription/fetch',{id:p.data.patientData.ticketId},config);
             setPrescription(data);
             setPatient(p.data);
             if(data.length===0){

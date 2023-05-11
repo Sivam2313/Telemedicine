@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 mongoose.set("strictQuery", false);
 const connectDB = ()=>{
     const DB=process.env.DB
-    console.log(DB)
+    // console.log(DB)
     mongoose.connect(DB,{
         useNewUrlParser:true,
         useUnifiedTopology:true

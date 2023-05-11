@@ -9,7 +9,8 @@ const familyRoutes = require('./routes/familyRoutes');
 const patientRoutes = require('./routes/PatientRoutes');
 const logRoutes = require('./routes/logRoutes');
 const prescriptionRoutes = require('./routes/prescriptionRoutes')
-const medicineRoutes=require('./routes/medicineRoutes')
+const medicineRoutes=require('./routes/medicineRoutes');
+const path = require('path');
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5000

@@ -72,36 +72,6 @@ const FamilyCardsView = () => {
                 </Table>
                 </TableContainer>         
             </Box>
-            <Box sx={{width:'100%',marginTop:'3vh',flexFlow:'column',marginBottom:'8vw'}} display='flex' justifyContent='center' alignItems='center'>
-                <Typography variant='h6' component='div' sx={{fontFamily:'Sans Sherif',textAlign:'center'}}>
-                    Additional Members
-                </Typography>
-                <TableContainer sx={{width:'35vw'}} component={Box}>
-                <Table sx={{ width:'35vw',borderWidth:'1px',borderStyle:'solid',borderColor:'rgb(209, 209, 209)',borderRadius:'5px' }} aria-label="simple table">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell align='center' sx={{color:'#FEFFFF',borderRadius:'5px 0px 0px 0px'}}>Id</TableCell>
-                        <TableCell align='center' sx={{color:'#FEFFFF'}}>Name</TableCell>
-                        <TableCell align='center' sx={{color:'#FEFFFF',borderRadius:'0px 5px 0px 0px'}}>Realtionship</TableCell>
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    {familyData.additionalMembers.map((row,idx) => (
-                        <TableRow
-                        key={idx}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                        <TableCell align='center' component="th" scope="row">
-                            {row.id}
-                        </TableCell>
-                        <TableCell align='center'>{row.name}</TableCell>
-                        <TableCell align='center'>Relative</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-                </TableContainer>         
-            </Box>
             <Box sx={{width:'100%',marginRight:'50px',marginBottom:'10px'}} display='flex' justifyContent='end' alignItems='center'>
                 <Typography variant='subtitle2' component='div'>
                     Issuer's Signature

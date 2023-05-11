@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, FormControl, InputLabel, OutlinedInput, Paper, TextField, Typography} from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Paper, Select, TextField, Typography} from '@mui/material'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
@@ -13,6 +13,7 @@ const Dashboard = () => {
   const [expanded, setExpanded] = useState();
   const [date, setDate] = useState();
   const [doctor, setDoctor] = useState()
+  const [docNames, setDocNames] = useState([]);
   const history = useHistory();
   useEffect(() => {
     async function fetch(){
@@ -31,6 +32,23 @@ const Dashboard = () => {
     if(isAuth=='false'){
       history.push('/')
     }
+  }, [])
+
+  useEffect(() => {
+    async function fetch(){
+      const config = {
+          headers: {
+            "Content-type":"application/json"
+          },
+      }
+      var {data}= await axios.get('/api/doctor/Doctor',config);
+      const Temp=[];
+      data.map((item) => {
+        Temp.push(item.doc_name)
+      })
+      setDocNames(Temp)
+    }
+    fetch();
   }, [])
   
   const submitHandler = async ()=>{
@@ -179,7 +197,7 @@ const Dashboard = () => {
                                       onChange={(e)=>{setDate(e.target.value)}}
                                       />
                                   </FormControl>
-                                  <FormControl sx={{width:'20vw',minWidth:'350px',marginLeft:'10vw'}}>
+                                  {/* <FormControl sx={{width:'20vw',minWidth:'350px',marginLeft:'10vw'}}>
                                       <InputLabel htmlFor="ID">Doctor</InputLabel>
                                       <OutlinedInput
                                       id="ID"
@@ -188,7 +206,24 @@ const Dashboard = () => {
                                       sx={{borderRadius:'5px 0px 0px 5px',backgroundColor:'#FEFFFF'}}
                                       onChange={(e)=>{setDoctor(e.target.value)}}
                                       />
-                                  </FormControl>
+                                  </FormControl> */}
+                                  <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        sx={{borderRadius:'5px',height:'5vh',width:'20vw',minWidth:'350px',marginLeft:'2vw'}}
+                                        displayEmpty
+                                        label="Doctor"
+                                        onChange={(e) => setDoctor(e.target.value)}
+                                    >
+                                    <MenuItem value="" disabled>
+                                      Select a doctor
+                                    </MenuItem>
+                                    {docNames.map((item,idx) => {
+                                      return (
+                                        <MenuItem value={item} key={idx}>{item}</MenuItem>
+                                      )
+                                    })}
+                                  </Select>
                                   <Button onClick={()=>{addHandler(item)}} sx={{backgroundColor:'#19414D',color:'#FEFFFF',marginLeft:'12vw',width:'8vw',borderRadius:'15px','&:hover':{backgroundColor:'#19414D'}}}>
                                     Change
                                   </Button>

@@ -35,20 +35,20 @@ const familySchema = mongoose.Schema({
             required:true,
         }
     }],
-    additionalMembers:[{
-        name:{
-            type:String,
-            required:true,
-        },
-        id:{
-            type:String,
-            required:true,
-        },
-        relationship:{
-            type:String,
-            default: 'relative',
-        },
-    }],
+    // additionalMembers:[{
+    //     name:{
+    //         type:String,
+    //         required:true,
+    //     },
+    //     id:{
+    //         type:String,
+    //         required:true,
+    //     },
+    //     relationship:{
+    //         type:String,
+    //         default: 'relative',
+    //     },
+    // }],
     education:{
         type:String,
         required:true,

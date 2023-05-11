@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const Family = require('../model/familySchema');
 
 const registerFamily = asyncHandler(async (req,res)=>{
-    var { mainName,mobile,address,date,locationCode,members,additionalMembers,education,familyIncome,maritalStatus } = req.body;
+    var { mainName,mobile,address,date,locationCode,members,education,familyIncome,maritalStatus } = req.body;
     if (!mainName || !mobile || !address || !date || !locationCode || !education || !familyIncome || !maritalStatus) {
         res.status(400);
         throw new Error("Please Enter all the Feilds");
@@ -50,16 +50,7 @@ const registerFamily = asyncHandler(async (req,res)=>{
     })
 
     members = [...memberArr];
-    memberArr =[];
-    additionalMembers.map((item,idx)=>{
-        var data ={
-            name:item.name,
-            id:id+'1'+(idx+1),
-        }
-        memberArr.push(data);
-    })
-
-    additionalMembers = [...memberArr];
+   
     const name = mainName;
 
     const family = await Family.create({
@@ -69,7 +60,6 @@ const registerFamily = asyncHandler(async (req,res)=>{
         date,
         locationCode,
         members,
-        additionalMembers,
         education,
         familyIncome,
         maritalStatus,
@@ -107,7 +97,6 @@ const fetchFamily = asyncHandler(async(req,res)=>{
                 mobile:family.mobile,
                 locationCode:family.locationCode,
                 members:family.members,
-                additionalMembers:family.additionalMembers,
                 education:family.education,
                 familyIncome:family.familyIncome,
                 maritalStatus:family.maritalStatus,   

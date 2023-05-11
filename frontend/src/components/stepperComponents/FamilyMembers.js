@@ -13,13 +13,13 @@ const FamilyMembers = ({name,relationship,setRelationship,setName,members,setMem
     if(!name){
       return;
     }
-    if(memberArr.length<=4){
+    if(memberArr.length<=5){
       var arr = [...members];
       arr.push(data);
       setMembers(arr)
     }
 
-    if(memberArr.length<4){
+    if(memberArr.length<5){
       arr=[...memberArr]
       arr.push(memberArr.length)
       setMemberArr(arr)

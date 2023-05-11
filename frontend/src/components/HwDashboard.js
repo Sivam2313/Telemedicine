@@ -31,6 +31,21 @@ const HwDashboard = () => {
         }
         var {data} = await axios.post('/api/doctor/fetchQ',{docName},config);
         setQueue(data.Patients);
+        if(patientArr[0] === 'None Found' || data.Patients.length == 0){
+          return;
+        }
+        else{
+          const arr = patientArr.filter((it,idx)=>{
+            var f = true;
+            queue.forEach(item => {
+              if(item.patientData.name === it.patientData.name){
+                f = false;
+              }
+            });
+            return f;
+          })
+          console.log(arr);
+        }
       }
       catch(error){
         console.log(error);
@@ -73,8 +88,9 @@ const HwDashboard = () => {
           "Content-type":"application/json"
         },
       }
-      const doc_name=docName
+      const doc_name=docName;
       console.log(doc_name);
+      // console.log(doc_name);
       const {data}=await axios.post('/api/doctor/modifyQ',{doc_name,queue},config)
 
     }catch(e){
@@ -124,7 +140,8 @@ const HwDashboard = () => {
     const item=queue[idx]
     if(patientArr.length==1){
       if(patientArr[0]=='None Found'){
-        setpatientArr(item)
+        setQueue(queue.filter((_,i) => (i!==idx)))
+        return;
       }else{
         setpatientArr([...patientArr,item])
       }
