@@ -6,7 +6,7 @@ const Protect = ({ children }) => {
  const isAuth = localStorage.getItem('isAuth');
  console.log("yes");
  
-    if (isAuth=='false') {
+    if (isAuth=='false' || !isAuth) {
         history.push('/');
     }
  
