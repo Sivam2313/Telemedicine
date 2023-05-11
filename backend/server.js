@@ -20,7 +20,7 @@ const cors = require('cors')
 const http = require('http')
 const {Server} = require('socket.io');
 
-
+console.log(PORT);
 const server = http.createServer(app);
 const io = new Server(server,{
     cors:{
