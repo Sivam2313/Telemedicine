@@ -19,7 +19,7 @@ const FamilyMembers = ({name,relationship,setRelationship,setName,members,setMem
       setMembers(arr)
     }
 
-    if(memberArr.length<5){
+    if(memberArr.length<10){
       arr=[...memberArr]
       arr.push(memberArr.length)
       setMemberArr(arr)
