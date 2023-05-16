@@ -31,13 +31,29 @@ const fetchPatient = asyncHandler(async (req,res)=>{
             number = (count+1)+"";
         }
         const ticket = mem[0].id + number+ "";
-        res.status(201).json({
-            registrationP: mem[0].id,
-            registrationNumber:fId,
-            name:mem[0].name,
-            ticketId:ticket,
-            relationship:mem[0].relationship,
-        })
+        const patient = await Patient.findOne({'patientData.registrationP':regId});
+        if(!patient){
+            res.status(201).json({
+                registrationP: mem[0].id,
+                registrationNumber:fId,
+                name:mem[0].name,
+                ticketId:ticket,
+                relationship:mem[0].relationship,
+                DOB:"",
+                mobile:"",
+            })
+        }
+        else{
+            res.status(201).json({
+                registrationP: mem[0].id,
+                registrationNumber:fId,
+                name:mem[0].name,
+                ticketId:ticket,
+                relationship:mem[0].relationship,
+                DOB:patient.DOB,
+                mobile:patient.mobile,
+            })
+        }
     }
 })
 
@@ -72,21 +88,47 @@ const addPatient = asyncHandler(async(req,res)=>{
         otherComplications:otherComplications,
         totalPregnancies:totalPregnancies,
     };
-    const patient = await Patient.create({
-        patientData,
-        marital,
-        gender,
-        DOB,
-        education,
-        profession,
-        mobile,
-        medical,
-        pastHistory,
-        gynocoligical,
-        reason:medReasons,
-    });
-    if(patient){
-        res.status(201).json(patient);
+    const exist = await Patient.findOne({'patientData.registrationP':patientData.registrationP});
+    if(!exist){
+        const patient = await Patient.create({
+            patientData,
+            marital,
+            gender,
+            DOB,
+            education,
+            profession,
+            mobile,
+            medical,
+            pastHistory,
+            gynocoligical,
+            reason:medReasons,
+        });
+        console.log(patient);
+        if(patient){
+            res.status(201).json(patient);
+        }
+    }
+    else{
+        const update = await Patient.updateOne({'patientData.registrationP':patientData.registrationP},{
+            patientData,
+            marital,
+            gender,
+            DOB,
+            education,
+            profession,
+            mobile,
+            medical,
+            pastHistory,
+            gynocoligical,
+            reason:medReasons,
+            doctor:"0",
+            isVisited:'false',
+        });
+
+        const patient = await Patient.findOne({'patientData.registrationP':patientData.registrationP});
+        if(patient){
+            res.status(201).json(patient);
+        }
     }
 })
 const medicinalConsultant=asyncHandler(async (req,res) =>{

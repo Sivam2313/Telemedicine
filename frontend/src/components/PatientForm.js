@@ -66,7 +66,7 @@ const PatientForm = ({patientData}) => {
         }
     }
     async function submitHandler (){
-        if(!marital || !DOB || !education || !profession || !height || !weight || !temperature || !pulse || !sbp || !dbp || !alcohol || !asthama || !diabetes || !familyIll || !smoking || !spo2 || !admitted || !currentMed || !healthCondition || !injuries || !pastDiseases){
+        if(!height || !weight || !temperature || !pulse || !sbp || !dbp || !alcohol || !asthama || !diabetes || !familyIll || !smoking || !spo2 || !admitted || !currentMed || !healthCondition || !injuries || !pastDiseases){
             return;
         }
         try{

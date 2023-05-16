@@ -7,7 +7,6 @@ const familySchema = mongoose.Schema({
     },
     mobile:{
         type: String,
-        required: true,
     },
     address:{
         type: String,

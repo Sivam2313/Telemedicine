@@ -1,6 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Box, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Paper, Select, Step, StepLabel, Stepper, Typography } from '@mui/material'
 const Personal = ({setDOB,setEducation,setProfession,patientData,setMarital,setGender}) => {
+  const dobVal = useRef(null);
+  useEffect(() => {
+    if(patientData.DOB != ""){
+      dobVal.current = document.getElementById("dob");
+      dobVal.current.value = patientData.DOB;
+      setDOB(patientData.DOB);
+    }
+  }, [])
+
   return (
     <Box sx={{flexFlow:'column'}} display='flex' justifyContent='center'>
       <Box sx={{ marginTop:'5vh',alignSelf:'start',marginLeft:'-4vw' }} display='flex' justifyContent='start'>
@@ -44,7 +53,7 @@ const Personal = ({setDOB,setEducation,setProfession,patientData,setMarital,setG
         </Box>
         <FormControl sx={{width:'40vw'}}>
         <OutlinedInput
-            id="Name"
+            id="dob"
             label="Name"
             type="date"
             sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}

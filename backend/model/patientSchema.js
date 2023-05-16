@@ -25,23 +25,18 @@ const patientSchema = mongoose.Schema({
     },
     marital:{
         type: String,
-        required: true,
     },
     gender:{
         type: String,
-        required: true,
     },
     DOB:{
         type: String,
-        required: true,
     },
     education:{
         type: String,
-        required: true,
     },
     profession:{
         type: String,
-        required: true,
     },
     mobile:{
         type: String,
