@@ -47,6 +47,7 @@ const Dashboard = () => {
         Temp.push(item.doc_name)
       })
       setDocNames(Temp)
+      console.log(Temp);
     }
     fetch();
   }, [])
@@ -113,7 +114,7 @@ const Dashboard = () => {
         setpatientArr(items.data);
       }
       document.getElementById("ID").value = "";
-      console.log(document.getElementById("ID").value = "");
+      console.log(data);
     }
     catch(error){
       console.log(error);

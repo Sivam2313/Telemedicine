@@ -45,7 +45,6 @@ const patientSchema = mongoose.Schema({
     },
     mobile:{
         type: String,
-        required: true,
     },
     medical:{
         height:{
@@ -152,7 +151,10 @@ const patientSchema = mongoose.Schema({
     nextAppointedDate:{
         type:Date,
         default:''
-    }
+    },
+    reason:[{
+        type:String,
+    }],
 },{
     timestamp:true,
     collection:'PatientRegistration'

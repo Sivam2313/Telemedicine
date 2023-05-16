@@ -9,9 +9,11 @@ import Medical from './stepperComponents/Patient/Medical';
 import PastHistory from './stepperComponents/Patient/PastHistory';
 import Gynecological from './stepperComponents/Patient/Gynecological';
 import axios from 'axios';
+import MedicalReason from './stepperComponents/Patient/MedicalReason';
+
 
 const PatientForm = ({patientData}) => {
-    const steps = ['Basic Info','Personal Profile', 'Medical Profile', 'Past Medical History','प्रसूति / स्त्री रोग संबंधी इतिहास (महिलाओं के लिए)'];
+    const steps = ['Basic Info','Personal Profile', 'Medical Profile', 'Medical Reason' , 'Past Medical History','प्रसूति / स्त्री रोग संबंधी इतिहास (महिलाओं के लिए)'];
     const [active, setActive] = useState(0);
     const [result, setResult] = useState('Successful')
     const [mobile, setMobile] = useState();
@@ -43,7 +45,9 @@ const PatientForm = ({patientData}) => {
     const [totalPregnancies, setTotalPregnancies] = useState("");
     const [marital, setMarital] = useState();
     const [gender, setGender] = useState();
+    const [medReasons, setMedReasons] = useState([]);
     function activeStep(){
+        console.log(active);
         switch(active){
             case 1:
                 return <Personal patientData={patientData}  setMarital={setMarital} setGender={setGender} setDOB={setDOB} setEducation={setEducation} setProfession={setProfession}/>
@@ -52,10 +56,12 @@ const PatientForm = ({patientData}) => {
             case 2:
                 return <Medical setHeight={setHeight} setWeight={setWeight} setTemperature={setTemperature} setPulse={setPulse} setSbp={setSbp} setDbp={setDbp} setAlcohol={setAlcohol} setAsthama={setAsthama} setDiabetes={setDiabetes} setFamilyIll={setFamilyIll} setSmoking={setSmoking} setSpo2={setSpo2} setOthers={setOthers}/>
             case 3:
-                return <PastHistory setAdmitted={setAdmitted} setCurrentMed={setCurrentMed} setHealthCondition={setHealthCondition} setInjuries={setInjuries} setOtherHistory={setOtherHistory} setPastDiseases={setPastDiseases}/>
+                return <MedicalReason medReasons={medReasons} setMedReasons={setMedReasons}/>
             case 4:
-                return <Gynecological setNAbortion={setAbortion} setNumberOfChild={setNumberOfChild} setOtherComplications={setOtherComplications} setTotalPregnancies={setTotalPregnancies}/>
+                return <PastHistory setAdmitted={setAdmitted} setCurrentMed={setCurrentMed} setHealthCondition={setHealthCondition} setInjuries={setInjuries} setOtherHistory={setOtherHistory} setPastDiseases={setPastDiseases}/>
             case 5:
+                return <Gynecological setNAbortion={setAbortion} setNumberOfChild={setNumberOfChild} setOtherComplications={setOtherComplications} setTotalPregnancies={setTotalPregnancies}/>
+            case 6:
                 return <Success result={result}/>
         }
     }
@@ -69,7 +75,7 @@ const PatientForm = ({patientData}) => {
                     "Content-type":"application/json"
                 }, 
             }
-            const {data} =await axios.post('/api/patient/add',{marital,DOB,education,profession,height,weight,temperature,pulse,sbp,dbp,alcohol,asthama,diabetes,familyIll,smoking,spo2,admitted,currentMed,healthCondition,injuries,pastDiseases,abortion,numberOfChild,otherComplications,totalPregnancies,others,otherHistory,patientData,mobile,gender},config);
+            const {data} =await axios.post('/api/patient/add',{marital,DOB,education,profession,height,weight,temperature,pulse,sbp,dbp,alcohol,asthama,diabetes,familyIll,smoking,spo2,admitted,currentMed,healthCondition,injuries,pastDiseases,abortion,numberOfChild,otherComplications,totalPregnancies,others,otherHistory,patientData,mobile,gender,medReasons},config);
             setResult('Successful')
         }
         catch(error){
@@ -85,10 +91,10 @@ const PatientForm = ({patientData}) => {
         }
     }
     const stepperHandler = ()=>{
-        if(active===4){
+        if(active===5){
             submitHandler()
         }
-        if(active<5){
+        if(active<6){
             var newActive = active + 1
             setActive(newActive);
         }
@@ -124,13 +130,13 @@ const PatientForm = ({patientData}) => {
                         
                     </Box>
                 </motion.div>
-                <Box display={(active===5)?'none':'block'}>
+                <Box display={(active===6)?'none':'block'}>
                     <motion.div style={{marginTop:'30px',marginLeft:'6vw',width:'56vw',display:'flex',justifyContent:'space-between'}} animate={{opacity:1}} initial={{opacity:0}} transition={{delay:0.4}}>
                         <Button onClick={backHandler} sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',alignSelf:'end',marginRight:'8vw','&:hover':{backgroundColor:'#CF9D6E'}}}>
                             Back
                         </Button>
                         <Button onClick={stepperHandler} sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',alignSelf:'end',marginRight:'8vw','&:hover':{backgroundColor:'#CF9D6E'}}}>
-                            {(active===4)? 'Register' : (active===5)? 'Reset' : 'Next'}
+                            {(active===5)? 'Register' : (active===6)? 'Reset' : 'Next'}
                         </Button>
                     </motion.div>
                 </Box>

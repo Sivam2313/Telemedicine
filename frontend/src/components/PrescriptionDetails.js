@@ -169,8 +169,9 @@ const PrescriptionDetails = ({data,patient}) => {
                     </div>
                   </Box>
                   <Box display='flex' style={{width:'90%',justifyContent:'space-between'}}>
-                    <input type='text' value={item.dose} placeholder='Frequency' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)',fontSize:'1.2rem'}}/>
+                    <input type='text' value={item.dose} placeholder='Frequency' style={{width:'30%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)',fontSize:'1.2rem'}}/>
                     <input type='text' value={item.total} placeholder='Total Number of Medicine' style={{width:'30%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)',fontSize:'1.2rem'}}/>
+                    <input type='text' value={item.fee} placeholder='Fee' style={{width:'30%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)',fontSize:'1.2rem'}}/>
                   </Box>
                 </Box>
               )

@@ -42,7 +42,7 @@ const fetchPatient = asyncHandler(async (req,res)=>{
 })
 
 const addPatient = asyncHandler(async(req,res)=>{
-    const {marital,DOB,education,profession,height,weight,temperature,pulse,sbp,dbp,alcohol,asthama,diabetes,familyIll,smoking,spo2,admitted,currentMed,healthCondition,injuries,pastDiseases,abortion,numberOfChild,otherComplications,totalPregnancies,others,otherHistory,patientData,mobile,gender} = req.body;
+    const {marital,DOB,education,profession,height,weight,temperature,pulse,sbp,dbp,alcohol,asthama,diabetes,familyIll,smoking,spo2,admitted,currentMed,healthCondition,injuries,pastDiseases,abortion,numberOfChild,otherComplications,totalPregnancies,others,otherHistory,patientData,mobile,gender,medReasons} = req.body;
     const medical={
         height:height,
         weight:weight,
@@ -82,7 +82,8 @@ const addPatient = asyncHandler(async(req,res)=>{
         mobile,
         medical,
         pastHistory,
-        gynocoligical
+        gynocoligical,
+        reason:medReasons,
     });
     if(patient){
         res.status(201).json(patient);
@@ -148,9 +149,11 @@ const setAppointedDate = asyncHandler(async (req,res)=>{
     const {date,id,doctor} = req.body;
     // const [day,month,year] = date.split('/');
     // const appointedDate = new Date(year,month - 1,day);
+    console.log(doctor);
     const patient = await Patient.updateOne({'patientData.ticketId':id},{nextAppointedDate:date,doctor:doctor})
     if(patient){
         const updated = await Patient.findOne({'patientData.ticketId':id})
+        console.log(updated);
         res.status(201).json(updated);
     }
     else{

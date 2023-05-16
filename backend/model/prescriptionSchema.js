@@ -47,6 +47,10 @@ const prescriptionSchema = mongoose.Schema({
             },
             total:{
                 type:String,
+            },
+            fee:{
+                type:String,
+                default : "free",
             }
         }
     ],

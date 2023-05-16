@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { AppBar, Box, Button,Typography, Autocomplete, TextField } from '@mui/material'
 import mainImg from '../images/Logo.png'
 import './style.css'
@@ -29,6 +29,12 @@ const Prescription = () => {
   const [dinner,setDinner]=useState("None")
   const [selectedMed,setSelectedMed]=useState("")
   const [currTID,setCurrTID]=useState(0)
+  const [fee, setFee] = useState();
+  const medVal = useRef(null);
+  const durationVal = useRef(null);
+  const totalVal = useRef(null); 
+  const feeVal = useRef(null);
+  const symptomsVal = useRef(null);
   const [patient, setPatient] = useState({
     patientData:{
       name:"afhajf;la",
@@ -45,6 +51,7 @@ const Prescription = () => {
     }
 
   })
+
  
   const handleBreakfastChange=(e) => {
     console.log(e.target.value)
@@ -102,6 +109,13 @@ const Prescription = () => {
         }
         const {data} = await axios.post('/api/patient/ticketFetch',{id},config);
         setPatient(data);
+        var str = "";
+        data.reason.map((item,idx)=>{
+          str+=item+",";
+        })
+        setSymptoms(str)
+        console.log(str);
+        symptomsVal.current.value = str;
       }
       catch(error){
         console.log(error);
@@ -126,8 +140,17 @@ const Prescription = () => {
       evening,
       dinner,
       dose,
-      total
+      total,
+      fee,
     }
+    setBreakFast("");
+    setLunch("");
+    setEvening("");
+    setDinner("");
+    setSelectedMed("");
+    durationVal.current.value = "";
+    totalVal.current.value = "";
+    feeVal.current.value = "";
     var arr = [...array];
     arr.push(data);
     setArray(arr);
@@ -280,7 +303,7 @@ const Prescription = () => {
         <Typography sx={{fontSize:'0.8rem'}}>
           Symptoms Summary:
         </Typography>
-        <textarea id='name' onChange={(e)=>{setSymptoms(e.target.value)}} style={{width:'70vw',height:'8vh',borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'5px',color:'black',outline:'none',padding:'8px'}}/>
+        <textarea id='name' ref={symptomsVal} onChange={(e)=>{setSymptoms(e.target.value)}} style={{width:'70vw',height:'8vh',borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'5px',color:'black',outline:'none',padding:'8px'}}/>
       </Box>
       <Box sx={{alignSelf:'flex-start',marginLeft:'4vw',marginBottom:'2vh'}}>
         <Typography sx={{fontSize:'0.8rem'}}>
@@ -323,13 +346,13 @@ const Prescription = () => {
         />
         </Box>
         <Button className='btn' onClick={addHandler} sx={{position:'relative',top:'5vh',left:'75vw',height:'5vh',width:'5vh',borderRadius:'15px',backgroundColor:'#19414D',color:'#FEFFFF'}}>
-          <i class='fas fa-plus'></i>
+          Add
         </Button>
         <Box style={{width:'100%'}}>
           
                 <Box sx={{paddingTop:'1vh',width:'70vw',padding:'20px',borderRadius:'8px',marginBottom:'3vh',border:'1px solid rgb(170, 170, 170)'}}>
                   <Box display='flex' style={{width:'90%',marginBottom:'2vh',justifyContent:'space-between'}}>
-                    <input type='text' onChange={(e)=>{setName(e.target.value)}} value={selectedMed} placeholder='Medicine Name' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    <input type='text' onChange={(e)=>{setName(e.target.value)}} value={selectedMed}  placeholder='Medicine Name' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
                     <div style={{display:'flex',flexDirection:'column',width:'35%'}}>
                       <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
                           <span  style={{width:'30%'}}>Breakfast:</span>
@@ -354,8 +377,9 @@ const Prescription = () => {
                     </div>
                   </Box>
                   <Box display='flex' style={{width:'90%',justifyContent:'space-between'}}>
-                    <input type='text' onChange={(e)=>{setDose(e.target.value)}} placeholder='Frequency' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
-                    <input type='text' onChange={(e)=>{setTotal(e.target.value)}} placeholder='Total Number of Medicine' style={{width:'30%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    <input type='text' ref={durationVal} onChange={(e)=>{setDose(e.target.value)}} placeholder='Duration' style={{width:'30%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    <input type='text' ref={totalVal} onChange={(e)=>{setTotal(e.target.value)}} placeholder='Total Number of Medicine' style={{width:'30%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    <input type='text' ref={feeVal} onChange={(e)=>{setFee(e.target.value)}} placeholder='fee' style={{width:'30%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
                   </Box>
                 </Box>
                 {
@@ -401,13 +425,13 @@ const Prescription = () => {
         <Typography sx={{fontSize:'0.8rem'}}>
           Tests:
         </Typography>
-        <textarea id='name' onChange={(e)=>{setTests(e.target.value)}} placeholder='name' style={{width:'70vw',height:'8vh',borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'5px',color:'black',outline:'none',padding:'8px'}}/>
+        <textarea id='name' onChange={(e)=>{setTests(e.target.value)}} placeholder='test' style={{width:'70vw',height:'8vh',borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'5px',color:'black',outline:'none',padding:'8px'}}/>
       </Box>
       <Box sx={{alignSelf:'flex-start',marginLeft:'4vw',marginBottom:'2vh'}}>
         <Typography sx={{fontSize:'0.8rem'}}>
           Any Other Instructions:
         </Typography>
-        <textarea id='name' onChange={(e)=>{setOther(e.target.value)}} placeholder='name' style={{width:'70vw',height:'8vh',borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'5px',color:'black',outline:'none',padding:'8px'}}/>
+        <textarea id='name' onChange={(e)=>{setOther(e.target.value)}} placeholder='info' style={{width:'70vw',height:'8vh',borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'5px',color:'black',outline:'none',padding:'8px'}}/>
       </Box>
       <Box sx={{alignSelf:'flex-start',marginLeft:'4vw',marginBottom:'2vh'}}>
         <Typography sx={{fontSize:'0.8rem'}}>
