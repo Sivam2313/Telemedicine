@@ -52,7 +52,7 @@ const FamilyMembers = ({name,relationship,setRelationship,setName,members,setMem
                     onChange={(e)=>{setRelationship(e.target.value)}}
                     defaultValue=''
                 >
-                    <MenuItem value='self(खुद)'>self(खुद)</MenuItem>
+                    {/* <MenuItem value='self(खुद)'>self(खुद)</MenuItem> */}
                     <MenuItem value='पति या पत्नी'>पति या पत्नी</MenuItem>
                     <MenuItem value='बेटा'>बेटा</MenuItem>
                     <MenuItem value='बेटी'>बेटी</MenuItem>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Paper, Select, Step, StepLabel, Stepper, Typography } from '@mui/material'
-const FBasicInfo = ({setMobile,setMainName,setAddress,setLocationCode}) => {
+const FBasicInfo = ({setMobile,setMainName,setAddress,setLocationCode,setName}) => {
     var today = new Date();
     var date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
   return (
@@ -15,7 +15,10 @@ const FBasicInfo = ({setMobile,setMainName,setAddress,setLocationCode}) => {
             id="Name"
             label="मुख्य वेतन अर्जक/ Chief Wage Earner (Name)"
             sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
-            onChange={(e)=>{setMainName(e.target.value)}}
+            onChange={(e)=>{
+              setMainName(e.target.value);
+              setName(e.target.value);
+            }}
         />
         </FormControl>                
       </Box>

@@ -43,10 +43,10 @@ const Personal = ({setDOB,setEducation,setProfession,patientData,setMarital,setG
             <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>create</i>
         </Box>
         <FormControl sx={{width:'40vw'}}>
-        <InputLabel htmlFor="Name">Date of Birth (dd/mm/yyyy)</InputLabel>
         <OutlinedInput
             id="Name"
             label="Name"
+            type="date"
             sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
             onChange={(e)=>{setDOB(e.target.value)}}
         />
@@ -112,14 +112,20 @@ const Personal = ({setDOB,setEducation,setProfession,patientData,setMarital,setG
             <i class="material-icons" style={{color:'#FEFFFF',fontSize:'2.5rem'}}>create</i>
         </Box>
         <FormControl sx={{width:'40vw'}}>
-        <InputLabel htmlFor="Name">Marital Status</InputLabel>
-        <OutlinedInput
-            id="Name"
-            label="Marital Status"
-            sx={{borderRadius:'0px 5px 5px 0px',backgroundColor:'#FEFFFF'}}
-            onChange={(e)=>{setMarital(e.target.value)}}
-        />
-        </FormControl>                
+          <InputLabel id="demo-simple-select-label">Marital Status</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Marital Status"
+              sx={{backgroundColor:'#FEFFFF'}}
+              defaultValue=''
+              onChange={(e)=>{setMarital(e.target.value)}}
+            >
+              <MenuItem value='Not Married/ अविवाहित'>Not Married/ अविवाहित</MenuItem>
+              <MenuItem value='विवाहित/ Married'>विवाहित/ Married</MenuItem>
+              <MenuItem value='विधवा / अलग (Widow/ Separated)'>विधवा / अलग (Widow/ Separated)</MenuItem>
+            </Select>
+        </FormControl>  
       </Box>
       
     </Box>

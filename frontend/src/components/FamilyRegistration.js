@@ -42,7 +42,7 @@ const FamilyRegistration = () => {
     function activeStep(){
         switch(active){
             case 0:
-                return <FBasicInfo setMainName={setMainName} setAddress={setAddress} setMobile={setMobile} setLocationCode={setLocationCode}/>
+                return <FBasicInfo setMainName={setMainName} setAddress={setAddress} setMobile={setMobile} setLocationCode={setLocationCode} setName={setName}/>
             case 1:
                 return <FamilyMembers name={name} setName={setName} relationship={relationship} setRelationship={setRelationship} members={members} setMembers={setMembers} memberArr={memberArr} setMemberArr={setMemberArr}/>
             // case 2:
@@ -85,8 +85,9 @@ const FamilyRegistration = () => {
         // if(active===4){
         //     setAdditionalMembers([])
         // }
-        if(active===2){
-            setMembers([])
+        if(active===1){
+            setMembers([]);
+            setMemberArr([]);
         }
         var newActive = active - 1;
         setActive(newActive)
@@ -97,6 +98,13 @@ const FamilyRegistration = () => {
             submitHandler();
         }
         if(active===0){
+            const val = {
+                name:name,
+                relationship:"self",
+            }
+            var arr = [];
+            arr.push(val);
+            setMembers(arr);
             setName(1);
         }
         if(active===1){
@@ -186,7 +194,7 @@ const FamilyRegistration = () => {
                         Back
                     </Button>
                     <Button onClick={stepperHandler} sx={{backgroundColor:'#CF823A', color:'#FEFFFF',width:'8vw',height:'5vh',borderRadius:'25px',alignSelf:'end',marginRight:'8vw','&:hover':{backgroundColor:'#CF9D6E'}}}>
-                        {(active===3)? 'Register' : 'Next'}
+                        {(active===2)? 'Register' : 'Next'}
                     </Button>
                 </motion.div>
             </Paper>
