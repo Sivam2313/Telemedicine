@@ -148,24 +148,13 @@ const PrescriptionDetails = ({data,patient}) => {
               return(
                 <Box sx={{paddingTop:'1vh',width:'70vw',padding:'20px',borderRadius:'8px',marginBottom:'3vh',border:'1px solid rgb(170, 170, 170)'}}>
                   <Box display='flex' style={{width:'90%',marginBottom:'2vh',justifyContent:'space-between'}}>
-                    <input type='text' value={item.name} placeholder='Medicine Name' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)',fontSize:'1.2rem'}}/>
-                    <div style={{display:'flex',flexDirection:'column',width:'35%'}}>
-                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
-                          <span  style={{width:'30%',fontSize:'1.2rem'}}>Breakfast:</span>
-                          <span  style={{width:'30%',fontSize:'1.2rem'}}>{item.breakFast}</span>
-                      </div>
-                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
-                          <span style={{width:'30%',fontSize:'1.2rem'}}>Lunch:</span>
-                          <span  style={{width:'30%',fontSize:'1.2rem'}}>{item.lunch}</span>
-                      </div>
-                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
-                           <span style={{width:'30%',fontSize:'1.2rem'}}>Evening:</span>
-                          <span  style={{width:'30%',fontSize:'1.2rem'}}>{item.evening}</span>
-                      </div>
-                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
-                          <span style={{width:'30%',fontSize:'1.2rem'}}> Dinner:</span>
-                          <span  style={{width:'30%',fontSize:'1.2rem'}}>{item.dinner}</span>
-                      </div>
+                    <Typography sx={{width:'40%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)',fontSize:'1.2rem'}}>
+                      Name : {item.name}  
+                    </Typography>
+                    <div style={{display:'flex',flexDirection:'column',width:'50%'}}>
+                      <Typography sx={{width:'100%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)',fontSize:'1.2rem'}}>
+                        Schedule : {item.schedule}  
+                      </Typography>
                     </div>
                   </Box>
                   <Box display='flex' style={{width:'90%',justifyContent:'space-between'}}>

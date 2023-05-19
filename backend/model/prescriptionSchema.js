@@ -33,16 +33,7 @@ const prescriptionSchema = mongoose.Schema({
             duration:{
                 type:String,
             },
-            breakFast:{
-                type:String,
-            },
-            lunch:{
-                type:String,
-            },
-            evening:{
-                type:String,
-            },
-            dinner:{
+            schedule:{
                 type:String,
             },
             total:{
