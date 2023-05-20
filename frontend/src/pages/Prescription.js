@@ -6,6 +6,7 @@ import axios from 'axios'
 import { useHistory, useParams } from 'react-router-dom'
 
 const Prescription = () => {
+  const [showButton, setShowButton] = useState([]);
   const [symptoms, setSymptoms] = useState();
   const [instructions, setInstructions] = useState();
   const [diagnosis, setDiagnosis] = useState();
@@ -23,18 +24,22 @@ const Prescription = () => {
   const [id, setId] = useState(para.id);
   const [allMed,setAllMed]=useState([])
   const history = useHistory();
-  const [breakFast,setBreakFast]=useState("None")
-  const [lunch,setLunch]=useState("None")
-  const [evening,setEvening]=useState("None")
-  const [dinner,setDinner]=useState("None")
   const [selectedMed,setSelectedMed]=useState("")
   const [currTID,setCurrTID]=useState(0)
   const [fee, setFee] = useState();
+  const [schedule, setSchedule] = useState();
+  const [upname, setUpname] = useState();
+  const [upDuration, setUpDuration] = useState();
+  const [upSchedule, setUpSchedule] = useState();
+  const [upDose, setUpDose] = useState();
+  const [upTotal, setUpTotal] = useState();
+  const [upFee, setUpFee] = useState();
   const medVal = useRef(null);
   const durationVal = useRef(null);
   const totalVal = useRef(null); 
   const feeVal = useRef(null);
   const symptomsVal = useRef(null);
+  const scheduleVal  = useRef(null);
   const [patient, setPatient] = useState({
     patientData:{
       name:"afhajf;la",
@@ -53,19 +58,6 @@ const Prescription = () => {
   })
 
  
-  const handleBreakfastChange=(e) => {
-    console.log(e.target.value)
-    setBreakFast(e.target.value)
-  }
-  const handleLunchChange = (e) => {
-    setLunch(e.target.value)
-  }
-  const handleEveChange = (e) => {
-    setEvening(e.target.value)
-  }
-  const handleDinnerChange = (e) => {
-    setDinner(e.target.value)
-  }
   const handleSelectChange = (event, value) => {
     setSelectedMed(event.target.innerText)
     setName(event.target.innerText)
@@ -135,23 +127,22 @@ const Prescription = () => {
     var data = {
       name,
       duration,
-      breakFast,
-      lunch,
-      evening,
-      dinner,
+      schedule,
       dose,
       total,
       fee,
     }
-    setBreakFast("");
-    setLunch("");
-    setEvening("");
-    setDinner("");
+    var arr = [];
+    arr = [...showButton];
+    arr.push('0');
+    setShowButton(arr);
     setSelectedMed("");
+    arr = [];
     durationVal.current.value = "";
     totalVal.current.value = "";
     feeVal.current.value = "";
-    var arr = [...array];
+    scheduleVal.current.value = "";
+    arr = [...array];
     arr.push(data);
     setArray(arr);
     console.log(arr); 
@@ -189,10 +180,6 @@ const Prescription = () => {
     }
   } 
   const submitHandler = async ()=>{
-    if(!symptoms){
-      console.log("??");
-      return;
-    }
     console.log(array)
     var arr = [...array]
     
@@ -212,6 +199,34 @@ const Prescription = () => {
       
     // popQ()
     // getQ()
+  }
+
+  function showBtn(idx){
+    var arr = [...showButton];
+    arr[idx] = '100';
+    setShowButton(arr);
+  }
+
+  function hideBtn(idx){
+    var arr = [...showButton];
+    arr[idx] = '0';
+    setShowButton(arr);
+  }
+
+  
+  
+  function medicineChangeHandler (idx,val){
+
+    var arr = [...array];
+    arr[idx] = val;
+  }
+
+  function deleteHandler (idx){
+    var arr = [...array];
+    arr = arr.filter((item,i)=>{
+      return i!=idx;
+    })
+    setArray(arr);
   }
   
   return (
@@ -241,7 +256,7 @@ const Prescription = () => {
           <Typography sx={{fontSize:'0.8rem'}}>
             Patient Id:
           </Typography>
-          <input id='name' disabled value={id} placeholder='name' style={{width:'25vw',height:'3vh',borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'5px'}}/>
+          <input id='name' disabled value={patient.patientData.registrationNumber} placeholder='name' style={{width:'25vw',height:'3vh',borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'5px'}}/>
         </Box>
         <Box sx={{alignSelf:'flex-start',marginLeft:'4vw',marginBottom:'2vh',marginTop:'2vh'}}>
           <Typography sx={{fontSize:'0.8rem'}}>
@@ -354,26 +369,7 @@ const Prescription = () => {
                   <Box display='flex' style={{width:'90%',marginBottom:'2vh',justifyContent:'space-between'}}>
                     <input type='text' onChange={(e)=>{setName(e.target.value)}} value={selectedMed}  placeholder='Medicine Name' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
                     <div style={{display:'flex',flexDirection:'column',width:'35%'}}>
-                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
-                          <span  style={{width:'30%'}}>Breakfast:</span>
-                          <input type="radio" value="Before" checked={breakFast==='Before'}  onChange={handleBreakfastChange} /> Before
-                          <input type="radio" value="After" checked={breakFast==='After'}  onChange={handleBreakfastChange} />   After
-                      </div>
-                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
-                          <span style={{width:'30%'}}>Lunch:</span>
-                          <input type="radio" value="Before" checked={lunch==='Before'} onChange={handleLunchChange} /> Before
-                          <input type="radio" value="After" checked={lunch==='After'} onChange={handleLunchChange} />   After
-                      </div>
-                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
-                           <span style={{width:'30%'}}>Evening:</span>
-                          <input type="radio" value="Before" checked={evening==='Before'} onChange={handleEveChange} /> Before
-                          <input type="radio" value="After" checked={evening==='After'} onChange={handleEveChange} />   After
-                      </div>
-                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
-                          <span style={{width:'30%'}}> Dinner:</span>
-                          <input type="radio" value="Before" checked={dinner==='Before'} onChange={handleDinnerChange} /> Before
-                          <input type="radio" value="After" checked={dinner==='After'} onChange={handleDinnerChange} />   After
-                      </div>
+                      <textarea placeholder='Schedule for Medicine' style={{borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'8px',outline:'none'}} type = 'text' onChange={(e)=>{setSchedule(e.target.value)}}/>
                     </div>
                   </Box>
                   <Box display='flex' style={{width:'90%',justifyContent:'space-between'}}>
@@ -385,36 +381,30 @@ const Prescription = () => {
                 {
             array.map((item,idx)=>{
               return(
-                <Box sx={{paddingTop:'1vh',width:'70vw',padding:'20px',borderRadius:'8px',marginBottom:'3vh',border:'1px solid rgb(170, 170, 170)'}}>
+                <Box onMouseOver={()=>{showBtn(idx)}} onMouseOut={()=>{hideBtn(idx)}} sx={{paddingTop:'1vh',width:'70vw',padding:'20px',borderRadius:'8px',marginBottom:'3vh',border:'1px solid rgb(170, 170, 170)'}}>
                   <Box display='flex' style={{width:'90%',marginBottom:'2vh',justifyContent:'space-between'}}>
                     <input type='text' value={item.name} placeholder='Medicine Name' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
                     <div style={{display:'flex',flexDirection:'column',width:'35%'}}>
-                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
-                          <span  style={{width:'30%'}}>Breakfast:</span>
-                          <input type="radio" value="Before" checked={item.breakFast==='Before'}  onChange={handleBreakfastChange} /> Before
-                          <input type="radio" value="After" checked={item.breakFast==='After'}  onChange={handleBreakfastChange} />   After
-                      </div>
-                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
-                          <span style={{width:'30%'}}>Lunch:</span>
-                          <input type="radio" value="Before" checked={item.lunch==='Before'} onChange={handleLunchChange} /> Before
-                          <input type="radio" value="After" checked={item.lunch==='After'} onChange={handleLunchChange} />   After
-                      </div>
-                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
-                           <span style={{width:'30%'}}>Evening:</span>
-                          <input type="radio" value="Before" checked={item.evening==='Before'} onChange={handleEveChange} /> Before
-                          <input type="radio" value="After" checked={item.evening==='After'} onChange={handleEveChange} />   After
-                      </div>
-                      <div style={{width:"100%",display:'flex',justifyContent:'space-between'}}>
-                          <span style={{width:'30%'}}> Dinner:</span>
-                          <input type="radio" value="Before" checked={item.dinner==='Before'} onChange={handleDinnerChange} /> Before
-                          <input type="radio" value="After" checked={item.dinner==='After'} onChange={handleDinnerChange} />   After
-                      </div>
+                      <textarea ref={scheduleVal} placeholder='Schedule for Medicine' style={{borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'8px',outline:'none'}} type = 'text' value={item.schedule}/>
                     </div>
                   </Box>
                   <Box display='flex' style={{width:'90%',justifyContent:'space-between'}}>
-                    <input type='text' value={item.dose} placeholder='Frequency' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
-                    <input type='text' value={item.total} placeholder='Total Number of Medicine' style={{width:'30%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    <Box sx = {{display:'flex',width:'40%',alignItems:'center'}}>  
+                      <Box sx={{fontSize:'0.8rem',height:'5vh',display:'flex',paddingRight:'1vw',alignItems:'center'}}>Dose:</Box>
+                      <input type='text' value={item.dose} placeholder='Frequency' style={{height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    </Box>
+                    <Box sx = {{display:'flex',width:'40%',alignItems:'center'}}>  
+                      <Box sx={{fontSize:'0.8rem',height:'5vh',display:'flex',paddingRight:'1vw',alignItems:'center'}}>Total Medicines:</Box>
+                      <input type='text' value={item.total} placeholder='Total Number of Medicine' style={{height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    </Box>
+                    <Box sx = {{display:'flex',width:'40%',alignItems:'center'}}>  
+                      <Box sx={{fontSize:'0.8rem',height:'5vh',display:'flex',paddingRight:'1vw',alignItems:'center'}}>Fee:</Box>
+                      <input type='text' value={item.fee} placeholder='fee' style={{height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
+                    </Box>
                   </Box>
+                  <Button className='btn' onClick={()=>{deleteHandler(idx)}} sx={{backgroundColor:'#19414D',color:'#FEFFFF',width:'4vw',height:'4vh',marginLeft:'7vh',position:'relative',left:'59vw',transition:'all 0.1s',opacity:showButton[idx]}}>
+                    Delete
+                  </Button>
                 </Box>
               )
             })

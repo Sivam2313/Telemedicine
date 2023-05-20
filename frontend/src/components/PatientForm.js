@@ -66,7 +66,8 @@ const PatientForm = ({patientData}) => {
         }
     }
     async function submitHandler (){
-        if(!height || !weight || !temperature || !pulse || !sbp || !dbp || !alcohol || !asthama || !diabetes || !familyIll || !smoking || !spo2 || !admitted || !currentMed || !healthCondition || !injuries || !pastDiseases){
+        if(!height || !weight || !temperature || !pulse || !sbp || !dbp || !alcohol || !asthama || !diabetes || !smoking || !spo2){
+            setResult('failed beacuse all fields were not filled');
             return;
         }
         try{
@@ -80,7 +81,7 @@ const PatientForm = ({patientData}) => {
         }
         catch(error){
             console.log(error);
-            setResult('Failed');
+            setResult('Failed...Please, Check your internet.');
         }
         
     }
