@@ -37,30 +37,39 @@ const OtherInfo = ({ setEducation, setFamilyIncome, setMaritalStatus }) => {
               setEducation(e.target.value);
             }}>
             <MenuItem value="कोई औपचारिक शिक्षा नहीं">
-              No Education / कोई औपचारिक शिक्षा नहीं
+              No Education / কোন আঞ্চলিক শিক্ষা নেই / कोई औपचारिक शिक्षा नहीं
             </MenuItem>
-            <MenuItem value="कक्षा 5 तक">To Class 5 / कक्षा 5 तक</MenuItem>
+            <MenuItem value="कक्षा 5 तक">
+              To Class 5 / ক্লাস ৫ পর্যন্ত / कक्षा 5 तक
+            </MenuItem>
             <MenuItem value="कक्षा 6-10, उत्तीर्ण नहीं">
-              Class 6-10, Not Passout / कक्षा 6-10, उत्तीर्ण नहीं
+              Class 6-10, Not Passout / শ্রেণি ৬-১০, উত্তীর্ণ হয়নি / कक्षा
+              6-10, उत्तीर्ण नहीं
             </MenuItem>
             <MenuItem value="10 . उत्तीर्ण">
-              Up To Class 5 / 10 . उत्तीर्ण
+              Up To Class 5 / ১০ম উত্তীর্ণ / 10 . उत्तीर्ण
             </MenuItem>
             <MenuItem value="कक्षा 11-12, उत्तीर्ण नहीं">
-              Class 11-12, Not Passout / कक्षा 11-12, उत्तीर्ण नहीं
+              Class 11-12, Not Passout / শ্রেণি ১১-১২, উত্তীর্ণ হয়নি / कक्षा
+              11-12, उत्तीर्ण नहीं
             </MenuItem>
-            <MenuItem value="12 उत्तीर्ण">12 Pass / 12 उत्तीर्ण</MenuItem>
+            <MenuItem value="12 उत्तीर्ण">
+              12 Pass / ১২তম উত্তীর্ণ / 12 उत्तीर्ण
+            </MenuItem>
             <MenuItem value="नामांकित स्नातक">
-              Enrolled Graduate / नामांकित स्नातक
+              Enrolled Graduate / নিবন্ধিত স্নাতক / नामांकित स्नातक
             </MenuItem>
-            <MenuItem value="ग्रेजुएट">Graduate / ग्रेजुएट</MenuItem>
+            <MenuItem value="ग्रेजुएट">
+              Graduate / গ্রাজুয়েট / ग्रेजुएट
+            </MenuItem>
             <MenuItem value="नामांकित स्नातकोत्तर">
-              Enrolled Postgraduate / नामांकित स्नातकोत्तर
+              Enrolled Postgraduate / নিবন্ধিত পোস্টগ্রাজুয়েট / नामांकित
+              स्नातकोत्तर
             </MenuItem>
             <MenuItem value="पोस्ट ग्रेजुएट">
-              Post-graduate / पोस्ट ग्रेजुएट
+              Post-graduate / পোস্টগ্রাজুয়েট / पोस्ट ग्रेजुएट
             </MenuItem>
-            <MenuItem value="अन्य">Other / अन्य</MenuItem>
+            <MenuItem value="अन्य">Other / অন্যান্য / अन्य</MenuItem>
           </Select>
         </FormControl>
       </Box>
@@ -104,11 +113,13 @@ const OtherInfo = ({ setEducation, setFamilyIncome, setMaritalStatus }) => {
               setMaritalStatus(e.target.value);
             }}>
             <MenuItem value="Not Married/ अविवाहित">
-              Not Married/ अविवाहित
+              Not Married/ অবিবাহিত / अविवाहित
             </MenuItem>
-            <MenuItem value="विवाहित/ Married">विवाहित/ Married</MenuItem>
+            <MenuItem value="विवाहित/ Married">
+              विवाहित / বিবাহিত / Married
+            </MenuItem>
             <MenuItem value="विधवा / अलग (Widow/ Separated)">
-              विधवा / अलग (Widow/ Separated)
+              विधवा / अलग (বিধবা / আলাদা) / (Widow/ Separated)
             </MenuItem>
           </Select>
         </FormControl>
