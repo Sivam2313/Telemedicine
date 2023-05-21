@@ -369,7 +369,7 @@ const Prescription = () => {
                   <Box display='flex' style={{width:'90%',marginBottom:'2vh',justifyContent:'space-between'}}>
                     <input type='text' onChange={(e)=>{setName(e.target.value)}} value={selectedMed}  placeholder='Medicine Name' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
                     <div style={{display:'flex',flexDirection:'column',width:'35%'}}>
-                      <textarea placeholder='Schedule for Medicine' style={{borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'8px',outline:'none'}} type = 'text' onChange={(e)=>{setSchedule(e.target.value)}}/>
+                      <textarea ref={scheduleVal} placeholder='Schedule for Medicine' style={{borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'8px',outline:'none'}} type = 'text' onChange={(e)=>{setSchedule(e.target.value)}}/>
                     </div>
                   </Box>
                   <Box display='flex' style={{width:'90%',justifyContent:'space-between'}}>
@@ -385,7 +385,7 @@ const Prescription = () => {
                   <Box display='flex' style={{width:'90%',marginBottom:'2vh',justifyContent:'space-between'}}>
                     <input type='text' value={item.name} placeholder='Medicine Name' style={{width:'60%',height:'3vh',paddingLeft:'12px',borderRadius:'8px',outline:'none',border:'1px solid rgb(170, 170, 170)'}}/>
                     <div style={{display:'flex',flexDirection:'column',width:'35%'}}>
-                      <textarea ref={scheduleVal} placeholder='Schedule for Medicine' style={{borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'8px',outline:'none'}} type = 'text' value={item.schedule}/>
+                      <textarea  placeholder='Schedule for Medicine' style={{borderRadius:'5px',border:'1px solid rgb(170, 170, 170)',paddingLeft:'8px',outline:'none'}} type = 'text' value={item.schedule}/>
                     </div>
                   </Box>
                   <Box display='flex' style={{width:'90%',justifyContent:'space-between'}}>
