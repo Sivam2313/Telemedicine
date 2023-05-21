@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import Peer from "peerjs";
 import "./style.css";
-import Prescription from "./Prescription";
 const socket = io.connect("http://localhost:5000");
-// const socket = io.connect("https://telemedicine-main.onrender.com/");
+// const socket = io.connect("https://telemedicine-main.onrender.com/")
 
 const Conference = () => {
   const [message, setMessage] = useState();
@@ -16,11 +15,10 @@ const Conference = () => {
   const remoteVideoRef = useRef(null);
   const currentUserVideoRef = useRef(null);
   const peerInstance = useRef(null);
+
   const [audio, setAudio] = useState(true);
   const [video, setVideo] = useState(true);
   const [MyStream, setMyStream] = useState(null);
-  const para = useParams();
-  const [id, setId] = useState(para.id);
   // var peer;
   const history = useHistory();
 
@@ -40,7 +38,6 @@ const Conference = () => {
         navigator.mozGetUserMedia;
 
       getUserMedia({ video: true, audio: true }, (mediaStream) => {
-        setMyStream(mediaStream);
         currentUserVideoRef.current.srcObject = mediaStream;
         currentUserVideoRef.current.play();
         call.answer(mediaStream);
@@ -82,6 +79,17 @@ const Conference = () => {
     socket.emit("send-message", message, room);
   };
 
+  const videoPause = () => {
+    setVideo(!video);
+    MyStream.getVideoTracks()[0].enabled =
+      !MyStream.getVideoTracks()[0].enabled;
+  };
+  const audioPause = () => {
+    setAudio(!audio);
+    MyStream.getAudioTracks()[0].enabled =
+      !MyStream.getAudioTracks()[0].enabled;
+  };
+
   const endCall = () => {
     const room = localStorage.getItem("room");
     socket.emit("leave-room", room, peerId);
@@ -94,9 +102,8 @@ const Conference = () => {
     //   const path='/HealthWorker';
     //   history.push(path)
     // }
-    // history.goBack();
-    const doc_name = JSON.parse(localStorage.getItem("DoctorOnline")).name;
-    history.push(`/doctor?DoctorName=${doc_name}`);
+    history.push("/HealthWorker");
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -142,7 +149,7 @@ const Conference = () => {
     getUserMedia({ video: true, audio: true }, (mediaStream) => {
       currentUserVideoRef.current.srcObject = mediaStream;
       currentUserVideoRef.current.play();
-      setMyStream(mediaStream);
+
       const call = peerInstance.current.call(remotePeerId, mediaStream);
 
       call.on("stream", (remoteStream) => {
@@ -151,17 +158,6 @@ const Conference = () => {
       });
     });
   }
-
-  const videoPause = () => {
-    setVideo(!video);
-    MyStream.getVideoTracks()[0].enabled =
-      !MyStream.getVideoTracks()[0].enabled;
-  };
-  const audioPause = () => {
-    setAudio(!audio);
-    MyStream.getAudioTracks()[0].enabled =
-      !MyStream.getAudioTracks()[0].enabled;
-  };
 
   return (
     <div>
@@ -172,48 +168,27 @@ const Conference = () => {
       </div>
       <div className="main">
         <div className="main__left">
-          {/* <div className="videos__group">
-            <div id="video-grid">
-              <video ref={currentUserVideoRef} />
-              <video ref={remoteVideoRef} />
-            </div>
-          </div> */}
-          <div className="prescription_area">
-            <Prescription />
+          <div className="videos__group">
+            {/* <div id="video-grid"> */}
+            {/* <video ref={currentUserVideoRef} /> */}
+            <video id="d_video" ref={remoteVideoRef} />
+            {/* </div> */}
           </div>
           <div className="options">
             <div className="options__left">
               <div id="stopVideo" className="options__button">
-                {/* <i className="fa fa-video-camera"></i> */}
-                {video === true ? (
-                  <i
-                    className="fa fa-video"
-                    onClick={() => {
-                      videoPause();
-                    }}></i>
-                ) : (
-                  <i
-                    className="fa fa-video-slash"
-                    onClick={() => {
-                      videoPause();
-                    }}></i>
-                )}
+                <i
+                  className="fa fa-video-camera"
+                  onClick={() => {
+                    videoPause();
+                  }}></i>
               </div>
               <div id="muteButton" className="options__button">
-                {/* <i className="fa fa-microphone"></i> */}
-                {audio ? (
-                  <i
-                    className="fa fa-microphone"
-                    onClick={() => {
-                      audioPause();
-                    }}></i>
-                ) : (
-                  <i
-                    className="fa fa-microphone-slash"
-                    onClick={() => {
-                      audioPause();
-                    }}></i>
-                )}
+                <i
+                  className="fa fa-microphone"
+                  onClick={() => {
+                    audioPause();
+                  }}></i>
               </div>
               <div>
                 <button
@@ -238,11 +213,8 @@ const Conference = () => {
           </div>
         </div>
         <div className="main__right">
-          <div className="videos__group">
-            <div id="video-grid">
-              <video ref={currentUserVideoRef} />
-              <video ref={remoteVideoRef} />
-            </div>
+          <div id="video-grid">
+            <video ref={currentUserVideoRef} />
           </div>
 
           <div className="main__chat_window">
