@@ -3,8 +3,8 @@ import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import Peer from "peerjs";
 import "./style.css";
-const socket = io.connect("http://localhost:5000");
-// const socket = io.connect("https://telemedicine-main.onrender.com/")
+// const socket = io.connect("http://localhost:5000");
+const socket = io.connect("https://telemedicine-main.onrender.com/")
 
 const Conference = () => {
   const [message, setMessage] = useState();
